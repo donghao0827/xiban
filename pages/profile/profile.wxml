@@ -56,8 +56,8 @@
         <text wx:else>{{userProfile.storageMode === 'local' ? '免费体验 · 最多 5 人共同筹备' : '开启后可共同筹备，并在不同设备使用'}}</text>
       </view>
       <view class="cloud-button-wrap">
-        <ui-button wx:if="{{!cloudStatus.enabled}}" text="{{userProfile.storageMode === 'local' ? '体验' : '开启'}}" size="small" bind:action="enableCloudSync"></ui-button>
-        <ui-button wx:else text="同步" type="secondary" size="small" bind:action="syncNow"></ui-button>
+        <view wx:if="{{!cloudStatus.enabled}}" class="cloud-action-button primary" bindtap="enableCloudSync">{{userProfile.storageMode === 'local' ? '体验' : '开启'}}</view>
+        <view wx:else class="cloud-action-button secondary" bindtap="syncNow">同步</view>
       </view>
     </view>
     <view wx:if="{{cloudStatus.enabled}}" class="cloud-actions">
