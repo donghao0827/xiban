@@ -95,7 +95,7 @@ async function upgradeLocalWedding(data) {
 }
 
 async function previewInvite(inviteCode) {
-  return request(`/api/invites/preview/${inviteCode}`, 'GET')
+  return request('/api/invites/preview', 'POST', { inviteCode })
 }
 
 async function joinWedding(data) {
