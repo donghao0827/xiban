@@ -1,5 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
-  <path d="M24 39.2 9.8 26.4C3.2 20.5 7.4 10 16.3 10c3.2 0 6.1 1.5 7.7 4 1.6-2.5 4.5-4 7.7-4 8.9 0 13.1 10.5 6.5 16.4L24 39.2Z" fill="#fff"/>
-  <path d="m32.7 17 .9 2.4 2.4.9-2.4.9-.9 2.4-.9-2.4-2.4-.9 2.4-.9.9-2.4Z" fill="#FF6688"/>
-  <path d="m38.5 8.5 1.1 3 3 1.1-3 1.1-1.1 3-1.1-3-3-1.1 3-1.1 1.1-3Z" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160" fill="none">
+  <defs>
+    <linearGradient id="heartFill" x1="48" y1="38" x2="112" y2="130" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.62" stop-color="#FFF8FA"/>
+      <stop offset="1" stop-color="#FFE8EE"/>
+    </linearGradient>
+    <linearGradient id="heartEdge" x1="46" y1="35" x2="112" y2="133" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD5DF"/>
+      <stop offset="0.48" stop-color="#FFABC0"/>
+      <stop offset="1" stop-color="#FF7194"/>
+    </linearGradient>
+    <linearGradient id="smallHeart" x1="72" y1="71" x2="88" y2="98" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFB7C8"/>
+      <stop offset="1" stop-color="#FF7899"/>
+    </linearGradient>
+    <linearGradient id="spark" x1="105" y1="25" x2="125" y2="54" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.55" stop-color="#FFF7FA"/>
+      <stop offset="1" stop-color="#FFDCE6"/>
+    </linearGradient>
+    <filter id="shadow" x="18" y="21" width="121" height="126" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#FF7899" flood-opacity="0.28"/>
+    </filter>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2.2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <path d="M79.5 132.5C72.7 126.9 41.6 104.4 32.8 82.8 22.7 57.9 37.7 36.5 55.7 35.5c10.1-.6 18.5 4.2 23.8 11.2 5.3-7 13.7-11.8 23.8-11.2 18 1 33 22.4 22.9 47.3-8.8 21.6-39.9 44.1-46.7 49.7Z" fill="url(#heartFill)" stroke="url(#heartEdge)" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M38.2 68.7C39.5 52.5 48.7 43 61.4 42.3" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+    <path d="M79.5 127.4c-9.5-7.5-33.5-26-41.4-43.7" stroke="#FFD6E0" stroke-width="2" stroke-linecap="round" opacity=".65"/>
+  </g>
+
+  <path d="M79.7 100.1 66.1 87.8c-6.3-5.7-2.3-15.7 6.2-15.7 3 0 5.8 1.5 7.4 3.8 1.5-2.3 4.3-3.8 7.3-3.8 8.5 0 12.5 10 6.2 15.7l-13.5 12.3Z" fill="url(#smallHeart)"/>
+  <circle cx="72.2" cy="80.3" r="2.2" fill="#FFFFFF" opacity=".85"/>
+
+  <g filter="url(#glow)">
+    <path d="m116 17.5 4.8 12.7 12.7 4.8-12.7 4.8-4.8 12.7-4.8-12.7L98.5 35l12.7-4.8 4.8-12.7Z" fill="url(#spark)" stroke="#FF93AE" stroke-width="2" stroke-linejoin="round"/>
+    <path d="m111 56.5 3.2 8.3 8.3 3.2-8.3 3.2-3.2 8.3-3.2-8.3-8.3-3.2 8.3-3.2 3.2-8.3Z" fill="#FFE6ED" stroke="#FFA1B7" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="m132 84 4.3 11.2 11.2 4.3-11.2 4.3L132 115l-4.3-11.2-11.2-4.3 11.2-4.3L132 84Z" fill="url(#spark)" stroke="#FF91AC" stroke-width="2" stroke-linejoin="round"/>
+  </g>
 </svg>
