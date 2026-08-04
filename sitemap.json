@@ -1,8 +1,8 @@
 {
-  "desc": "囍伴页面索引",
+  "desc": "囍伴为私人备婚工具，不开放页面索引",
   "rules": [
     {
-      "action": "allow",
+      "action": "disallow",
       "page": "*"
     }
   ]
