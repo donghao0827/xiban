@@ -139,7 +139,7 @@ Page({
     }
     wx.showModal({
       title: '开始新的婚礼？',
-      content: '当前设备里已有备婚数据。继续将覆盖现有婚礼信息、任务、婚品、预算、宾客和记录，建议先导出备份。',
+      content: '当前设备里已有备婚数据。继续将覆盖现有婚礼信息、任务、婚品、预算、宾客和记录，请确认这些数据不再需要。',
       confirmText: '确认覆盖',
       confirmColor: '#c94743',
       success: result => {
@@ -177,7 +177,7 @@ Page({
         ? `当前成员：${preview.members.map(item => `${item.name}（${item.relation}）`).join('、')}`
         : '当前还没有成员'
       const replacementWarning = storage.hasWeddingData()
-        ? '\n\n注意：加入后将用这场婚礼的云端数据替换当前设备上的备婚数据，建议先导出备份。'
+        ? '\n\n注意：加入后将用这场婚礼的云端数据替换当前设备上的备婚数据，请确认本地数据不再需要。'
         : ''
       wx.showModal({
         title: '确认加入这场婚礼？',

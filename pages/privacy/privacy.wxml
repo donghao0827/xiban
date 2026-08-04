@@ -40,7 +40,7 @@
   <view class="privacy-section">
     <view class="section-title">保存与删除</view>
     <view class="card copy-card">
-      <view>本地数据会保存至你主动清除微信数据、导入覆盖或开始新的婚礼。</view>
+      <view>本地数据会保存至你主动清除微信数据或开始新的婚礼。</view>
       <view>云端数据在婚礼空间存续期间保存。管理员可在“我的 → 数据与服务”关闭同步或删除云端婚礼空间。</view>
       <view>删除云端空间会删除婚礼数据、成员关系和邀请，并尝试清理相关云端文件；该操作不可恢复。</view>
     </view>
@@ -50,7 +50,7 @@
     <view class="section-title">你的选择</view>
     <view class="card copy-card">
       <view>你可以不上传头像和结婚照，也可以只使用免费本地版本。</view>
-      <view>你可以导出本地文字数据备份、关闭自动同步，或由管理员删除整个云端婚礼空间。</view>
+      <view>你可以开通或关闭自动同步，也可以由管理员删除整个云端婚礼空间。</view>
       <view>涉及其他宾客的信息时，请只录入共同筹备所必需的内容，并妥善管理成员权限。</view>
     </view>
   </view>

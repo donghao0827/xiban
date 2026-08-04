@@ -80,6 +80,6 @@
       <ui-button text="{{submitting ? '正在准备…' : mode === 'create' ? '开始备婚' : '查找并加入婚礼'}}" disabled="{{submitting}}" bind:action="submit"></ui-button>
     </view>
 
-    <view class="privacy-note">数据仅保存在当前设备，不会自动上传。清理微信数据或更换设备时可能丢失，建议定期导出备份。</view>
+    <view class="privacy-note">数据仅保存在当前设备，不会自动上传；之后可在“我的”页面开通免费云端体验。</view>
   </block>
 </view>

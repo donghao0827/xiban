@@ -43,7 +43,6 @@
 .local-storage-note>view:last-child { flex:1; min-width:0; }
 .local-storage-note>view:last-child>view { color:var(--xiban-text-primary); font-size:24rpx; font-weight:650; }
 .local-storage-note text { display:block; margin-top:7rpx; color:#9A7760; font-size:19rpx; line-height:1.55; }
-.backup-card { margin-top:18rpx; }
 .more-card { margin-top:18rpx; padding:0 24rpx; }
 .brand { padding:58rpx 0 28rpx; text-align:center; }
 .brand view { color:#FF9FB1; font-family:"STKaiti",serif; font-size:58rpx; }

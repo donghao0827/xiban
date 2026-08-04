@@ -68,12 +68,7 @@
 
   <view wx:if="{{userProfile.storageMode === 'local'}}" class="local-storage-note card">
     <view class="local-storage-note-icon"><app-icon name="info" size="{{22}}"></app-icon></view>
-    <view><view>数据保存在当前设备</view><text>清理微信数据、更换手机或设备故障时可能丢失，建议定期导出备份。</text></view>
-  </view>
-
-  <view class="card menu-card backup-card">
-    <ui-list-item icon="profile-export" tone="green" title="导出本地备份" description="备份清单和文字数据，不包含照片和自定义图片" bind:tap="exportLocalBackup"></ui-list-item>
-    <ui-list-item icon="profile-import" tone="blue" title="导入本地备份" description="从微信文件中恢复备份" divider="{{false}}" bind:tap="importLocalBackup"></ui-list-item>
+    <view><view>数据保存在当前设备</view><text>清理微信数据或更换手机时可能丢失，可开通免费云端体验进行同步。</text></view>
   </view>
 
   <view class="card menu-card more-card">
