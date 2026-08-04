@@ -1,6 +1,5 @@
 .privacy-mask { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; padding:48rpx; background:rgba(28,28,30,.48); }
 .privacy-dialog { width:100%; max-width:620rpx; padding:38rpx 32rpx 30rpx; border-radius:34rpx; background:#fff; box-shadow:0 28rpx 80rpx rgba(38,25,23,.2); text-align:center; box-sizing:border-box; }
-.privacy-symbol { display:flex; align-items:center; justify-content:center; width:76rpx; height:76rpx; margin:0 auto 20rpx; color:var(--xiban-brand); border-radius:26rpx; background:var(--xiban-brand-light); }
 .privacy-title { color:var(--xiban-text-primary); font-size:31rpx; font-weight:720; }
 .privacy-copy { margin-top:18rpx; color:var(--xiban-text-secondary); font-size:22rpx; line-height:1.75; }
 .privacy-copy text { color:var(--xiban-brand); }
