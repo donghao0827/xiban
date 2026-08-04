@@ -87,4 +87,5 @@
     <view class="form-row"><text class="form-label">婚礼场地</text><input class="form-input" placeholder="例如：西湖国宾馆" value="{{locationForm.venue}}" data-field="venue" bindinput="updateLocationField" /></view>
     <ui-button text="保存婚礼地点" bind:action="saveWeddingLocation"></ui-button>
   </ui-sheet>
+  <privacy-popup></privacy-popup>
 </view>

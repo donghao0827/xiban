@@ -31,6 +31,7 @@
     "ui-tag": "/components/ui-tag/ui-tag",
     "ui-progress": "/components/ui-progress/ui-progress",
     "ui-list-item": "/components/ui-list-item/ui-list-item",
-    "ui-sheet": "/components/ui-sheet/ui-sheet"
+    "ui-sheet": "/components/ui-sheet/ui-sheet",
+    "privacy-popup": "/components/privacy-popup/privacy-popup"
   }
 }

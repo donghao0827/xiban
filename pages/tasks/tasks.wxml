@@ -225,4 +225,5 @@
         <ui-button text="{{materialForm.id ? '保存修改' : '加入购买清单'}}" bind:action="saveMaterial"></ui-button>
       </scroll-view>
   </ui-sheet>
+  <privacy-popup></privacy-popup>
 </view>
