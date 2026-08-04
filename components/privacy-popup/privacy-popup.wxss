@@ -1,10 +1,10 @@
 .privacy-mask { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; padding:48rpx; background:rgba(28,28,30,.48); }
-.privacy-dialog { width:100%; max-width:620rpx; padding:38rpx 32rpx 30rpx; border-radius:34rpx; background:#fff; box-shadow:0 28rpx 80rpx rgba(38,25,23,.2); text-align:center; }
+.privacy-dialog { width:100%; max-width:620rpx; padding:38rpx 32rpx 30rpx; border-radius:34rpx; background:#fff; box-shadow:0 28rpx 80rpx rgba(38,25,23,.2); text-align:center; box-sizing:border-box; }
 .privacy-symbol { display:flex; align-items:center; justify-content:center; width:76rpx; height:76rpx; margin:0 auto 20rpx; color:var(--xiban-brand); border-radius:26rpx; background:var(--xiban-brand-light); }
 .privacy-title { color:var(--xiban-text-primary); font-size:31rpx; font-weight:720; }
 .privacy-copy { margin-top:18rpx; color:var(--xiban-text-secondary); font-size:22rpx; line-height:1.75; }
 .privacy-copy text { color:var(--xiban-brand); }
-.privacy-actions { display:grid; grid-template-columns:1fr 1.45fr; gap:14rpx; margin-top:32rpx; }
-.privacy-actions button { display:flex; align-items:center; justify-content:center; height:78rpx; border-radius:24rpx; font-size:23rpx; font-weight:650; }
-.privacy-cancel { color:var(--xiban-text-secondary); background:#F5F2F1; }
-.privacy-agree { color:#fff; background:var(--xiban-brand); box-shadow:0 9rpx 24rpx rgba(255,102,136,.2); }
+.privacy-actions { display:flex; gap:14rpx; width:100%; margin-top:32rpx; }
+.privacy-actions button { display:flex; min-width:0; height:78rpx; margin:0; padding:0 12rpx; align-items:center; justify-content:center; border-radius:24rpx; font-size:23rpx; font-weight:650; box-sizing:border-box; white-space:nowrap; }
+.privacy-cancel { flex:1; color:var(--xiban-text-secondary); background:#F5F2F1; }
+.privacy-agree { flex:1.35; color:#fff; background:var(--xiban-brand); box-shadow:0 9rpx 24rpx rgba(255,102,136,.2); }
