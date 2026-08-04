@@ -17,7 +17,7 @@ Page({
   },
 
   onLoad() {
-    const windowInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync()
+    const windowInfo = wx.getWindowInfo()
     const menu = wx.getMenuButtonBoundingClientRect()
     const viewportWidth = windowInfo.windowWidth - 32
     this.setData({

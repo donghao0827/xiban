@@ -28,7 +28,7 @@ Component({
   },
   lifetimes: {
     attached() {
-      const system = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync()
+      const system = wx.getWindowInfo()
       const menu = wx.getMenuButtonBoundingClientRect()
       this.setData({
         top: system.statusBarHeight || 20,
