@@ -1,0 +1,4 @@
+<button class="ui-button {{type}} {{size}} {{block ? 'block' : ''}}" disabled="{{disabled}}" bindtap="handleTap">
+  <app-icon wx:if="{{icon}}" name="{{icon}}" size="{{18}}"></app-icon>
+  <text>{{text}}</text>
+</button>

@@ -1,0 +1,35 @@
+.empty {
+  padding: 72rpx 40rpx;
+  text-align: center;
+}
+
+.empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92rpx;
+  height: 92rpx;
+  margin: 0 auto;
+  border-radius: 30rpx;
+  background: var(--xiban-brand-light);
+  opacity: .72;
+}
+
+.empty-title {
+  margin-top: 18rpx;
+  color: var(--xiban-text-primary);
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.empty-desc {
+  margin-top: 12rpx;
+  color: var(--xiban-text-tertiary);
+  font-size: 24rpx;
+}
+
+.empty-action {
+  display: flex;
+  justify-content: center;
+  margin-top: 24rpx;
+}

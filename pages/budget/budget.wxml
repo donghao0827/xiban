@@ -1,0 +1,137 @@
+<view class="page budget-page">
+  <nav-bar></nav-bar>
+
+  <view class="budget-overview card">
+    <view class="overview-head">
+      <view>
+        <text>总预算（元）</text>
+        <view class="total-money"><text>¥</text>{{totalPlanned}}</view>
+      </view>
+      <view class="overview-edit" bindtap="openSheet"><app-icon name="edit" size="{{18}}"></app-icon><text>添加分类</text></view>
+    </view>
+
+    <view class="money-summary">
+      <view>
+        <text>已花费</text>
+        <view class="spent">¥{{totalSpent}}</view>
+      </view>
+      <view>
+        <text>剩余</text>
+        <view>¥{{remaining}}</view>
+      </view>
+      <view>
+        <text>预算使用</text>
+        <view>{{rate}}%</view>
+      </view>
+    </view>
+
+    <view class="chart-area">
+      <view class="rate-ring" style="background:{{chartGradient}}">
+        <view class="rate-ring-inner"><text>{{rate}}%</text><view>已花费</view></view>
+      </view>
+      <view class="chart-legend">
+        <view wx:for="{{budgets}}" wx:key="id">
+          <text class="legend-dot tone-{{index % 5}}"></text>
+          <view><text>{{item.category}}</text><text>¥{{item.spent}}</text></view>
+          <text>{{item.share}}%</text>
+        </view>
+        <view wx:if="{{!budgets.length}}" class="legend-empty">添加分类后，这里会展示预算构成</view>
+      </view>
+    </view>
+  </view>
+
+  <ui-section title="预算明细" meta="{{'· ' + budgets.length + ' 个分类'}}" link="添加" bind:action="openSheet"></ui-section>
+
+  <view class="budget-list card" wx:if="{{budgets.length}}">
+    <view wx:for="{{budgets}}" wx:key="id" class="budget-row" data-id="{{item.id}}" bindtap="openBudgetDetail" bindlongpress="removeBudget">
+      <view class="category-icon tone-bg-{{index % 5}}"><app-icon name="{{item.icon}}" size="{{22}}"></app-icon></view>
+      <view class="budget-main">
+        <view class="budget-row-head">
+          <view><text>{{item.category}}</text><text>{{item.expenses.length}} 笔账单</text></view>
+          <view><text>¥{{item.spent}}</text><text>/ ¥{{item.planned}}</text></view>
+        </view>
+      </view>
+      <app-icon name="arrow-right" size="{{17}}"></app-icon>
+    </view>
+  </view>
+
+  <view class="card empty-wrap" wx:else>
+    <empty-state icon="wallet" title="先定一个舒服的预算" description="不需要一次想清楚，可以从婚宴或婚纱照开始" actionText="添加预算分类" bind:action="openSheet"></empty-state>
+  </view>
+
+  <view class="budget-tip">
+    <view><app-icon name="sparkle" size="{{18}}"></app-icon></view>
+    <text>建议预留总预算的 5%—10% 作为机动资金，应对临时的小惊喜。</text>
+  </view>
+
+  <view class="fab" bindtap="openSheet"><app-icon name="plus" size="{{26}}"></app-icon></view>
+  <bottom-nav current="{{1}}"></bottom-nav>
+
+  <ui-sheet visible="{{showSheet}}" title="{{form.id ? '修改预算' : '添加预算分类'}}" subtitle="先定范围，后续可以随时调整" bind:close="closeSheet">
+    <view class="form-row">
+      <view class="category-grid">
+        <view wx:for="{{categoryOptions}}" wx:key="category" class="category-chip {{form.category === item.category ? 'active' : ''}}" data-index="{{index}}" bindtap="chooseCategory">
+          <view><app-icon name="{{item.icon}}" size="{{20}}"></app-icon></view>
+          <text>{{item.category}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="form-row">
+      <text class="form-label">计划预算</text>
+      <view class="money-input"><text>¥</text><input type="digit" placeholder="0" value="{{form.planned}}" bindinput="updatePlanned" /></view>
+    </view>
+    <ui-button text="{{form.id ? '保存修改' : '保存预算'}}" bind:action="saveBudget"></ui-button>
+  </ui-sheet>
+
+  <ui-sheet visible="{{showDetailSheet}}" title="{{selectedBudget.category}}" subtitle="预算与支出账单" bind:close="closeBudgetDetail">
+    <view class="detail-summary">
+      <view><text>计划预算</text><text>¥{{selectedBudget.planned}}</text></view>
+      <view><text>实际支出</text><text class="pink-money">¥{{selectedBudget.spent}}</text></view>
+      <view><text>剩余</text><text>¥{{selectedBudget.planned - selectedBudget.spent}}</text></view>
+    </view>
+    <view class="detail-actions">
+      <ui-button text="修改预算" type="secondary" size="medium" bind:action="editBudget"></ui-button>
+      <ui-button text="+ 记一笔" size="medium" bind:action="openExpenseSheet"></ui-button>
+    </view>
+    <view class="expense-title">支出记录 <text>· {{selectedBudget.expenses.length}} 笔</text></view>
+    <scroll-view scroll-y class="expense-scroll">
+      <view wx:if="{{selectedBudget.expenses.length}}" class="expense-list">
+        <view wx:for="{{selectedBudget.expenses}}" wx:key="id" class="expense-row" data-id="{{item.id}}" bindtap="editExpense" bindlongpress="removeExpense">
+          <view class="receipt-icon"><app-icon name="receipt" size="{{20}}"></app-icon></view>
+          <view class="expense-main">
+            <view>{{item.name}}</view>
+            <text>{{item.date}}<text wx:if="{{item.payer}}"> · {{item.payer}}支付</text><text wx:if="{{item.note}}"> · {{item.note}}</text></text>
+          </view>
+          <view class="expense-amount">-¥{{item.amount}}</view>
+        </view>
+      </view>
+      <view wx:else class="expense-empty">还没有支出，记录第一笔婚礼花费吧</view>
+    </scroll-view>
+  </ui-sheet>
+
+  <ui-sheet visible="{{showExpenseSheet}}" title="{{expenseForm.id ? '修改支出' : '记录一笔支出'}}" subtitle="每一笔都记清楚，预算会自动更新" bind:close="closeExpenseSheet">
+    <view class="form-row">
+      <text class="form-label">支出名称</text>
+      <input class="form-input" maxlength="30" placeholder="例如：酒店定金" value="{{expenseForm.name}}" data-field="name" bindinput="updateExpenseField" />
+    </view>
+    <view class="money-row">
+      <view class="form-row money-field">
+        <text class="form-label">支出金额</text>
+        <view class="money-input small"><text>¥</text><input type="digit" placeholder="0" value="{{expenseForm.amount}}" data-field="amount" bindinput="updateExpenseField" /></view>
+      </view>
+      <view class="form-row money-field">
+        <text class="form-label">支付日期</text>
+        <picker mode="date" value="{{expenseForm.date}}" bindchange="pickExpenseDate"><view class="form-input expense-date">{{expenseForm.date}}</view></picker>
+      </view>
+    </view>
+    <view class="form-row">
+      <text class="form-label">付款人（可选）</text>
+      <input class="form-input" maxlength="20" placeholder="例如：双方共同" value="{{expenseForm.payer}}" data-field="payer" bindinput="updateExpenseField" />
+    </view>
+    <view class="form-row">
+      <text class="form-label">备注（可选）</text>
+      <input class="form-input" maxlength="60" placeholder="例如：首笔定金，可退" value="{{expenseForm.note}}" data-field="note" bindinput="updateExpenseField" />
+    </view>
+    <ui-button text="{{expenseForm.id ? '保存修改' : '保存支出'}}" bind:action="saveExpense"></ui-button>
+  </ui-sheet>
+</view>

@@ -1,0 +1,59 @@
+<view class="page guests-page">
+  <nav-bar></nav-bar>
+
+  <view class="guest-overview card">
+    <view><text>已邀请</text><view>{{totalPeople}}</view><text>预计宾客</text></view>
+    <view><text>确认出席</text><view>{{confirmedPeople}}</view><text>已确认人数</text></view>
+    <view><text>待确认</text><view>{{totalPeople - confirmedPeople}}</view><text>继续联系</text></view>
+  </view>
+
+  <view class="guest-toolbar">
+    <scroll-view class="filter-scroll" scroll-x enable-flex>
+      <view wx:for="{{filters}}" wx:key="*this" class="filter {{activeFilter === index ? 'active' : ''}}" data-index="{{index}}" bindtap="changeFilter">{{item}}</view>
+    </scroll-view>
+    <view class="add-guest" bindtap="openSheet"><app-icon name="plus" size="{{20}}"></app-icon></view>
+  </view>
+
+  <ui-section title="宾客分组" meta="{{'· ' + visibleGuests.length + ' 位'}}"></ui-section>
+  <view class="guest-list card" wx:if="{{visibleGuests.length}}">
+    <view wx:for="{{visibleGuests}}" wx:key="id" class="guest-row" data-id="{{item.id}}" bindlongpress="removeGuest">
+      <view class="avatar tone-{{index % 4}}">{{item.initial}}</view>
+      <view class="guest-main">
+        <view>{{item.name}} <text wx:if="{{item.count > 1}}">+{{item.count - 1}}</text></view>
+        <text>{{item.side}} · {{item.group}} · 共 {{item.count}} 人</text>
+      </view>
+      <view class="guest-status status-{{item.statusClass}}" data-id="{{item.id}}" bindtap="cycleStatus">{{item.status}}</view>
+      <app-icon name="arrow-right" size="{{16}}"></app-icon>
+    </view>
+  </view>
+  <view class="card" wx:else>
+    <empty-state icon="record-guests" title="这里还没有宾客" description="从最重要的家人和朋友开始添加吧" actionText="添加第一位宾客" bind:action="openSheet"></empty-state>
+  </view>
+
+  <view class="page-hint">轻触状态可以快速切换，长按宾客可从名单移除</view>
+  <bottom-nav current="{{3}}"></bottom-nav>
+
+  <ui-sheet visible="{{showSheet}}" title="添加宾客" subtitle="先记录称呼，其他信息之后也能完善" bind:close="closeSheet">
+    <view class="form-row">
+      <text class="form-label">称呼或姓名</text>
+      <input class="form-input" placeholder="例如：王阿姨" value="{{form.name}}" bindinput="updateName" focus />
+    </view>
+    <view class="form-row">
+      <text class="form-label">宾客归属</text>
+      <view class="chip-row"><view wx:for="{{sides}}" wx:key="*this" class="chip {{form.side === item ? 'active' : ''}}" data-value="{{item}}" bindtap="chooseSide">{{item}}</view></view>
+    </view>
+    <view class="form-row">
+      <text class="form-label">宾客分组</text>
+      <view class="chip-row"><view wx:for="{{groups}}" wx:key="*this" class="chip {{form.group === item ? 'active' : ''}}" data-value="{{item}}" bindtap="chooseGroup">{{item}}</view></view>
+    </view>
+    <view class="form-row">
+      <text class="form-label">当前状态</text>
+      <view class="chip-row"><view wx:for="{{statuses}}" wx:key="*this" class="chip {{form.status === item ? 'active' : ''}}" data-value="{{item}}" bindtap="chooseStatus">{{item}}</view></view>
+    </view>
+    <view class="form-row">
+      <text class="form-label">人数（含同行）</text>
+      <input class="form-input" type="number" value="{{form.count}}" bindinput="updateCount" />
+    </view>
+    <ui-button text="加入宾客名单" bind:action="saveGuest"></ui-button>
+  </ui-sheet>
+</view>

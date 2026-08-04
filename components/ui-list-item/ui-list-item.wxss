@@ -1,0 +1,7 @@
+.ui-list-item { display:flex; align-items:center; min-height:110rpx; }
+.ui-list-item.divider { border-bottom:1rpx solid var(--xiban-border-light); }
+.ui-list-icon { display:flex; flex:none; align-items:center; justify-content:center; width:62rpx; height:62rpx; border-radius:19rpx; }
+.pink{background:#FFEAF0}.orange{background:#FFF0E5}.green{background:#EAF9F1}.purple{background:#F0EDFF}.blue{background:#EAF3FF}
+.ui-list-main { flex:1; min-width:0; margin:0 18rpx; }
+.ui-list-main>view { overflow:hidden; color:var(--xiban-text-primary); font-size:27rpx; font-weight:600; text-overflow:ellipsis; white-space:nowrap; }
+.ui-list-main>text { display:block; margin-top:7rpx; overflow:hidden; color:var(--xiban-text-tertiary); font-size:20rpx; text-overflow:ellipsis; white-space:nowrap; }

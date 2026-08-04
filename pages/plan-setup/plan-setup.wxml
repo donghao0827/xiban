@@ -1,0 +1,88 @@
+<view class="plan-page">
+  <nav-bar custom-left="{{true}}">
+    <view slot="left" class="step-count"><text>{{editMode ? step : step + 1}}</text><text>/ {{editMode ? 2 : 3}}</text></view>
+  </nav-bar>
+
+  <view class="plan-head">
+    <view class="plan-title">{{step === 0 ? '选择规划方式' : step === 1 ? (editMode ? '调整筹备范围' : '你们准备怎样办婚礼？') : (editMode ? '确认新的筹备计划' : '这是你们的专属计划')}}</view>
+    <view class="plan-desc">
+      {{step === 0 ? '不熟悉流程就交给我们，已有安排也可以从空白清单开始' : step === 1 ? (editMode ? '调整后会保留完成状态、自建任务和手动设置的日期' : '只需选择需要筹备的范围，我们会按剩余时间安排任务') : '先完成最近的三件事，其余任务按时间逐步出现'}}
+    </view>
+  </view>
+
+  <view wx:if="{{step === 0}}" class="template-list">
+    <view wx:for="{{templates}}" wx:key="id" class="template-card card {{selectedTemplate === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="chooseTemplate">
+      <view class="template-mark">
+        <app-icon name="{{item.id === 'custom' ? 'edit' : 'calendar'}}" size="{{28}}"></app-icon>
+      </view>
+      <view class="template-main">
+        <view class="template-name">{{item.name}}</view>
+        <view class="template-desc">{{item.description}}</view>
+        <view wx:if="{{item.taskCount}}" class="template-meta">{{item.taskCount}} 项大任务 · 含详细步骤 · 自动排期</view>
+      </view>
+      <view class="select-ring"><app-icon wx:if="{{selectedTemplate === item.id}}" name="check" size="{{15}}"></app-icon></view>
+    </view>
+    <view class="planning-note">
+      <app-icon name="sparkle" size="{{19}}"></app-icon>
+      <view><text>先看方向，再看细节</text><view>计划以大任务呈现，每项任务内都有可逐条查看的操作清单。</view></view>
+    </view>
+  </view>
+
+  <scroll-view wx:elif="{{step === 1}}" scroll-y class="setup-scroll">
+    <view class="setup-section">
+      <view class="section-label">选择需要筹备的范围</view>
+      <view class="section-help">可多选；未选择的范围不会生成相关任务</view>
+      <view class="option-card card">
+        <block wx:for="{{conditionOptions}}" wx:key="key">
+          <view class="option-row" data-index="{{index}}" bindtap="toggleCondition">
+            <view class="option-copy"><view>{{item.title}}</view><text>{{item.description}}</text></view>
+            <view class="switch {{item.checked ? 'active' : ''}}"><text></text></view>
+          </view>
+        </block>
+      </view>
+      <view wx:if="{{simpleMode}}" class="simple-mode-tip"><app-icon name="heart" size="{{18}}"></app-icon><text>已切换为轻量计划，不会安排婚宴、仪式和接亲任务。</text></view>
+    </view>
+    <view wx:if="{{!editMode}}" class="setup-section">
+      <view class="section-label">现在已经准备到哪里了？</view>
+      <view class="section-help">勾选已完成的事情，生成后不会重复安排</view>
+      <view class="completed-grid">
+        <view wx:for="{{availableCompletedOptions}}" wx:key="id" class="completed-chip {{item.checked ? 'active' : ''}}" data-index="{{item.sourceIndex}}" bindtap="toggleCompleted">
+          <view class="completed-check"><app-icon wx:if="{{item.checked}}" name="check" size="{{12}}"></app-icon></view>
+          <text>{{item.title}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view wx:else class="preview">
+    <view class="preview-hero card">
+      <view class="schedule-mode">{{scheduleMode}}</view>
+      <view class="preview-days"><text>{{daysLeft}}</text> 天</view>
+      <view>距离婚礼</view>
+      <view class="preview-date">{{weddingDate}}</view>
+    </view>
+    <view class="summary-card card">
+      <view class="summary-item"><text>{{summary.count}}</text><view>大任务</view></view>
+      <view class="summary-item"><text>{{summary.detailCount}}</text><view>检查步骤</view></view>
+      <view class="summary-item"><text>{{summary.optionalCount}}</text><view>可选任务</view></view>
+    </view>
+    <view wx:if="{{previewTasks.length}}" class="preview-first card">
+      <view class="preview-first-title">接下来先做这三件事</view>
+      <view wx:for="{{previewTasks}}" wx:key="id" class="preview-task">
+        <text>{{index + 1}}</text><view><view>{{item.title}}</view><text>{{item.stage}} · {{item.displayDate}}</text></view>
+      </view>
+    </view>
+    <view class="preview-tip">
+      <app-icon name="sparkle" size="{{20}}"></app-icon>
+      <text wx:if="{{selectedTemplate === 'custom'}}">将为你创建一份空白清单，可以从第一项任务开始自由规划。</text>
+      <text wx:else>{{scheduleMode === '冲刺计划' ? '时间比较紧，计划会优先保留影响婚礼落地的任务，可选事项可以按实际情况跳过。' : '每个大任务里都有详细步骤；首页只显示当前阶段和最近事项，不需要一次面对全部计划。'}}</text>
+    </view>
+  </view>
+
+  <view class="plan-footer">
+    <view wx:if="{{step > 0}}" class="back-action" bindtap="previousStep">上一步</view>
+    <view class="next-action" bindtap="handlePrimaryAction">
+      {{step === 2 ? (saving ? '正在保存…' : editMode ? '保存筹备设置' : '生成我的计划') : '继续'}}
+    </view>
+  </view>
+</view>

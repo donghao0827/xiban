@@ -1,0 +1,46 @@
+.nav-space {
+  position: relative;
+  z-index: 30;
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  padding: 0 28rpx;
+}
+
+.nav-back {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 60rpx;
+  height: 60rpx;
+  margin-right: 14rpx;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--xiban-shadow-sm);
+}
+
+.nav-copy {
+  min-width: 0;
+}
+
+.nav-custom {
+  width: 100%;
+  height: 100%;
+}
+
+.nav-title {
+  color: var(--xiban-text-primary);
+  font-size: 40rpx;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.nav-subtitle {
+  margin-top: 4rpx;
+  color: var(--xiban-text-tertiary);
+  font-size: 20rpx;
+  letter-spacing: 1rpx;
+}

@@ -1,0 +1,12 @@
+.ui-button { display:inline-flex; align-items:center; justify-content:center; gap:10rpx; margin:0; padding:0 30rpx; border:0; border-radius:20rpx; font-size:26rpx; font-weight:650; line-height:1; }
+.ui-button::after { border:0; }
+.ui-button.block { display:flex; width:100%; }
+.ui-button.large { height:84rpx; }
+.ui-button.medium { height:68rpx; border-radius:34rpx; font-size:23rpx; }
+.ui-button.small { height:54rpx; padding:0 22rpx; border-radius:28rpx; font-size:21rpx; }
+.ui-button.primary { color:#fff; background:linear-gradient(135deg,#FF7892,#FF587E); box-shadow:0 11rpx 23rpx rgba(255,102,136,.2); }
+.ui-button.primary app-icon { filter:brightness(0) invert(1); }
+.ui-button.secondary { color:var(--xiban-brand); background:var(--xiban-brand-light); }
+.ui-button.outline { color:var(--xiban-brand); border:1rpx solid #FFC5D1; background:#fff; }
+.ui-button.text { color:var(--xiban-brand); background:transparent; }
+.ui-button[disabled] { color:#B9B5B5; background:#EEECEB; box-shadow:none; opacity:1; }

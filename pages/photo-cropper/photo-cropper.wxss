@@ -1,0 +1,23 @@
+.cropper-page { min-height:100vh; color:#fff; background:#171719; }
+.nav-back-action image { width:38rpx; height:38rpx; filter:brightness(0) invert(1); }
+.cropper-nav { display:flex; box-sizing:content-box; align-items:center; justify-content:space-between; padding-right:30rpx; padding-left:30rpx; }
+.nav-title { font-size:28rpx; font-weight:650; }
+.nav-action { min-width:90rpx; color:rgba(255,255,255,.72); font-size:24rpx; }
+.nav-action.confirm { color:#FF7892; text-align:right; font-weight:650; }
+.cropper-stage { display:flex; align-items:center; flex-direction:column; padding-top:10vh; }
+.cropper-hint { margin-bottom:28rpx; color:rgba(255,255,255,.58); font-size:21rpx; }
+.viewport { position:relative; overflow:hidden; border-radius:24rpx; background:#050505; box-shadow:0 20rpx 60rpx rgba(0,0,0,.36); }
+.crop-photo { position:absolute; top:0; left:0; z-index:1; display:block; transform-origin:center center; will-change:transform; }
+.viewfinder { position:absolute; inset:0; z-index:5; border:2rpx solid rgba(255,255,255,.92); border-radius:24rpx; pointer-events:none; }
+.corner { position:absolute; width:34rpx; height:34rpx; border-color:#fff; border-style:solid; }
+.top-left { top:-2rpx; left:-2rpx; border-width:5rpx 0 0 5rpx; border-radius:22rpx 0 0 0; }
+.top-right { top:-2rpx; right:-2rpx; border-width:5rpx 5rpx 0 0; border-radius:0 22rpx 0 0; }
+.bottom-left { bottom:-2rpx; left:-2rpx; border-width:0 0 5rpx 5rpx; border-radius:0 0 0 22rpx; }
+.bottom-right { right:-2rpx; bottom:-2rpx; border-width:0 5rpx 5rpx 0; border-radius:0 0 22rpx 0; }
+.grid { position:absolute; background:rgba(255,255,255,.24); }
+.grid.vertical { top:0; bottom:0; width:1rpx; }
+.grid.horizontal { right:0; left:0; height:1rpx; }
+.vertical.one { left:33.333%; }.vertical.two{left:66.666%}
+.horizontal.one { top:33.333%; }.horizontal.two{top:66.666%}
+.cropper-caption { margin-top:26rpx; color:rgba(255,255,255,.48); font-size:20rpx; }
+.crop-canvas { position:fixed; left:-2000px; top:-2000px; width:1200px; height:900px; }

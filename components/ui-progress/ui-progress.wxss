@@ -1,0 +1,3 @@
+.ui-progress { width:100%; overflow:hidden; border-radius:999rpx; background:#F4EFEF; }
+.ui-progress view { height:100%; border-radius:999rpx; background:#FF6688; transition:width .3s ease; }
+.orange view{background:#FF9855}.green view{background:#4FCB8B}.purple view{background:#8F7DE8}.blue view{background:#5E9CF8}

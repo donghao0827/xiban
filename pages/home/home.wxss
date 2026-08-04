@@ -1,0 +1,72 @@
+.home-page { overflow: hidden; }
+.couple-bar { display:flex; align-items:center; width:100%; height:100%; }
+.couple-avatars { display:flex; flex:none; align-items:center; min-width:68rpx; }
+.couple-avatar { display:flex; flex:none; align-items:center; justify-content:center; width:68rpx; height:68rpx; overflow:hidden; color:var(--xiban-brand); border:3rpx solid #fff; border-radius:50%; background:var(--xiban-brand-light); box-sizing:border-box; box-shadow:0 5rpx 16rpx rgba(55,39,35,.12); }
+.couple-avatar + .couple-avatar { margin-left:-21rpx; }
+.couple-avatar-fallback { border-width:0; }
+.couple-avatar image { width:100%; height:100%; }
+.couple-avatar .couple-avatar-placeholder { width:54rpx; height:54rpx; }
+.couple-info { flex:1; min-width:0; margin-left:14rpx; }
+.couple-info>view { overflow:hidden; font-size:27rpx; font-weight:700; text-overflow:ellipsis; white-space:nowrap; }
+.couple-info>text { display:block; overflow:hidden; margin-top:5rpx; color:var(--xiban-text-secondary); font-size:18rpx; text-overflow:ellipsis; white-space:nowrap; }
+.tiny-heart { margin-left:4rpx; color:var(--xiban-brand); }
+.hero { position:relative; height:380rpx; margin-top:22rpx; color:var(--xiban-text-primary); background:linear-gradient(110deg,#F9ECE9,#F3D6CE); box-shadow:var(--xiban-shadow-md); }
+.hero-photo,.hero-mask { position:absolute; inset:0; width:100%; height:100%; }
+.hero-photo.fit { background:#E9D8D3; }
+.hero-mask { background:linear-gradient(90deg,rgba(255,250,248,.88) 0%,rgba(255,248,246,.76) 32%,rgba(255,248,246,.24) 58%,rgba(255,248,246,.01) 82%); }
+.hero-copy { position:absolute; z-index:2; top:48rpx; left:38rpx; }
+.countdown-label { color:#4F4947; font-size:24rpx; }
+.countdown { display:flex; align-items:baseline; margin-top:12rpx; }
+.countdown .days { font-family:"Didot","Times New Roman",serif; font-size:92rpx; font-weight:500; line-height:.95; }
+.countdown text:last-child { margin-left:12rpx; font-size:26rpx; }
+.wedding-date { margin-top:27rpx; color:#555150; font-size:22rpx; letter-spacing:1rpx; }
+.wedding-date>text { margin-left:8rpx; }
+.wedding-place { display:flex; align-items:center; gap:7rpx; margin-top:12rpx; color:#494443; font-size:21rpx; }
+.hero-sticker { position:absolute; z-index:3; right:18rpx; bottom:17rpx; width:245rpx; height:104rpx; pointer-events:none; }
+.stage-guide { margin-top:28rpx; padding:27rpx 28rpx 24rpx; background:linear-gradient(135deg,#FFFFFF,#FFF3F5); box-shadow:var(--xiban-shadow-md); }
+.stage-guide-top { display:flex; align-items:flex-start; justify-content:space-between; }
+.stage-guide-top>view>text { color:var(--xiban-brand); font-size:24rpx; font-weight:600; }
+.stage-guide-top>view>view { margin-top:5rpx; font-size:31rpx; font-weight:750; }
+.stage-guide-top>text { color:var(--xiban-text-tertiary); font-size:20rpx; }
+.stage-guide-desc { margin-top:12rpx; color:var(--xiban-text-secondary); font-size:21rpx; line-height:1.55; }
+.stage-guide-progress { height:8rpx; margin-top:20rpx; overflow:hidden; border-radius:8rpx; background:#F1E9E8; }
+.stage-guide-progress view { height:100%; border-radius:8rpx; background:linear-gradient(90deg,#FF8099,#FF6688); }
+.stage-guide-foot { display:flex; align-items:center; justify-content:space-between; margin-top:13rpx; color:var(--xiban-text-tertiary); font-size:19rpx; }
+.journey-icon { display:flex; flex:none; align-items:center; justify-content:center; border-radius:20rpx; }
+.title-dot { margin-left:5rpx; color:var(--xiban-brand); font-size:12rpx; }
+.journey-card { padding:0 24rpx 24rpx; }
+.journey-row { display:flex; align-items:center; min-height:112rpx; border-bottom:1rpx solid var(--xiban-border-light); }
+.journey-icon { width:64rpx; height:64rpx; }
+.pink { color:#F45F80; background:transparent; }
+.orange { color:#F58A45; background:transparent; }
+.purple { color:#8371D8; background:transparent; }
+.blue { color:#5795E9; background:transparent; }
+.journey-main { flex:1; min-width:0; margin-left:18rpx; }
+.journey-main view { overflow:hidden; font-size:27rpx; font-weight:600; text-overflow:ellipsis; white-space:nowrap; }
+.journey-main text { display:block; margin-top:7rpx; color:var(--xiban-text-tertiary); font-size:20rpx; }
+.check { width:38rpx; height:38rpx; border:2rpx solid #D8D5D4; border-radius:50%; }
+.journey-empty { padding:38rpx 10rpx 20rpx; color:var(--xiban-text-tertiary); text-align:center; font-size:23rpx; }
+.journey-card ui-button { display:block; margin-top:22rpx; }
+.progress-card { margin-top:32rpx; padding:28rpx 24rpx 26rpx; overflow:hidden; }
+.progress-head { display:flex; align-items:center; justify-content:space-between; }
+.progress-head>view:first-child { font-size:30rpx; font-weight:700; }
+.progress-head>view:last-child { display:flex; align-items:center; gap:3rpx; color:var(--xiban-text-secondary); font-size:20rpx; }
+.progress-dashboard { display:grid; grid-template-columns:148rpx minmax(0,1fr) 156rpx; gap:18rpx; align-items:center; margin-top:24rpx; }
+.progress-overall { display:flex; align-items:center; flex-direction:column; }
+.progress-ring { display:flex; align-items:center; justify-content:center; width:142rpx; height:142rpx; border-radius:50%; }
+.progress-ring-inner { display:flex; align-items:center; justify-content:center; flex-direction:column; width:112rpx; height:112rpx; border-radius:50%; background:#fff; }
+.progress-ring-inner>view { display:flex; align-items:baseline; }
+.progress-ring-inner>view text:first-child { font-size:42rpx; font-weight:750; }
+.progress-ring-inner>view text:last-child { margin-left:2rpx; font-size:18rpx; }
+.progress-ring-inner>text { margin-top:2rpx; color:var(--xiban-text-secondary); font-size:18rpx; }
+.progress-summary { margin-top:16rpx; color:var(--xiban-text-secondary); font-size:18rpx; }
+.progress-summary text { color:var(--xiban-brand); font-weight:650; }
+.progress-groups { min-width:0; }
+.progress-group { display:flex; align-items:center; margin:13rpx 0; }
+.progress-group-icon { display:flex; flex:none; align-items:center; justify-content:center; width:44rpx; height:44rpx; border-radius:11rpx; }
+.progress-group-main { flex:1; min-width:0; margin-left:10rpx; }
+.progress-group-main>view { display:flex; align-items:center; justify-content:space-between; margin-bottom:7rpx; font-size:19rpx; }
+.progress-group-main>view text:first-child { font-weight:600; }
+.progress-group-main>view text:last-child { color:var(--xiban-text-tertiary); }
+.progress-cheer { display:flex; align-items:center; justify-content:center; }
+.progress-cheer image { display:block; width:148rpx; height:148rpx; }

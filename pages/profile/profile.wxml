@@ -1,0 +1,89 @@
+<view class="page profile-page">
+  <nav-bar custom-left="{{true}}">
+  <view slot="left" class="profile-identity">
+    <view class="profile-avatar">
+      <image wx:if="{{wechatAvatar}}" src="{{wechatAvatar}}" mode="aspectFill"></image>
+      <view wx:else class="avatar-placeholder"><image class="avatar-placeholder-icon" src="/assets/icons/profile-avatar.svg" mode="aspectFit"></image></view>
+      <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="chooseWechatAvatar"></button>
+    </view>
+    <view class="profile-identity-copy">
+      <view class="profile-name-row">
+        <text>{{userProfile.name || wedding.couple || '我们的婚礼'}}</text>
+        <ui-tag text="{{userProfile.relation || userProfile.role || '共同筹备成员'}}" tone="pink"></ui-tag>
+      </view>
+      <text wx:if="{{!wechatAvatar}}" class="avatar-hint">点击头像设置微信头像</text>
+    </view>
+  </view>
+  </nav-bar>
+
+  <view class="photo-card card" bindtap="choosePhoto">
+    <image wx:if="{{weddingPhoto}}" class="wedding-photo {{photoDisplay.mode === 'aspectFit' ? 'fit' : ''}}" src="{{weddingPhoto}}" mode="{{photoDisplay.mode}}"></image>
+    <view wx:if="{{weddingPhoto}}" class="photo-overlay">
+      <view class="photo-meta">
+        <view>{{wedding.couple || '我们的婚礼'}}</view>
+        <text>{{wedding.date}} · {{wedding.city || '婚礼城市待定'}}</text>
+      </view>
+      <view class="photo-tools">
+        <view catchtap="previewPhoto"><image class="photo-tool-icon" src="/assets/icons/photo.svg" mode="aspectFit"></image></view>
+        <view catchtap="choosePhoto"><image class="photo-tool-icon" src="/assets/icons/refresh.svg" mode="aspectFit"></image></view>
+        <view catchtap="adjustPhoto"><image class="photo-tool-icon" src="/assets/icons/edit.svg" mode="aspectFit"></image></view>
+      </view>
+    </view>
+    <view wx:else class="photo-empty">
+      <view class="photo-upload-icon"><app-icon name="wedding-photo-upload" size="{{42}}"></app-icon></view>
+      <view>上传一张结婚照</view>
+      <text>记录属于你们的婚礼封面</text>
+    </view>
+  </view>
+
+  <ui-section title="婚礼档案"></ui-section>
+  <view class="card menu-card">
+    <ui-list-item wx:if="{{userProfile.weddingId}}" icon="profile-members" tone="pink" title="成员与邀请" description="{{userProfile.name + ' · ' + (userProfile.relation || userProfile.role) + ' · 管理共同筹备成员'}}" bind:tap="openMembers"></ui-list-item>
+    <ui-list-item wx:if="{{wedding.plan && wedding.plan.templateId !== 'custom'}}" icon="profile-plan" tone="pink" title="筹备设置" description="调整婚宴、仪式、接亲和婚纱照范围" bind:tap="openPlanSettings"></ui-list-item>
+    <picker class="date-picker" mode="date" value="{{wedding.date}}" bindchange="changeWeddingDate">
+      <ui-list-item icon="profile-calendar" tone="orange" title="婚礼日期" description="{{wedding.date || '还没有确定婚期'}}"></ui-list-item>
+    </picker>
+    <ui-list-item icon="profile-location" tone="blue" title="婚礼地点" description="{{(wedding.city || '城市待定') + ' · ' + (wedding.venue || '场地待定')}}" divider="{{false}}" bind:tap="openLocationSheet"></ui-list-item>
+  </view>
+
+  <ui-section title="数据与服务"></ui-section>
+  <view class="cloud-card card">
+    <view class="cloud-main-row">
+      <view class="cloud-icon"><app-icon name="profile-cloud" size="{{23}}"></app-icon></view>
+      <view class="cloud-copy">
+        <view>云端同步 <ui-tag wx:if="{{cloudStatus.enabled}}" text="已开启" tone="green"></ui-tag></view>
+        <text wx:if="{{cloudStatus.enabled}}">{{cloudStatus.status}}<text wx:if="{{cloudStatus.updatedText}}"> · {{cloudStatus.updatedText}}</text></text>
+        <text wx:else>{{userProfile.storageMode === 'local' ? '本地版免费，开通云端后可多人协作' : '开启后可共同筹备，并在不同设备使用'}}</text>
+      </view>
+      <ui-button wx:if="{{!cloudStatus.enabled}}" text="{{userProfile.storageMode === 'local' ? '开通' : '开启'}}" size="small" block="{{false}}" bind:action="enableCloudSync"></ui-button>
+      <ui-button wx:else text="同步" type="secondary" size="small" block="{{false}}" bind:action="syncNow"></ui-button>
+    </view>
+    <view wx:if="{{cloudStatus.enabled}}" class="cloud-actions">
+      <text bindtap="disableCloudSync">关闭自动同步</text>
+      <text bindtap="removeCloudData">删除云端数据</text>
+    </view>
+  </view>
+
+  <view wx:if="{{userProfile.storageMode === 'local'}}" class="local-storage-note card">
+    <view class="local-storage-note-icon"><app-icon name="info" size="{{22}}"></app-icon></view>
+    <view><view>数据保存在当前设备</view><text>清理微信数据、更换手机或设备故障时可能丢失，建议定期导出备份。</text></view>
+  </view>
+
+  <view class="card menu-card backup-card">
+    <ui-list-item icon="profile-export" tone="green" title="导出本地备份" description="备份清单和文字数据，不包含照片和自定义图片" bind:tap="exportLocalBackup"></ui-list-item>
+    <ui-list-item icon="profile-import" tone="blue" title="导入本地备份" description="从微信文件中恢复备份" divider="{{false}}" bind:tap="importLocalBackup"></ui-list-item>
+  </view>
+
+  <view class="card menu-card more-card">
+    <ui-list-item icon="profile-info" tone="purple" title="关于囍伴" description="本地优先，需要时再开启共同同步" divider="{{false}}" bind:tap="showAbout"></ui-list-item>
+  </view>
+
+  <view class="brand"><view>囍</view><text>愿所有期待，都如约而至</text></view>
+  <bottom-nav current="{{4}}"></bottom-nav>
+
+  <ui-sheet visible="{{showLocationSheet}}" title="修改婚礼地点" subtitle="场地还没确定时，可以只填写城市" bind:close="closeLocationSheet">
+    <view class="form-row"><text class="form-label">城市</text><input class="form-input" placeholder="例如：杭州" value="{{locationForm.city}}" data-field="city" bindinput="updateLocationField" /></view>
+    <view class="form-row"><text class="form-label">婚礼场地</text><input class="form-input" placeholder="例如：西湖国宾馆" value="{{locationForm.venue}}" data-field="venue" bindinput="updateLocationField" /></view>
+    <ui-button text="保存婚礼地点" bind:action="saveWeddingLocation"></ui-button>
+  </ui-sheet>
+</view>

@@ -1,0 +1,28 @@
+.members-page { background:linear-gradient(180deg,#FFF9F8,#FFF7F6 46%,#FFF9F8); }
+.permission-note { display:flex; align-items:flex-start; margin-top:12rpx; padding:24rpx; background:linear-gradient(135deg,#FFF0F2,#FFF9F8); }
+.note-icon { display:flex; flex:none; align-items:center; justify-content:center; width:64rpx; height:64rpx; border-radius:20rpx; background:#fff; }
+.permission-note>view:last-child { margin-left:18rpx; }
+.note-title { font-size:26rpx; font-weight:650; }
+.note-desc { margin-top:7rpx; color:var(--xiban-text-secondary); font-size:20rpx; line-height:1.55; }
+.member-list { padding:0 24rpx; }
+.member-row { display:flex; align-items:center; min-height:112rpx; border-bottom:1rpx solid var(--xiban-border-light); }
+.member-row:last-child { border-bottom:0; }
+.member-avatar { display:flex; align-items:center; justify-content:center; width:66rpx; height:66rpx; color:var(--xiban-brand); border-radius:50%; background:var(--xiban-brand-light); font-size:27rpx; font-weight:700; }
+.member-avatar image { width:100%; height:100%; border-radius:50%; }
+.member-main { flex:1; margin-left:18rpx; }
+.member-name { font-size:27rpx; font-weight:650; }.member-name text{color:var(--xiban-text-tertiary);font-size:20rpx;font-weight:400}
+.member-relation { margin-top:7rpx; color:var(--xiban-text-tertiary); font-size:20rpx; }
+.permission-tag { padding:9rpx 14rpx; border-radius:999rpx; font-size:19rpx; }
+.permission-tag.owner{color:#F25377;background:#FFF0F3}.permission-tag.editor{color:#32A66D;background:#EAF9F1}.permission-tag.viewer{color:#77777C;background:#F1F1F2}
+.member-tip { padding:20rpx 0 28rpx; color:var(--xiban-text-tertiary); text-align:center; font-size:19rpx; }
+.members-page>ui-button { display:block; margin-top:26rpx; }
+.permission-options { display:grid; gap:12rpx; }
+.permission-option { padding:20rpx; border-radius:20rpx; background:#F8F6F5; }
+.permission-option.active { background:var(--xiban-brand-light); box-shadow:inset 0 0 0 2rpx #FFC7D2; }
+.permission-option view { font-size:25rpx; font-weight:650; }
+.permission-option text { display:block; margin-top:6rpx; color:var(--xiban-text-tertiary); font-size:19rpx; }
+.invite-result { padding:10rpx 4rpx 4rpx; text-align:center; }
+.invite-result-relation { color:var(--xiban-text-secondary); font-size:22rpx; }
+.invite-code { margin:26rpx 0 12rpx; color:var(--xiban-brand); font-size:60rpx; font-weight:750; letter-spacing:8rpx; }
+.invite-expiry { margin-bottom:28rpx; color:var(--xiban-text-tertiary); font-size:19rpx; line-height:1.5; }
+.invite-close-action { padding:24rpx 0 4rpx; color:var(--xiban-text-tertiary); font-size:21rpx; }

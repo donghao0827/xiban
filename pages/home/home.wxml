@@ -1,0 +1,86 @@
+<view class="page home-page">
+  <nav-bar custom-left="{{true}}">
+  <view slot="left" class="couple-bar">
+    <view class="couple-avatars">
+      <block wx:if="{{coupleAvatars.length}}">
+        <image wx:for="{{coupleAvatars}}" wx:key="id" class="couple-avatar" src="{{item.avatarFileId}}" mode="aspectFill"></image>
+      </block>
+      <view wx:else class="couple-avatar couple-avatar-fallback">
+        <image wx:if="{{weddingPhoto}}" src="{{weddingPhoto}}" mode="aspectFill"></image>
+        <image wx:else class="couple-avatar-placeholder" src="/assets/icons/profile-avatar.svg" mode="aspectFit"></image>
+      </view>
+    </view>
+    <view class="couple-info">
+      <view>{{wedding.couple || '我们的婚礼'}}</view>
+      <text>我们一起备婚中 <text class="tiny-heart">♥</text></text>
+    </view>
+  </view>
+  </nav-bar>
+
+  <view class="hero card">
+    <image class="hero-photo {{weddingPhoto && photoDisplay.mode === 'aspectFit' ? 'fit' : ''}}" src="{{weddingPhoto || 'cloud://prod-d0gfyfw705426c497.7072-prod-d0gfyfw705426c497-1458425791/assets/placeholders/wedding-hero.jpg'}}" mode="{{weddingPhoto ? photoDisplay.mode : 'aspectFill'}}" bindtap="previewPhoto"></image>
+    <view class="hero-mask"></view>
+    <view class="hero-copy">
+      <view class="countdown-label">距离婚礼还有</view>
+      <view class="countdown"><text class="days">{{daysLeft}}</text><text>天</text></view>
+      <view class="wedding-date">{{weddingDateText}} <text wx:if="{{weddingWeekday}}">{{weddingWeekday}}</text></view>
+      <view class="wedding-place"><app-icon name="location" size="{{17}}"></app-icon><text>{{wedding.city || '城市待定'}}<text wx:if="{{wedding.venue}}"> · {{wedding.venue}}</text></text></view>
+    </view>
+    <image wx:if="{{weddingPhoto}}" class="hero-sticker" src="/assets/stickers/future-days.svg" mode="aspectFit"></image>
+  </view>
+
+  <view wx:if="{{currentStage}}" class="stage-guide card" bindtap="goTasks">
+    <view class="stage-guide-top">
+      <view><text>当前阶段</text><view>{{currentStage.name}}</view></view>
+      <text>第 {{currentStage.index}}/{{currentStage.totalStages}} 阶段</text>
+    </view>
+    <view class="stage-guide-desc">{{currentStage.description}}</view>
+    <view class="stage-guide-progress"><view style="width:{{currentStage.progress}}%"></view></view>
+    <view class="stage-guide-foot"><text>本阶段已完成 {{currentStage.completed}} / {{currentStage.total}} 项</text><app-icon name="arrow-right" size="{{16}}"></app-icon></view>
+  </view>
+
+  <ui-section title="最近先做这三件事" link="{{completed + '/' + total + ' 项'}}" bind:action="goTasks"></ui-section>
+  <view class="journey-card card">
+    <view wx:for="{{upcoming}}" wx:key="id" class="journey-row">
+      <view class="journey-icon {{index % 3 === 0 ? 'pink' : index % 3 === 1 ? 'orange' : 'purple'}}">
+        <app-icon name="{{item.icon}}" size="{{25}}"></app-icon>
+      </view>
+      <view class="journey-main">
+        <view>{{item.title}}</view>
+        <text>{{item.urgencyText}} · {{item.displayDate}}</text>
+      </view>
+      <view class="check" data-id="{{item.id}}" bindtap="toggleTask"></view>
+    </view>
+    <view wx:if="{{!upcoming.length}}" class="journey-empty">最近没有待办，留一点时间享受二人世界吧</view>
+    <ui-button text="查看日历安排" bind:action="goToday"></ui-button>
+  </view>
+
+  <view class="progress-card card">
+    <view class="progress-head">
+      <view>我们的备婚进度</view>
+      <view bindtap="goTasks">查看详情 <app-icon name="arrow-right" size="{{16}}"></app-icon></view>
+    </view>
+    <view class="progress-dashboard">
+      <view class="progress-overall">
+        <view class="progress-ring" style="background:conic-gradient(#FF6688 0 {{progress}}%,#FFE7EC {{progress}}% 100%)">
+          <view class="progress-ring-inner"><view><text>{{progress}}</text><text>%</text></view><text>已完成</text></view>
+        </view>
+        <view class="progress-summary">已完成 <text>{{completed}}</text> 项</view>
+      </view>
+      <view class="progress-groups">
+        <view wx:for="{{progressGroups}}" wx:key="name" class="progress-group">
+          <view class="progress-group-icon {{item.tone}}"><app-icon name="{{item.icon}}" size="{{21}}"></app-icon></view>
+          <view class="progress-group-main">
+            <view><text>{{item.name}}</text><text>{{item.completed}}/{{item.total}}</text></view>
+            <ui-progress value="{{item.rate}}" tone="{{item.tone}}"></ui-progress>
+          </view>
+        </view>
+      </view>
+      <view class="progress-cheer">
+        <image src="cloud://prod-d0gfyfw705426c497.7072-prod-d0gfyfw705426c497-1458425791/assets/illustrations/progress-envelope.png" mode="aspectFit"></image>
+      </view>
+    </view>
+  </view>
+
+  <bottom-nav current="{{0}}"></bottom-nav>
+</view>

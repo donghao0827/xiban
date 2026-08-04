@@ -1,0 +1,46 @@
+.profile-page { background:linear-gradient(180deg,#FFF9F8,#FFF7F6 42%,#FFF9F8); }
+.profile-identity { display:flex; align-items:center; width:100%; height:100%; }
+.profile-avatar { position:relative; display:flex; flex:0 0 72rpx; align-items:center; justify-content:center; width:72rpx; min-width:72rpx; max-width:72rpx; height:72rpx; overflow:hidden; color:var(--xiban-brand); border:3rpx solid rgba(255,255,255,.9); border-radius:50%; background:var(--xiban-brand-light); box-shadow:0 5rpx 16rpx rgba(80,50,44,.09); }
+.profile-avatar>image { position:absolute; inset:0; width:100%; height:100%; border-radius:50%; }
+.avatar-placeholder { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+.avatar-placeholder-icon { display:block; width:54rpx; height:54rpx; }
+.avatar-picker { position:absolute; inset:0; z-index:2; width:72rpx; height:72rpx; margin:0; padding:0; border:0; border-radius:50%; background:transparent; opacity:.01; }
+.avatar-picker::after { border:0; }
+.profile-identity-copy { flex:1; min-width:0; margin-left:17rpx; }
+.profile-name-row { display:flex; align-items:center; min-width:0; overflow:hidden; white-space:nowrap; }
+.profile-name-row>text:first-child { overflow:hidden; font-size:28rpx; font-weight:700; text-overflow:ellipsis; }
+.profile-name-row ui-tag { flex:none; margin-left:12rpx; }
+.profile-identity-copy .avatar-hint { display:block; margin-top:5rpx; color:var(--xiban-text-tertiary); font-size:18rpx; }
+.photo-card { position:relative; min-height:350rpx; margin-top:22rpx; overflow:hidden; box-shadow:var(--xiban-shadow-md); }
+.wedding-photo { display:block; width:100%; height:390rpx; }
+.wedding-photo.fit { background:#F1E9E7; }
+.photo-overlay { position:absolute; right:0; bottom:0; left:0; display:flex; align-items:flex-end; justify-content:space-between; padding:70rpx 24rpx 22rpx; color:#fff; background:linear-gradient(transparent,rgba(24,16,15,.72)); }
+.photo-meta view { font-size:29rpx; font-weight:700; }
+.photo-meta text { display:block; margin-top:7rpx; font-size:20rpx; opacity:.86; }
+.photo-tools { display:flex; gap:12rpx; }
+.photo-tools>view { display:flex; align-items:center; justify-content:center; width:54rpx; height:54rpx; border-radius:50%; background:rgba(255,255,255,.22); backdrop-filter:blur(12rpx); }
+.photo-tool-icon { width:34rpx; height:34rpx; filter:brightness(0) invert(1); }
+.photo-empty { display:flex; min-height:350rpx; align-items:center; justify-content:center; flex-direction:column; background:linear-gradient(135deg,#FFF0F2,#FFF8F6); }
+.photo-upload-icon { display:flex; align-items:center; justify-content:center; width:100rpx; height:100rpx; }
+.photo-empty>view:nth-child(2) { margin-top:18rpx; font-size:27rpx; font-weight:650; }
+.photo-empty>text { margin-top:8rpx; color:var(--xiban-text-tertiary); font-size:20rpx; }
+.menu-card { padding:0 24rpx; }
+.date-picker { display:block; }
+.cloud-card { padding:24rpx; }
+.cloud-main-row { display:flex; align-items:center; }
+.cloud-icon { display:flex; flex:none; align-items:center; justify-content:center; width:64rpx; height:64rpx; border-radius:20rpx; background:#EAF3FF; }
+.cloud-copy { flex:1; min-width:0; margin:0 18rpx; }
+.cloud-copy>view { display:flex; align-items:center; gap:10rpx; font-size:27rpx; font-weight:650; }
+.cloud-copy>text { display:block; margin-top:7rpx; color:var(--xiban-text-tertiary); font-size:19rpx; }
+.cloud-actions { display:flex; justify-content:flex-end; gap:30rpx; margin-top:22rpx; padding-top:20rpx; color:var(--xiban-text-tertiary); border-top:1rpx solid var(--xiban-border-light); font-size:19rpx; }
+.cloud-actions text:last-child { color:#E85B63; }
+.local-storage-note { display:flex; align-items:flex-start; gap:17rpx; margin-top:18rpx; padding:23rpx 24rpx; background:#FFF8ED; box-shadow:var(--xiban-shadow-sm); }
+.local-storage-note-icon { display:flex; flex:none; align-items:center; justify-content:center; width:54rpx; height:54rpx; color:#D98A43; }
+.local-storage-note>view:last-child { flex:1; min-width:0; }
+.local-storage-note>view:last-child>view { color:var(--xiban-text-primary); font-size:24rpx; font-weight:650; }
+.local-storage-note text { display:block; margin-top:7rpx; color:#9A7760; font-size:19rpx; line-height:1.55; }
+.backup-card { margin-top:18rpx; }
+.more-card { margin-top:18rpx; padding:0 24rpx; }
+.brand { padding:58rpx 0 28rpx; text-align:center; }
+.brand view { color:#FF9FB1; font-family:"STKaiti",serif; font-size:58rpx; }
+.brand text { color:#B4AAA7; font-size:18rpx; letter-spacing:3rpx; }

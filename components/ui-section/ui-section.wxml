@@ -1,0 +1,4 @@
+<view class="ui-section">
+  <view class="ui-section-title">{{title}}<text wx:if="{{dot}}" class="ui-section-dot">●</text><text wx:if="{{meta}}" class="ui-section-meta">{{meta}}</text></view>
+  <view wx:if="{{link}}" class="ui-section-link" bindtap="handleAction">{{link}}<text>›</text></view>
+</view>

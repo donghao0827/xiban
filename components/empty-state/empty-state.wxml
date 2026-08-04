@@ -1,0 +1,6 @@
+<view class="empty">
+  <view class="empty-icon"><app-icon name="{{icon}}" size="{{42}}"></app-icon></view>
+  <view class="empty-title">{{title}}</view>
+  <view class="empty-desc">{{description}}</view>
+  <view wx:if="{{actionText}}" class="empty-action"><ui-button text="{{actionText}}" type="secondary" size="medium" block="{{false}}" bind:action="handleAction"></ui-button></view>
+</view>

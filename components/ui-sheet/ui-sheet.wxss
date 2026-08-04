@@ -1,0 +1,10 @@
+.ui-sheet-mask { position:fixed; inset:0; z-index:90; display:flex; align-items:flex-end; background:rgba(28,28,30,.42); }
+.ui-sheet-panel { width:100%; max-height:88vh; padding:16rpx 28rpx calc(30rpx + env(safe-area-inset-bottom)); overflow:auto; border-radius:42rpx 42rpx 0 0; background:#fff; box-shadow:0 -16rpx 50rpx rgba(30,20,20,.1); }
+.ui-sheet-panel.fixed-height { display:flex; flex-direction:column; height:82vh; overflow:hidden; }
+.ui-sheet-panel.fixed-height .ui-sheet-body { flex:1; min-height:0; overflow:auto; }
+.ui-sheet-panel.fixed-height .ui-sheet-footer { flex:none; padding-top:18rpx; background:#fff; }
+.ui-sheet-handle { width:64rpx; height:7rpx; margin:0 auto 22rpx; border-radius:99rpx; background:#E8E5E4; }
+.ui-sheet-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:28rpx; }
+.ui-sheet-title { font-size:33rpx; font-weight:700; }
+.ui-sheet-head text { display:block; margin-top:7rpx; color:var(--xiban-text-tertiary); font-size:20rpx; }
+.ui-sheet-close { display:flex; align-items:center; justify-content:center; width:60rpx; height:60rpx; border-radius:50%; background:#F7F5F4; }

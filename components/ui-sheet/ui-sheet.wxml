@@ -1,0 +1,11 @@
+<view wx:if="{{visible}}" class="ui-sheet-mask" bindtap="close">
+  <view class="ui-sheet-panel {{fixedHeight ? 'fixed-height' : ''}}" catchtap="stop">
+    <view class="ui-sheet-handle"></view>
+    <view class="ui-sheet-head">
+      <view><view class="ui-sheet-title">{{title}}</view><text wx:if="{{subtitle}}">{{subtitle}}</text></view>
+      <view class="ui-sheet-close" bindtap="close"><app-icon name="close" size="{{22}}"></app-icon></view>
+    </view>
+    <view class="ui-sheet-body"><slot></slot></view>
+    <view class="ui-sheet-footer"><slot name="footer"></slot></view>
+  </view>
+</view>

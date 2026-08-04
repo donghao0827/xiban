@@ -1,0 +1,78 @@
+<view class="onboarding-page">
+  <nav-bar></nav-bar>
+
+  <view wx:if="{{checking}}" class="checking">
+    <view class="checking-ring"></view>
+    <text>正在确认婚礼信息</text>
+  </view>
+
+  <block wx:else>
+    <view wx:if="{{forceNewUserFlow}}" class="dev-flow-tip">新人流程测试模式</view>
+    <view class="intro-visual">
+      <view class="visual-circle circle-one"></view>
+      <view class="visual-circle circle-two"></view>
+      <view class="visual-icon"><app-icon name="onboarding-space" size="{{52}}"></app-icon></view>
+      <view class="intro-title">建立你们的婚礼空间</view>
+      <view class="intro-desc">本地使用永久免费，需要多人协作时再升级云端版</view>
+    </view>
+
+    <view class="form-card card">
+      <view class="entry-tabs">
+        <view class="entry-tab {{mode === 'create' ? 'active' : ''}}" data-mode="create" bindtap="changeMode">创建婚礼</view>
+        <view class="entry-tab {{mode === 'join' ? 'active' : ''}}" data-mode="join" bindtap="changeMode">加入婚礼</view>
+      </view>
+
+      <view class="field">
+        <text class="field-label">你的姓名</text>
+        <input class="field-input" maxlength="20" placeholder="请输入真实姓名或常用称呼" value="{{form.name}}" data-field="name" bindinput="updateField" />
+      </view>
+
+      <view class="field" wx:if="{{mode === 'create'}}">
+        <text class="field-label">你的身份</text>
+        <view class="role-row">
+          <view wx:for="{{roles}}" wx:key="*this" class="role-option {{form.role === item ? 'active' : ''}}" data-value="{{item}}" bindtap="chooseRole">
+            <app-icon name="{{item === '新娘' ? 'onboarding-bride' : 'onboarding-groom'}}" size="{{28}}"></app-icon>
+            <text>{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <block wx:if="{{mode === 'create'}}">
+        <view class="field">
+          <text class="field-label">婚礼日期</text>
+          <picker mode="date" value="{{form.date}}" bindchange="pickDate">
+            <view class="field-input picker-input"><text>{{form.date}}</text><app-icon name="calendar" size="{{20}}"></app-icon></view>
+          </picker>
+        </view>
+        <view class="two-column">
+          <view class="field">
+            <text class="field-label">婚礼城市</text>
+            <input class="field-input" maxlength="20" placeholder="可稍后填写" value="{{form.city}}" data-field="city" bindinput="updateField" />
+          </view>
+          <view class="field">
+            <text class="field-label">婚礼场地</text>
+            <input class="field-input" maxlength="50" placeholder="可稍后填写" value="{{form.venue}}" data-field="venue" bindinput="updateField" />
+          </view>
+        </view>
+        <view class="create-tip">数据默认保存在本机，之后可在“我的”页面升级云端同步与多人协作。</view>
+      </block>
+
+      <view wx:else class="field">
+        <text class="field-label">邀请码</text>
+        <input class="field-input wedding-id-input" maxlength="10" placeholder="输入新人分享的 10 位邀请码" value="{{form.inviteCode}}" data-field="inviteCode" bindinput="updateField" />
+        <view class="field-help">提交前会展示婚期、受邀身份和权限，确认后才会加入。</view>
+      </view>
+
+      <view wx:if="{{mode === 'join'}}" class="agreement" bindtap="toggleAgreement">
+        <view class="agreement-check {{agreed ? 'active' : ''}}">
+          <app-icon wx:if="{{agreed}}" name="check" size="{{14}}"></app-icon>
+        </view>
+        <text>我同意将婚礼信息、任务、婚品、预算和宾客数据保存至云端，用于共同筹备和跨设备同步。</text>
+      </view>
+
+      <ui-button text="{{submitting ? '正在准备…' : mode === 'create' ? '开始备婚' : '查找并加入婚礼'}}" disabled="{{submitting}}" bind:action="submit"></ui-button>
+    </view>
+
+    <view class="privacy-note">数据仅保存在当前设备，不会自动上传。清理微信数据或更换设备时可能丢失，建议定期导出备份。</view>
+  </block>
+</view>

@@ -1,0 +1,228 @@
+<view class="page tasks-page">
+  <nav-bar></nav-bar>
+
+  <view class="view-tabs">
+    <view data-mode="calendar" bindtap="changePrimaryMode">日历</view>
+    <text>/</text>
+    <view class="{{activeMode === 0 ? 'active' : ''}}" data-mode="tasks" bindtap="changePrimaryMode">任务</view>
+    <text>/</text>
+    <view class="{{activeMode === 1 ? 'active' : ''}}" data-mode="materials" bindtap="changePrimaryMode">婚品</view>
+  </view>
+
+  <view class="summary card" wx:if="{{activeMode === 0}}">
+    <view class="summary-copy">
+      <view class="summary-title">筹备进度</view>
+      <view class="summary-desc">已完成 {{completedCount}} 项，共 {{effectiveTaskCount}} 项</view>
+    </view>
+    <view class="summary-rate"><text>{{taskProgress}}</text>%</view>
+  </view>
+  <view class="summary card" wx:else>
+    <view class="summary-copy">
+      <view class="summary-title">婚品进度</view>
+      <view class="summary-desc">已备齐 {{boughtCount}} 项，共 {{materials.length}} 项</view>
+    </view>
+    <view class="summary-rate"><text>{{materialProgress}}</text>%</view>
+  </view>
+
+  <block wx:if="{{activeMode === 0}}">
+  <view class="tabs">
+    <view wx:for="{{tabs}}" wx:key="*this" class="tab {{activeTab === index ? 'active' : ''}}" data-index="{{index}}" bindtap="changeTab">{{item}}</view>
+  </view>
+  <scroll-view wx:if="{{taskCategories.length > 1}}" class="task-category-scroll" scroll-x enable-flex show-scrollbar="{{false}}">
+    <view class="task-category-row">
+      <view wx:for="{{taskCategories}}" wx:key="*this" class="task-category {{activeCategory === item ? 'active' : ''}}" data-value="{{item}}" bindtap="changeTaskCategory">{{item}}</view>
+    </view>
+  </scroll-view>
+
+  <view class="task-timeline" wx:if="{{timelineGroups.length}}">
+    <view wx:for="{{timelineGroups}}" wx:for-item="group" wx:key="stage" class="timeline-group">
+      <view class="timeline-node"></view>
+      <view class="timeline-stage">
+        <text>{{group.stage}}</text>
+        <view><text>{{group.completed}}</text>/{{group.total}}</view>
+      </view>
+      <view class="timeline-task-list">
+        <view wx:for="{{group.tasks}}" wx:for-item="task" wx:key="id" class="task-item {{task.status === 'skipped' ? 'skipped' : ''}}">
+          <view class="task-category-icon"><app-icon name="{{task.icon}}" size="{{24}}"></app-icon></view>
+          <view class="task-content" data-id="{{task.id}}" bindtap="openTaskGuide" bindlongpress="removeTask">
+            <view class="task-name-row">
+              <view class="task-name {{task.done ? 'finished' : ''}}">{{task.title}}</view>
+              <text wx:if="{{task.level === 'optional'}}" class="optional-task-tag">可选</text>
+            </view>
+            <view class="task-bottom">
+              <text class="tag">{{task.category}}</text>
+              <text class="task-detail">{{task.status === 'skipped' ? '不需要' : task.displayDate}}</text>
+            </view>
+          </view>
+          <view class="round-check {{task.done ? 'done' : ''}} {{task.status === 'skipped' ? 'skipped' : ''}}" data-id="{{task.id}}" bindtap="toggleTask">
+            <app-icon wx:if="{{task.done}}" name="check" size="{{16}}"></app-icon>
+            <text wx:elif="{{task.status === 'skipped'}}">—</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="card" wx:else>
+    <empty-state icon="check-square" title="这里还空着" description="点击右下角添加一项备婚任务"></empty-state>
+  </view>
+
+  <view class="fab" bindtap="openSheet"><app-icon name="plus" size="{{26}}"></app-icon></view>
+  </block>
+
+  <block wx:else>
+    <view class="material-view-tabs">
+      <view wx:for="{{materialViews}}" wx:key="*this" class="material-view-tab {{activeMaterialView === index ? 'active' : ''}}" data-index="{{index}}" bindtap="changeMaterialView">{{item}}</view>
+    </view>
+
+    <scroll-view class="material-category-scroll" scroll-x enable-flex>
+      <view wx:for="{{materialCategories}}" wx:key="*this" class="material-category {{activeMaterialCategory === item ? 'active' : ''}}" data-value="{{item}}" bindtap="changeMaterialCategory">{{item}}</view>
+    </scroll-view>
+
+    <block wx:if="{{activeMaterialView === 0}}">
+    <view wx:if="{{materialPlanned || materialSpent}}" class="material-budget-strip card">
+      <text>婚品预算 ¥{{materialPlanned}}</text><text>实际支出 ¥{{materialSpent}}</text>
+    </view>
+
+    <view class="card material-list" wx:if="{{visibleMaterials.length}}">
+      <view wx:for="{{visibleMaterials}}" wx:key="id" class="material-row" data-id="{{item.id}}" bindlongpress="removeMaterial">
+        <view class="material-icon {{item.image || item.customImage ? 'has-image' : ''}}">
+          <image wx:if="{{item.customImage}}" class="material-image" src="{{item.customImage}}" mode="aspectFit"></image>
+          <image wx:elif="{{item.image}}" class="material-image" src="{{item.imageUrl}}" mode="aspectFit"></image>
+          <app-icon wx:else name="{{item.icon}}" size="{{23}}"></app-icon>
+        </view>
+        <view class="material-main" data-id="{{item.id}}" bindtap="editMaterial">
+          <view class="material-name {{item.bought ? 'finished' : ''}}">{{item.title}}</view>
+          <view class="material-group">{{item.category}} · {{item.detailLine}}</view>
+          <view wx:if="{{item.amountLine}}" class="material-amount">{{item.amountLine}}</view>
+        </view>
+        <view class="round-check {{item.bought ? 'done' : ''}}" data-id="{{item.id}}" bindtap="toggleMaterial">
+          <app-icon wx:if="{{item.bought}}" name="check" size="{{16}}"></app-icon>
+        </view>
+      </view>
+    </view>
+    <view class="card" wx:else>
+      <empty-state icon="record-shopping" title="我的清单还是空的" description="去婚品库选配，或点击右下角添加自定义婚品"></empty-state>
+    </view>
+    <view class="material-hint">轻触婚品可填写数量和金额，勾选已购买，长按可移除</view>
+    <view class="fab" bindtap="openMaterialSheet"><app-icon name="plus" size="{{26}}"></app-icon></view>
+    </block>
+
+    <block wx:else>
+      <view class="catalog-intro card">
+        <view class="catalog-intro-title">官方婚品库</view>
+        <view class="catalog-intro-desc">按需选配，加入后再填写数量、规格和预算</view>
+      </view>
+      <view class="catalog-grid" wx:if="{{visibleCatalogMaterials.length}}">
+        <view wx:for="{{visibleCatalogMaterials}}" wx:key="title" class="catalog-card card">
+          <view class="catalog-image-wrap">
+            <image wx:if="{{item.image}}" class="catalog-image" src="{{item.imageUrl}}" mode="aspectFit"></image>
+            <app-icon wx:else name="{{item.icon}}" size="{{30}}"></app-icon>
+            <view class="catalog-category {{item.categoryTone}}">{{item.category}}</view>
+          </view>
+          <view class="catalog-title-row">
+            <view class="catalog-name">{{item.title}}</view>
+            <view class="catalog-action {{item.selected ? 'selected' : ''}}" data-title="{{item.title}}" bindtap="toggleCatalogMaterial">
+              {{item.selected ? '已加入' : '+ 加入'}}
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </block>
+  <bottom-nav current="{{2}}"></bottom-nav>
+
+  <ui-sheet visible="{{showSheet}}" title="添加筹备任务" subtitle="把大事拆成一个容易完成的小步骤" bind:close="closeSheet">
+    <view class="form-row">
+      <view class="task-form-category-grid">
+        <view wx:for="{{categoryOptions}}" wx:key="name" class="task-form-category {{form.category === item.name ? 'active' : ''}}" data-value="{{item.name}}" bindtap="chooseCategory">
+          <view><app-icon name="{{item.icon}}" size="{{20}}"></app-icon></view>
+          <text>{{item.name}}</text>
+        </view>
+      </view>
+      </view>
+      <view class="form-row">
+        <text class="form-label">任务名称</text>
+        <input class="form-input" placeholder="例如：预约试纱" value="{{form.title}}" bindinput="updateTitle" focus />
+      </view>
+      <view class="form-row">
+        <text class="form-label">计划完成日期</text>
+        <picker mode="date" value="{{form.dueDate}}" bindchange="pickDate">
+          <view class="form-picker"><text>{{form.dueDate}}</text><view class="picker-action"><text class="subtle">选择日期</text><app-icon name="arrow-right" size="{{17}}"></app-icon></view></view>
+        </picker>
+      </view>
+      <ui-button text="添加任务" bind:action="saveTask"></ui-button>
+  </ui-sheet>
+
+  <ui-sheet visible="{{showTaskGuide}}" title="{{selectedTask.title}}" subtitle="{{selectedTask.category}} · {{selectedTask.levelText}}事项" bind:close="closeTaskGuide">
+    <view wx:if="{{selectedTask}}" class="task-guide">
+      <view wx:if="{{selectedTask.checklist && selectedTask.checklist.length}}" class="guide-section">
+        <view class="guide-title">做到这些就算完成</view>
+        <view wx:for="{{selectedTask.checklist}}" wx:key="*this" class="guide-check"><view></view><text>{{item}}</text></view>
+      </view>
+      <view class="guide-meta {{selectedTask.nextTaskTitle ? '' : 'single'}}">
+        <view><text>计划完成</text><view>{{selectedTask.displayDate}}</view></view>
+        <view wx:if="{{selectedTask.nextTaskTitle}}" class="guide-next"><text>完成之后</text><view>{{selectedTask.nextTaskTitle}}</view></view>
+      </view>
+      <view class="guide-actions">
+        <view wx:if="{{selectedTask.status === 'skipped'}}" class="guide-secondary full" bindtap="restoreSelectedTask">恢复到计划</view>
+        <block wx:else>
+          <view class="guide-secondary" bindtap="skipSelectedTask">不需要</view>
+          <view class="guide-primary" bindtap="completeSelectedTask">{{selectedTask.done ? '恢复为待完成' : '标记完成'}}</view>
+        </block>
+      </view>
+    </view>
+  </ui-sheet>
+
+  <ui-sheet visible="{{showMaterialSheet}}" title="{{materialForm.id ? '编辑婚品' : '添加婚品'}}" subtitle="可以上传自己的图片，也可以使用默认图" bind:close="closeMaterialSheet">
+      <scroll-view scroll-y class="material-form-scroll">
+        <view class="form-row">
+          <text class="form-label">需要购买什么</text>
+          <input class="form-input" placeholder="例如：红色婚鞋" value="{{materialForm.title}}" bindinput="updateMaterialTitle" focus="{{!materialForm.id}}" />
+        </view>
+        <view class="form-row">
+          <text class="form-label">放入分类</text>
+          <view class="chip-row">
+            <block wx:for="{{materialCategories}}" wx:key="*this">
+              <view wx:if="{{item !== '全部'}}" class="chip {{materialForm.category === item ? 'active' : ''}}" data-value="{{item}}" bindtap="chooseMaterialCategory">{{item}}</view>
+            </block>
+          </view>
+        </view>
+        <view class="material-number-row">
+          <view class="form-row material-number-field">
+            <text class="form-label">数量</text>
+            <input class="form-input" type="number" placeholder="1" value="{{materialForm.quantity}}" data-field="quantity" bindinput="updateMaterialField" />
+          </view>
+          <view class="form-row material-number-field">
+            <text class="form-label">单位</text>
+            <input class="form-input" maxlength="6" placeholder="件/个/套" value="{{materialForm.unit}}" data-field="unit" bindinput="updateMaterialField" />
+          </view>
+        </view>
+        <view class="money-row">
+          <view class="form-row money-field">
+            <text class="form-label">计划预算</text>
+            <input class="form-input" type="digit" placeholder="0" value="{{materialForm.plannedAmount}}" data-field="plannedAmount" bindinput="updateMaterialField" />
+          </view>
+          <view class="form-row money-field">
+            <text class="form-label">实际支出</text>
+            <input class="form-input" type="digit" placeholder="0" value="{{materialForm.spentAmount}}" data-field="spentAmount" bindinput="updateMaterialField" />
+          </view>
+        </view>
+        <view class="form-row">
+          <text class="form-label">规格或备注</text>
+          <input class="form-input" maxlength="60" placeholder="例如：20 个，5 元/个" value="{{materialForm.note}}" data-field="note" bindinput="updateMaterialField" />
+        </view>
+        <view class="form-row">
+          <text class="form-label">婚品图片（可选）</text>
+          <view class="material-image-picker" bindtap="chooseMaterialImage">
+            <image wx:if="{{materialForm.customImage}}" src="{{materialForm.customImage}}" mode="aspectFit"></image>
+            <view wx:else class="material-image-placeholder">
+              <app-icon name="camera" size="{{25}}"></app-icon>
+              <text>上传照片或拍摄</text>
+            </view>
+          </view>
+          <view wx:if="{{materialForm.customImage}}" class="use-default-image" bindtap="clearMaterialImage">移除图片，使用默认图标</view>
+        </view>
+        <ui-button text="{{materialForm.id ? '保存修改' : '加入购买清单'}}" bind:action="saveMaterial"></ui-button>
+      </scroll-view>
+  </ui-sheet>
+</view>

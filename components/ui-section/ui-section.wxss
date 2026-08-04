@@ -1,0 +1,6 @@
+.ui-section { display:flex; align-items:center; justify-content:space-between; margin:34rpx 2rpx 17rpx; }
+.ui-section-title { color:var(--xiban-text-primary); font-size:31rpx; font-weight:700; letter-spacing:.3rpx; }
+.ui-section-dot { margin-left:9rpx; color:var(--xiban-brand); font-size:10rpx; vertical-align:middle; }
+.ui-section-meta { margin-left:9rpx; color:var(--xiban-text-secondary); font-size:23rpx; font-weight:400; }
+.ui-section-link { vertical-align: middle; color:var(--xiban-text-tertiary); font-size:22rpx; }
+.ui-section-link text { color:inherit; font-size:28rpx; margin-left: 4rpx; }

@@ -1,0 +1,42 @@
+<view class="cropper-page">
+  <view class="cropper-nav" style="padding-top:{{statusBarHeight}}px;height:{{navHeight}}px">
+    <view class="nav-action nav-back-action" bindtap="cancel">
+      <image src="/assets/icons/chevron-left.svg" mode="aspectFit"></image>
+    </view>
+    <view class="nav-title">调整取景</view>
+    <view class="nav-action confirm" bindtap="confirmCrop">完成</view>
+  </view>
+
+  <view class="cropper-stage">
+    <view class="cropper-hint">拖动照片调整位置 · 双指缩放</view>
+    <view
+      class="viewport"
+      style="width:{{viewportWidth}}px;height:{{viewportHeight}}px"
+      bindtouchstart="handleTouchStart"
+      catchtouchmove="handleTouchMove"
+      bindtouchend="handleTouchEnd"
+      bindtouchcancel="handleTouchEnd"
+    >
+      <image
+        wx:if="{{sourcePath}}"
+        class="crop-photo"
+        src="{{sourcePath}}"
+        mode="scaleToFill"
+        style="width:{{displayWidth}}px;height:{{displayHeight}}px;transform:translate3d({{photoX}}px,{{photoY}}px,0) scale({{photoScale}})"
+      ></image>
+      <view class="viewfinder">
+        <view class="corner top-left"></view>
+        <view class="corner top-right"></view>
+        <view class="corner bottom-left"></view>
+        <view class="corner bottom-right"></view>
+        <view class="grid vertical one"></view>
+        <view class="grid vertical two"></view>
+        <view class="grid horizontal one"></view>
+        <view class="grid horizontal two"></view>
+      </view>
+    </view>
+    <view class="cropper-caption">首页与“我的”页面将展示取景框中的区域</view>
+  </view>
+
+  <canvas type="2d" id="cropCanvas" class="crop-canvas"></canvas>
+</view>

@@ -1,0 +1,14 @@
+<view class="nav-space" style="padding-top: {{top}}px;">
+  <view class="nav-inner" style="height: {{height}}px; padding-right: {{rightSpace}}px;">
+    <view wx:if="{{customLeft}}" class="nav-custom"><slot name="left"></slot></view>
+    <block wx:else>
+      <view wx:if="{{back}}" class="nav-back" bindtap="goBack">
+        <app-icon name="chevron-left" size="{{20}}"></app-icon>
+      </view>
+      <view class="nav-copy">
+        <view class="nav-title">{{title}}</view>
+        <view wx:if="{{subtitle}}" class="nav-subtitle">{{subtitle}}</view>
+      </view>
+    </block>
+  </view>
+</view>

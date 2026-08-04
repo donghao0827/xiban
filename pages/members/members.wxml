@@ -1,0 +1,64 @@
+<view class="page members-page">
+  <nav-bar back="{{true}}"></nav-bar>
+
+  <view class="permission-note card">
+    <view class="note-icon"><app-icon name="record-guests" size="{{25}}"></app-icon></view>
+    <view>
+      <view class="note-title">身份与权限相互独立</view>
+      <view class="note-desc">协作者可以更新筹备数据，只读成员只能查看；管理员可邀请和管理成员。</view>
+    </view>
+  </view>
+
+  <ui-section title="共同筹备成员" meta="{{'· ' + members.length + ' 人'}}"></ui-section>
+
+  <view class="card member-list" wx:if="{{members.length}}">
+    <view wx:for="{{members}}" wx:key="id" class="member-row" data-id="{{item.id}}" bindlongpress="removeMember">
+      <view class="member-avatar">
+        <image wx:if="{{item.avatarFileId}}" src="{{item.avatarFileId}}" mode="aspectFill"></image>
+        <text wx:else>{{item.initial}}</text>
+      </view>
+      <view class="member-main">
+        <view class="member-name">{{item.name}}<text wx:if="{{item.isMe}}">（我）</text></view>
+        <view class="member-relation">{{item.relation}}</view>
+      </view>
+      <view class="permission-tag {{item.permissionRole}}" data-id="{{item.id}}" bindtap="changePermission">{{item.permissionLabel}}</view>
+    </view>
+  </view>
+
+  <view class="member-tip" wx:if="{{profile.permissionRole === 'owner'}}">轻触权限标签可切换协作者/只读，长按成员可移除</view>
+
+  <ui-button wx:if="{{profile.permissionRole === 'owner'}}" text="生成成员邀请码" icon="invite" bind:action="openInviteSheet"></ui-button>
+
+  <ui-sheet visible="{{showInviteSheet}}" title="{{createdInvite ? '邀请码已生成' : '邀请共同筹备成员'}}" subtitle="{{createdInvite ? '复制后分享给对方即可' : '选择身份和可使用的权限'}}" bind:close="closeInviteSheet">
+      <block wx:if="{{!createdInvite}}">
+        <view class="form-row">
+          <text class="form-label">受邀身份</text>
+          <view class="chip-row">
+            <view wx:for="{{relations}}" wx:key="*this" class="chip {{inviteForm.relation === item ? 'active' : ''}}" data-value="{{item}}" bindtap="chooseRelation">{{item}}</view>
+          </view>
+        </view>
+        <view class="form-row">
+          <text class="form-label">可使用的权限</text>
+          <view class="permission-options">
+            <view wx:if="{{inviteForm.relation === '新娘' || inviteForm.relation === '新郎'}}" class="permission-option active">
+              <view>管理员</view><text>新人可管理成员和全部筹备内容</text>
+            </view>
+            <view wx:if="{{inviteForm.relation !== '新娘' && inviteForm.relation !== '新郎'}}" class="permission-option {{inviteForm.permissionRole === 'editor' ? 'active' : ''}}" data-value="editor" bindtap="choosePermission">
+              <view>协作者</view><text>可以查看和更新筹备内容</text>
+            </view>
+            <view wx:if="{{inviteForm.relation !== '新娘' && inviteForm.relation !== '新郎'}}" class="permission-option {{inviteForm.permissionRole === 'viewer' ? 'active' : ''}}" data-value="viewer" bindtap="choosePermission">
+              <view>只读成员</view><text>只能查看，不能修改</text>
+            </view>
+          </view>
+        </view>
+        <ui-button text="生成一次性邀请码" bind:action="createInvite"></ui-button>
+      </block>
+      <view wx:else class="invite-result">
+        <view class="invite-result-relation">邀请 {{createdInvite.relation}} · {{createdInvite.permissionRole === 'owner' ? '管理员' : createdInvite.permissionRole === 'editor' ? '协作者' : '只读成员'}}</view>
+        <view class="invite-code">{{createdInvite.inviteCode}}</view>
+        <view class="invite-expiry">{{createdInvite.expiresText}}</view>
+        <ui-button text="复制邀请码" bind:action="copyInviteCode"></ui-button>
+        <view class="invite-close-action" bindtap="closeInviteSheet">完成</view>
+      </view>
+  </ui-sheet>
+</view>

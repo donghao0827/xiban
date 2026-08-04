@@ -1,0 +1,233 @@
+page {
+  --xiban-brand: #FF6688;
+  --xiban-brand-dark: #F24F74;
+  --xiban-brand-light: #FFF0F3;
+  --xiban-coral-light: #FFE1E8;
+  --xiban-gold: #FF9855;
+  --xiban-gold-light: #FFF2E8;
+  --xiban-green: #4FCB8B;
+  --xiban-green-light: #EAF9F1;
+  --xiban-purple: #8F7DE8;
+  --xiban-purple-light: #F1EEFF;
+  --xiban-blue: #5E9CF8;
+  --xiban-blue-light: #EDF4FF;
+  --xiban-text-primary: #1C1C1E;
+  --xiban-text-secondary: #66666B;
+  --xiban-text-tertiary: #99999F;
+  --xiban-bg-page: #FFF9F8;
+  --xiban-bg-card: #FFFFFF;
+  --xiban-border-light: #F2EEED;
+  --xiban-radius-xs: 8rpx;
+  --xiban-radius-sm: 16rpx;
+  --xiban-radius-md: 28rpx;
+  --xiban-radius-lg: 44rpx;
+  --xiban-space-xs: 8rpx;
+  --xiban-space-sm: 16rpx;
+  --xiban-space-md: 24rpx;
+  --xiban-space-lg: 32rpx;
+  --xiban-shadow-sm: 0 6rpx 20rpx rgba(89, 57, 50, .055);
+  --xiban-shadow-md: 0 14rpx 42rpx rgba(89, 57, 50, .085);
+  min-height: 100%;
+  background: var(--xiban-bg-page);
+  color: var(--xiban-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+  font-size: 28rpx;
+}
+
+view, text, button, input, picker {
+  box-sizing: border-box;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  line-height: normal;
+}
+
+button::after {
+  border: 0;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 0 28rpx calc(160rpx + env(safe-area-inset-bottom));
+}
+
+.card {
+  overflow: hidden;
+  background: var(--xiban-bg-card);
+  border: 0;
+  border-radius: var(--xiban-radius-md);
+  box-shadow: var(--xiban-shadow-sm);
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 32rpx 0 16rpx;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  color: var(--xiban-text-primary);
+  font-size: 32rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+}
+
+.section-title::before {
+  display: none;
+}
+
+.section-link {
+  color: var(--xiban-brand);
+  font-size: 24rpx;
+}
+
+.link-with-icon, .picker-action {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.primary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: var(--xiban-radius-sm);
+  color: #fff;
+  font-size: 29rpx;
+  font-weight: 600;
+  background: linear-gradient(135deg, #FF7892, #FF587E);
+  box-shadow: 0 12rpx 24rpx rgba(255, 102, 136, .22);
+}
+
+.primary-btn.button-hover {
+  opacity: .82;
+}
+
+.subtle {
+  color: var(--xiban-text-tertiary);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44rpx;
+  padding: 0 16rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  color: var(--xiban-green);
+  background: var(--xiban-green-light);
+}
+
+.fab {
+  position: fixed;
+  right: 32rpx;
+  bottom: calc(144rpx + env(safe-area-inset-bottom));
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92rpx;
+  height: 92rpx;
+  color: #fff;
+  font-size: 28rpx;
+  border-radius: 50%;
+  background: var(--xiban-brand);
+  box-shadow: 0 8rpx 20rpx rgba(169, 84, 98, .22);
+}
+
+.fab:active {
+  opacity: .82;
+  transform: scale(.96);
+}
+
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(18, 16, 15, 0.42);
+}
+
+.sheet {
+  width: 100%;
+  max-height: 88vh;
+  overflow: auto;
+  padding: 34rpx 28rpx calc(32rpx + env(safe-area-inset-bottom));
+  border-radius: var(--xiban-radius-lg) var(--xiban-radius-lg) 0 0;
+  background: #fff;
+  box-shadow: 0 -16rpx 50rpx rgba(30, 20, 20, .1);
+}
+
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28rpx;
+}
+
+.sheet-title {
+  color: var(--xiban-text-primary);
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.sheet-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-row {
+  margin-bottom: 24rpx;
+}
+
+.form-label {
+  display: block;
+  margin: 0 4rpx 12rpx;
+  color: var(--xiban-text-secondary);
+  font-size: 24rpx;
+}
+
+.form-input, .form-picker {
+  width: 100%;
+  height: 80rpx;
+  padding: 0 24rpx;
+  border: 0;
+  border-radius: 18rpx;
+  background: #F8F6F5;
+  font-size: 28rpx;
+}
+
+.form-picker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.chip {
+  padding: 12rpx 20rpx;
+  color: var(--xiban-text-secondary);
+  border: 0;
+  border-radius: 999rpx;
+  background: #F4F1F0;
+  font-size: 24rpx;
+}
+
+.chip.active {
+  color: #fff;
+  background: var(--xiban-brand);
+}

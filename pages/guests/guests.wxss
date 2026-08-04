@@ -1,0 +1,25 @@
+.guests-page { background:linear-gradient(180deg,#FFF9F8,#FFF7F6 44%,#FFF9F8); }
+.guest-overview { position:relative; z-index:1; display:grid; grid-template-columns:repeat(3,1fr); margin-top:28rpx; padding:28rpx 8rpx; box-shadow:var(--xiban-shadow-md); }
+.guest-overview>view { display:flex; align-items:center; flex-direction:column; }
+.guest-overview>view+view { border-left:1rpx solid var(--xiban-border-light); }
+.guest-overview>view>text:first-child { color:var(--xiban-text-tertiary); font-size:19rpx; }
+.guest-overview>view>view { margin-top:8rpx; font-size:40rpx; font-weight:750; }
+.guest-overview>view:nth-child(2)>view { color:var(--xiban-brand); }
+.guest-overview>view>text:last-child { margin-top:7rpx; color:#B0A9A7; font-size:17rpx; }
+.guest-toolbar { display:flex; align-items:center; margin-top:24rpx; }
+.filter-scroll { flex:1; min-width:0; white-space:nowrap; }
+.filter { display:inline-flex; margin-right:10rpx; padding:12rpx 21rpx; color:var(--xiban-text-secondary); border-radius:999rpx; background:#F0ECEB; font-size:22rpx; }
+.filter.active { color:#fff; background:var(--xiban-brand); }
+.add-guest { display:flex; flex:none; align-items:center; justify-content:center; width:58rpx; height:58rpx; color:#fff; border-radius:50%; background:var(--xiban-brand); box-shadow:0 8rpx 18rpx rgba(255,102,136,.2); filter:none; }
+.guest-list { padding:0 24rpx; }
+.guest-row { display:flex; align-items:center; min-height:116rpx; border-bottom:1rpx solid var(--xiban-border-light); }
+.guest-row:last-child { border-bottom:0; }
+.avatar { display:flex; flex:none; align-items:center; justify-content:center; width:66rpx; height:66rpx; border-radius:50%; font-size:27rpx; font-weight:700; }
+.tone-0{color:#F45F80;background:#FFEAF0}.tone-1{color:#F08A48;background:#FFF0E5}.tone-2{color:#4F8CDC;background:#EAF3FF}.tone-3{color:#35A970;background:#EAF9F1}
+.guest-main { flex:1; min-width:0; margin-left:18rpx; }
+.guest-main>view { font-size:27rpx; font-weight:650; }
+.guest-main>view text { color:var(--xiban-brand); font-size:20rpx; }
+.guest-main>text { display:block; margin-top:8rpx; color:var(--xiban-text-tertiary); font-size:19rpx; }
+.guest-status { flex:none; margin-right:8rpx; padding:9rpx 13rpx; border-radius:999rpx; font-size:18rpx; }
+.status-0{color:#7B7472;background:#F1EEEE}.status-1{color:#E48442;background:#FFF0E5}.status-2{color:#35A970;background:#EAF9F1}.status-3{color:#999;background:#F1F1F2}
+.page-hint { padding:24rpx 0; color:var(--xiban-text-tertiary); text-align:center; font-size:19rpx; }

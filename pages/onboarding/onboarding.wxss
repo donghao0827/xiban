@@ -1,0 +1,30 @@
+.onboarding-page { min-height:100vh; padding:0 28rpx calc(40rpx + env(safe-area-inset-bottom)); background:linear-gradient(160deg,#FFF9F8 0,#FFF0F2 50%,#FFF9F8 100%); }
+.dev-flow-tip { width:max-content; margin:8rpx auto 0; padding:7rpx 15rpx; color:#A96A32; border-radius:999rpx; background:#FFF0D9; font-size:18rpx; }
+.checking { display:flex; align-items:center; justify-content:center; flex-direction:column; height:60vh; color:var(--xiban-text-tertiary); font-size:22rpx; }
+.checking-ring { width:58rpx; height:58rpx; margin-bottom:20rpx; border:5rpx solid #FFE0E7; border-top-color:var(--xiban-brand); border-radius:50%; animation:spin .8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.intro-visual { position:relative; display:flex; align-items:center; flex-direction:column; padding:28rpx 20rpx 32rpx; overflow:hidden; text-align:center; }
+.visual-circle { position:absolute; border-radius:50%; background:rgba(255,102,136,.08); }
+.circle-one { top:-80rpx; right:80rpx; width:220rpx; height:220rpx; }
+.circle-two { bottom:0; left:40rpx; width:130rpx; height:130rpx; }
+.visual-icon { position:relative; display:flex; align-items:center; justify-content:center; width:112rpx; height:112rpx; color:var(--xiban-brand); border-radius:38rpx; background:#fff; box-shadow:0 18rpx 45rpx rgba(255,102,136,.15); }
+.intro-title { position:relative; margin-top:24rpx; font-size:37rpx; font-weight:750; }
+.intro-desc { position:relative; max-width:560rpx; margin-top:12rpx; color:var(--xiban-text-secondary); font-size:22rpx; line-height:1.7; }
+.form-card { padding:20rpx 24rpx 28rpx; box-shadow:var(--xiban-shadow-md); }
+.entry-tabs { display:flex; padding:6rpx; border-radius:20rpx; background:#F4F0EF; }
+.entry-tab { flex:1; padding:17rpx 0; color:var(--xiban-text-tertiary); border-radius:16rpx; text-align:center; font-size:24rpx; }
+.entry-tab.active { color:var(--xiban-brand); background:#fff; box-shadow:var(--xiban-shadow-sm); font-weight:650; }
+.field { margin-top:24rpx; }
+.field-label { display:block; margin:0 4rpx 11rpx; color:var(--xiban-text-secondary); font-size:22rpx; }
+.field-input { width:100%; height:80rpx; padding:0 22rpx; border-radius:18rpx; background:#F8F6F5; font-size:25rpx; }
+.picker-input { display:flex; align-items:center; justify-content:space-between; }
+.role-row { display:grid; grid-template-columns:1fr 1fr; gap:14rpx; }
+.role-option { display:flex; align-items:center; justify-content:center; gap:12rpx; height:82rpx; color:var(--xiban-text-secondary); border-radius:20rpx; background:#F8F6F5; font-size:24rpx; }
+.role-option.active { color:var(--xiban-brand); background:var(--xiban-brand-light); box-shadow:inset 0 0 0 2rpx #FFC7D2; }
+.two-column { display:grid; grid-template-columns:1fr 1fr; gap:14rpx; }
+.create-tip,.field-help { margin-top:12rpx; color:var(--xiban-text-tertiary); font-size:19rpx; line-height:1.5; }
+.wedding-id-input { text-transform:uppercase; letter-spacing:4rpx; }
+.agreement { display:flex; align-items:flex-start; margin:26rpx 4rpx; color:var(--xiban-text-secondary); font-size:19rpx; line-height:1.55; }
+.agreement-check { display:flex; flex:none; align-items:center; justify-content:center; width:34rpx; height:34rpx; margin:2rpx 12rpx 0 0; color:#fff; border:2rpx solid #D9D3D2; border-radius:10rpx; }
+.agreement-check.active { border-color:var(--xiban-brand); background:var(--xiban-brand); }
+.privacy-note { padding:24rpx 20rpx; color:#B1A7A5; text-align:center; font-size:18rpx; line-height:1.5; }
