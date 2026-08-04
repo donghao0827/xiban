@@ -70,6 +70,6 @@
 
 .center-art {
   flex: none;
-  width: 94rpx;
-  height: 94rpx;
+  width: 70rpx;
+  height: 70rpx;
 }
