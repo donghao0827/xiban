@@ -1,6 +1,7 @@
 const storage = require('../../utils/storage')
 const cloud = require('../../utils/cloud')
 const taskPlan = require('../../utils/task-plan')
+const imageFile = require('../../utils/image-file')
 
 Page({
   data: {
@@ -231,6 +232,16 @@ Page({
   async chooseWechatAvatar(event) {
     const tempFilePath = event.detail && event.detail.avatarUrl
     if (!tempFilePath) return
+    let fileMeta
+    try {
+      fileMeta = await imageFile.validate(tempFilePath, {
+        label: '头像',
+        maxBytes: imageFile.limits.avatar
+      })
+    } catch (error) {
+      wx.showToast({ title: error.message, icon: 'none', duration: 3000 })
+      return
+    }
     const profile = cloud.getLocalProfile()
     if (profile && profile.weddingId && cloud.isEnabled() && wx.cloud && wx.cloud.uploadFile) {
       wx.showLoading({ title: '正在保存头像' })
@@ -238,8 +249,7 @@ Page({
       try {
         const ready = getApp().globalData.cloudReady
         if (ready) await ready
-        const extensionMatch = tempFilePath.match(/\.([a-zA-Z0-9]+)$/)
-        const extension = extensionMatch ? extensionMatch[1].toLowerCase() : 'jpg'
+        const extension = fileMeta.extension
         const cloudPath = `weddings/${profile.weddingId}/avatars/member_${profile.id}_${Date.now()}.${extension}`
         const uploaded = await new Promise((resolve, reject) => {
           wx.cloud.uploadFile({
@@ -304,8 +314,18 @@ Page({
       mediaType: ['image'],
       sourceType: ['album', 'camera'],
       sizeType: ['original'],
-      success: result => {
+      success: async result => {
         const tempFilePath = result.tempFiles[0].tempFilePath
+        try {
+          await imageFile.validate(tempFilePath, {
+            label: '结婚照原图',
+            maxBytes: imageFile.limits.weddingOriginal,
+            knownSize: result.tempFiles[0].size
+          })
+        } catch (error) {
+          wx.showToast({ title: error.message, icon: 'none', duration: 3000 })
+          return
+        }
         this.cropAndSavePhoto(tempFilePath, true)
       }
     })
@@ -353,7 +373,16 @@ Page({
     })
   },
 
-  savePhotoPair(originalPath, croppedPath, replaceOriginal) {
+  async savePhotoPair(originalPath, croppedPath, replaceOriginal) {
+    try {
+      await imageFile.validate(croppedPath, {
+        label: '结婚照展示图',
+        maxBytes: imageFile.limits.weddingDisplay
+      })
+    } catch (error) {
+      wx.showToast({ title: error.message, icon: 'none', duration: 3000 })
+      return
+    }
     const profile = cloud.getLocalProfile()
     if (cloud.isEnabled() && profile && wx.cloud && wx.cloud.uploadFile) {
       this.uploadPhotoPairToCloud(originalPath, croppedPath, profile, { replaceOriginal }).catch(() => {})
@@ -362,9 +391,13 @@ Page({
     this.savePhotoPairLocally(originalPath, croppedPath, replaceOriginal)
   },
 
-  uploadFileToCloud(filePath, profile, type) {
-    const extensionMatch = filePath.match(/\.([a-zA-Z0-9]+)$/)
-    const extension = extensionMatch ? extensionMatch[1].toLowerCase() : 'jpg'
+  async uploadFileToCloud(filePath, profile, type) {
+    const isOriginal = type === 'original'
+    const fileMeta = await imageFile.validate(filePath, {
+      label: isOriginal ? '结婚照原图' : '结婚照展示图',
+      maxBytes: isOriginal ? imageFile.limits.weddingOriginal : imageFile.limits.weddingDisplay
+    })
+    const extension = fileMeta.extension
     const cloudPath = `weddings/${profile.weddingId}/photos/${type}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${extension}`
     return new Promise((resolve, reject) => {
       wx.cloud.uploadFile({
@@ -522,11 +555,13 @@ Page({
     const profile = cloud.getLocalProfile()
     const localAvatar = wx.getStorageSync('xiban_wechat_avatar') || ''
     if (!profile || !profile.weddingId || !localAvatar || this.isCloudPhoto(localAvatar)) return false
-    const extensionMatch = localAvatar.match(/\.([a-zA-Z0-9]+)$/)
-    const extension = extensionMatch ? extensionMatch[1].toLowerCase() : 'jpg'
+    const fileMeta = await imageFile.validate(localAvatar, {
+      label: '头像',
+      maxBytes: imageFile.limits.avatar
+    })
     const fileID = await this.uploadLocalAsset(
       localAvatar,
-      `weddings/${profile.weddingId}/avatars/member_${profile.id}_${Date.now()}.${extension}`
+      `weddings/${profile.weddingId}/avatars/member_${profile.id}_${Date.now()}.${fileMeta.extension}`
     )
     try {
       const latestProfile = await cloud.updateMyAvatar(fileID)
@@ -551,12 +586,14 @@ Page({
     const uploaded = new Map()
     let failed = 0
     for (const item of localItems) {
-      const extensionMatch = item.customImage.match(/\.([a-zA-Z0-9]+)$/)
-      const extension = extensionMatch ? extensionMatch[1].toLowerCase() : 'jpg'
       try {
+        const fileMeta = await imageFile.validate(item.customImage, {
+          label: '婚品图片',
+          maxBytes: imageFile.limits.material
+        })
         const fileID = await this.uploadLocalAsset(
           item.customImage,
-          `weddings/${profile.weddingId}/materials/${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${extension}`
+          `weddings/${profile.weddingId}/materials/${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${fileMeta.extension}`
         )
         uploaded.set(item.id, { fileID, localPath: item.customImage })
       } catch (error) {

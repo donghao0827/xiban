@@ -149,8 +149,10 @@ Page({
         return
       }
       const crop = this.getCropRect()
-      const outputWidth = Math.max(1, Math.round(crop.width))
-      const outputHeight = Math.max(1, Math.round(crop.height))
+      const maxOutputEdge = 1600
+      const outputScale = Math.min(1, maxOutputEdge / Math.max(crop.width, crop.height))
+      const outputWidth = Math.max(1, Math.round(crop.width * outputScale))
+      const outputHeight = Math.max(1, Math.round(crop.height * outputScale))
       canvas.width = outputWidth
       canvas.height = outputHeight
       const context = canvas.getContext('2d')
@@ -171,7 +173,7 @@ Page({
         wx.canvasToTempFilePath({
           canvas,
           fileType: 'jpg',
-          quality: 1,
+          quality: 0.86,
           destWidth: outputWidth,
           destHeight: outputHeight,
           success: output => {

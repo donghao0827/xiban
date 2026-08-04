@@ -3,6 +3,7 @@ const date = require('../../utils/date')
 const cloud = require('../../utils/cloud')
 const taskPlan = require('../../utils/task-plan')
 const numberInput = require('../../utils/number-input')
+const imageFile = require('../../utils/image-file')
 const { createId } = storage
 
 const categories = ['前期规划', '婚宴场地', '婚礼策划', '婚纱摄影', '礼服造型', '婚品采购', '宾客邀请', '婚礼流程', '交通住宿', '其他事项']
@@ -341,18 +342,28 @@ Page({
       mediaType: ['image'],
       sourceType: ['album', 'camera'],
       sizeType: ['compressed'],
-      success: result => this.uploadMaterialImage(result.tempFiles[0].tempFilePath)
+      success: async result => {
+        const selected = result.tempFiles[0]
+        try {
+          const fileMeta = await imageFile.validate(selected.tempFilePath, {
+            label: '婚品图片',
+            maxBytes: imageFile.limits.material,
+            knownSize: selected.size
+          })
+          this.uploadMaterialImage(selected.tempFilePath, fileMeta.extension)
+        } catch (error) {
+          wx.showToast({ title: error.message, icon: 'none', duration: 3000 })
+        }
+      }
     })
   },
 
-  uploadMaterialImage(filePath) {
+  uploadMaterialImage(filePath, extension = 'jpg') {
     const profile = cloud.getLocalProfile()
     if (!wx.cloud || !wx.cloud.uploadFile || !profile || !profile.weddingId || !cloud.isEnabled()) {
       this.saveMaterialImageLocally(filePath)
       return
     }
-    const extensionMatch = filePath.match(/\.([a-zA-Z0-9]+)$/)
-    const extension = extensionMatch ? extensionMatch[1].toLowerCase() : 'jpg'
     const cloudPath = `weddings/${profile.weddingId}/materials/${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${extension}`
     wx.showLoading({ title: '正在上传图片' })
     wx.cloud.uploadFile({
