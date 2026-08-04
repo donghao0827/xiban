@@ -47,7 +47,7 @@
   </view>
 
   <ui-section title="数据与服务"></ui-section>
-  <view class="cloud-card card" bindtap="handleCloudAction">
+  <view class="cloud-card card">
     <view class="cloud-main-row">
       <view class="cloud-icon"><app-icon name="profile-cloud" size="{{23}}"></app-icon></view>
       <view class="cloud-copy">
@@ -56,13 +56,13 @@
         <text wx:else>{{userProfile.storageMode === 'local' ? '免费体验 · 最多 5 人共同筹备' : '开启后可共同筹备，并在不同设备使用'}}</text>
       </view>
       <view class="cloud-button-wrap">
-        <view wx:if="{{!cloudStatus.enabled}}" class="cloud-action-button primary" catchtap="enableCloudSync">{{userProfile.storageMode === 'local' ? '体验' : '开启'}}</view>
-        <view wx:else class="cloud-action-button secondary" catchtap="syncNow">同步</view>
+        <view wx:if="{{!cloudStatus.enabled}}" class="cloud-action-button primary" bindtap="enableCloudSync">开通</view>
+        <view wx:else class="cloud-action-button secondary" bindtap="syncNow">同步</view>
       </view>
     </view>
     <view wx:if="{{cloudStatus.enabled}}" class="cloud-actions">
-      <text catchtap="disableCloudSync">关闭自动同步</text>
-      <text catchtap="removeCloudData">删除云端数据</text>
+      <text bindtap="disableCloudSync">关闭自动同步</text>
+      <text bindtap="removeCloudData">删除云端数据</text>
     </view>
   </view>
 
