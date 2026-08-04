@@ -13,7 +13,7 @@
       <view class="visual-circle circle-two"></view>
       <view class="visual-icon"><app-icon name="onboarding-space" size="{{52}}"></app-icon></view>
       <view class="intro-title">建立你们的婚礼空间</view>
-      <view class="intro-desc">本地使用永久免费，需要多人协作时再升级云端版</view>
+      <view class="intro-desc">本地使用永久免费，需要多人协作时可开通免费云端体验</view>
     </view>
 
     <view class="form-card card">

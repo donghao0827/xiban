@@ -9,7 +9,7 @@
     </view>
   </view>
 
-  <ui-section title="共同筹备成员" meta="{{'· ' + members.length + ' 人'}}"></ui-section>
+  <ui-section title="共同筹备成员" meta="{{'· ' + members.length + '/5 人'}}"></ui-section>
 
   <view class="card member-list" wx:if="{{members.length}}">
     <view wx:for="{{members}}" wx:key="id" class="member-row" data-id="{{item.id}}" bindlongpress="removeMember">
@@ -27,7 +27,8 @@
 
   <view class="member-tip" wx:if="{{profile.permissionRole === 'owner'}}">轻触权限标签可切换协作者/只读，长按成员可移除</view>
 
-  <ui-button wx:if="{{profile.permissionRole === 'owner'}}" text="生成成员邀请码" icon="invite" bind:action="openInviteSheet"></ui-button>
+  <ui-button wx:if="{{profile.permissionRole === 'owner' && members.length < 5}}" text="生成成员邀请码" icon="invite" bind:action="openInviteSheet"></ui-button>
+  <view wx:if="{{profile.permissionRole === 'owner' && members.length >= 5}}" class="member-limit-tip">免费云端体验最多支持 5 名成员</view>
 
   <ui-sheet visible="{{showInviteSheet}}" title="{{createdInvite ? '邀请码已生成' : '邀请共同筹备成员'}}" subtitle="{{createdInvite ? '复制后分享给对方即可' : '选择身份和可使用的权限'}}" bind:close="closeInviteSheet">
       <block wx:if="{{!createdInvite}}">

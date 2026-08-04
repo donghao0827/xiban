@@ -2,6 +2,7 @@ const storage = require('../../utils/storage')
 const cloud = require('../../utils/cloud')
 const taskPlan = require('../../utils/task-plan')
 const imageFile = require('../../utils/image-file')
+const CLOUD_CUSTOM_IMAGE_LIMIT = 20
 
 Page({
   data: {
@@ -583,12 +584,17 @@ Page({
     const profile = cloud.getLocalProfile()
     if (!profile || !profile.weddingId) return { migrated: 0, failed: 0 }
     const materials = storage.get('materials')
-    const localItems = materials.filter(item => (
+    const cloudImageCount = materials.filter(item => (
+      item.customImage && this.isCloudPhoto(item.customImage)
+    )).length
+    const availableSlots = Math.max(0, CLOUD_CUSTOM_IMAGE_LIMIT - cloudImageCount)
+    const pendingItems = materials.filter(item => (
       item.customImage && !this.isCloudPhoto(item.customImage)
     ))
-    if (!localItems.length) return { migrated: 0, failed: 0 }
+    const localItems = pendingItems.slice(0, availableSlots)
+    if (!localItems.length) return { migrated: 0, failed: pendingItems.length }
     const uploaded = new Map()
-    let failed = 0
+    let failed = pendingItems.length - localItems.length
     for (const item of localItems) {
       try {
         const fileMeta = await imageFile.validate(item.customImage, {
@@ -648,9 +654,9 @@ Page({
     const profile = cloud.getLocalProfile()
     if (profile && profile.storageMode === 'local') {
       wx.showModal({
-        title: '开通云端存储',
-        content: '开通后，当前婚礼信息、任务、婚品、预算、宾客、头像和结婚照将上传到云端。同一婚礼的成员可按权限查看或共同编辑这些数据。本地数据会继续保留。',
-        confirmText: '同意并开通',
+        title: '开通免费云端体验',
+        content: '体验版最多支持 5 名成员和 20 张自定义婚品图片。开通后，婚礼信息、任务、婚品、预算、宾客、头像和结婚照将上传到云端，同一婚礼成员可按权限访问。本地数据会继续保留。',
+        confirmText: '同意并体验',
         confirmColor: '#d96a63',
         success: result => {
           if (result.confirm) this.upgradeLocalWeddingToCloud()
@@ -723,7 +729,7 @@ Page({
         wechatAvatar: latestProfile.avatarFileId || wx.getStorageSync('xiban_wechat_avatar') || ''
       })
       wx.showToast({
-        title: pendingAssets ? '云端已开通，部分图片待上传' : '云端存储已开通',
+        title: pendingAssets ? '体验已开通，部分图片待上传' : '云端体验已开通',
         icon: pendingAssets ? 'none' : 'success',
         duration: 3000
       })

@@ -64,6 +64,10 @@ Page({
       wx.showToast({ title: '仅管理员可以邀请成员', icon: 'none' })
       return
     }
+    if (this.data.members.length >= 5) {
+      wx.showToast({ title: '免费体验最多支持 5 名成员', icon: 'none' })
+      return
+    }
     this.setData({
       showInviteSheet: true,
       createdInvite: null,

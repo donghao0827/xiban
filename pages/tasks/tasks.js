@@ -21,6 +21,7 @@ const categoryIcons = {
 }
 const categoryOptions = categories.map(name => ({ name, icon: categoryIcons[name] }))
 const MATERIAL_CLOUD_BASE = 'cloud://prod-d0gfyfw705426c497.7072-prod-d0gfyfw705426c497-1458425791/assets/materials'
+const CLOUD_CUSTOM_IMAGE_LIMIT = 20
 
 function materialImageUrl(image) {
   return image ? `${MATERIAL_CLOUD_BASE}/${image}.png` : ''
@@ -336,6 +337,18 @@ Page({
     if (profile && profile.permissionRole === 'viewer') {
       wx.showToast({ title: '你当前是只读成员', icon: 'none' })
       return
+    }
+    if (cloud.isEnabled()) {
+      const currentId = this.data.materialForm.id
+      const usedCount = storage.get('materials').filter(item => (
+        item.id !== currentId &&
+        typeof item.customImage === 'string' &&
+        item.customImage.indexOf('cloud://') === 0
+      )).length
+      if (usedCount >= CLOUD_CUSTOM_IMAGE_LIMIT) {
+        wx.showToast({ title: `免费体验最多上传 ${CLOUD_CUSTOM_IMAGE_LIMIT} 张婚品图片`, icon: 'none' })
+        return
+      }
     }
     wx.chooseMedia({
       count: 1,
