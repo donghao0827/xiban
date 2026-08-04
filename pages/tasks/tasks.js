@@ -763,11 +763,14 @@ Page({
   },
 
   changeMaterialCategory(event) {
-    this.setData({ activeMaterialCategory: event.currentTarget.dataset.value }, this.filterMaterials)
+    this.setData({ activeMaterialCategory: event.currentTarget.dataset.value }, () => {
+      this.filterMaterials()
+      this.cacheMaterialImages()
+    })
   },
 
   changeMaterialView(event) {
-    this.setData({ activeMaterialView: Number(event.currentTarget.dataset.index) })
+    this.setData({ activeMaterialView: Number(event.currentTarget.dataset.index) }, this.cacheMaterialImages)
   },
 
   toggleCatalogMaterial(event) {
