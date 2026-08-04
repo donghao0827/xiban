@@ -6,8 +6,7 @@
         <image wx:for="{{coupleAvatars}}" wx:key="id" class="couple-avatar" src="{{item.avatarFileId}}" mode="aspectFill"></image>
       </block>
       <view wx:else class="couple-avatar couple-avatar-fallback">
-        <image wx:if="{{weddingPhoto}}" src="{{weddingPhoto}}" mode="aspectFill"></image>
-        <image wx:else class="couple-avatar-placeholder" src="/assets/icons/profile-avatar.svg" mode="aspectFit"></image>
+        <image class="couple-avatar-placeholder" src="/assets/icons/profile-avatar.svg" mode="aspectFit"></image>
       </view>
     </view>
     <view class="couple-info">

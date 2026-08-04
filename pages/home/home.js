@@ -46,7 +46,12 @@ Page({
   async loadCoupleAvatars() {
     const profile = cloud.getLocalProfile()
     if (!profile || !profile.weddingId) {
-      this.setData({ coupleAvatars: [] })
+      const localAvatar = wx.getStorageSync('xiban_wechat_avatar') || ''
+      this.setData({
+        coupleAvatars: localAvatar
+          ? [{ id: 'local-profile', avatarFileId: localAvatar }]
+          : []
+      })
       return
     }
     try {
