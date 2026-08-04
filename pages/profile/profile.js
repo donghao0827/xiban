@@ -771,36 +771,4 @@ Page({
     })
   },
 
-  removeCloudData() {
-    wx.showModal({
-      title: '删除云端婚礼空间',
-      content: '婚礼信息、成员、邀请和云端文件将永久删除。照片会先尝试保存到本机；如仍有其他成员，需要先移除成员。',
-      confirmText: '永久删除',
-      confirmColor: '#c94743',
-      success: async result => {
-        if (!result.confirm) return
-        wx.showLoading({ title: '正在删除' })
-        try {
-          const deleteResult = await cloud.removeCloudData()
-          wx.hideLoading()
-          this.setData({
-            cloudStatus: cloud.getStatus(),
-            userProfile: cloud.getLocalProfile(),
-            weddingPhoto: storage.get('photo'),
-            weddingPhotoOriginal: storage.get('photoOriginal'),
-            wechatAvatar: wx.getStorageSync('xiban_wechat_avatar') || ''
-          })
-          const fullyCleaned = deleteResult.filesDeleted && !deleteResult.filesKept
-          wx.showToast({
-            title: fullyCleaned ? '云端婚礼空间已删除' : '数据已删除，部分文件待清理',
-            icon: fullyCleaned ? 'success' : 'none',
-            duration: 3000
-          })
-        } catch (error) {
-          wx.hideLoading()
-          wx.showToast({ title: error.message, icon: 'none', duration: 3000 })
-        }
-      }
-    })
-  }
 })

@@ -56,5 +56,6 @@
   </view>
 
   <view class="contract-button" bindtap="openPrivacyContract">查看微信《用户隐私保护指引》</view>
+  <view wx:if="{{cloudEnabled}}" class="delete-cloud-action" bindtap="removeCloudData">删除云端婚礼空间</view>
   <view class="privacy-footnote">本说明用于解释囍伴当前的数据处理方式；微信官方隐私保护指引以小程序平台展示内容为准。</view>
 </view>
