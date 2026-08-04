@@ -740,27 +740,6 @@ Page({
     }
   },
 
-  syncNow() {
-    wx.showLoading({ title: '正在同步' })
-    this.migratePendingAssetsToCloud().then(() => cloud.syncNow()).then(result => {
-      wx.hideLoading()
-      this.setData({ cloudStatus: cloud.getStatus() })
-      if (result && result.pulledConflict) this.onShow()
-      wx.showToast({
-        title: result && result.pulledConflict ? '已获取云端更新' : '同步完成',
-        icon: 'success'
-      })
-    }).catch(error => {
-      wx.hideLoading()
-      this.setData({ cloudStatus: cloud.getStatus() })
-      if (error.statusCode === 409 && error.remoteData) {
-        this.resolveSyncConflict(error)
-      } else {
-        wx.showToast({ title: error.message, icon: 'none', duration: 3000 })
-      }
-    })
-  },
-
   resolveSyncConflict(error) {
     wx.showModal({
       title: '发现两份不同的数据',
@@ -780,20 +759,6 @@ Page({
           wx.hideLoading()
           wx.showToast({ title: resolveError.message, icon: 'none', duration: 3000 })
         }
-      }
-    })
-  },
-
-  disableCloudSync() {
-    wx.showModal({
-      title: '关闭云同步',
-      content: '关闭后仍会保留本机和云端已有数据，但新的修改不再自动上传。',
-      confirmText: '关闭同步',
-      confirmColor: '#d96a63',
-      success: result => {
-        if (!result.confirm) return
-        cloud.disable()
-        this.setData({ cloudStatus: cloud.getStatus() })
       }
     })
   },

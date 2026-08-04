@@ -52,16 +52,14 @@
       <view class="cloud-icon"><app-icon name="profile-cloud" size="{{23}}"></app-icon></view>
       <view class="cloud-copy">
         <view>云端同步 <ui-tag wx:if="{{cloudStatus.enabled}}" text="已开启" tone="green"></ui-tag></view>
-        <text wx:if="{{cloudStatus.enabled}}">{{cloudStatus.status}}<text wx:if="{{cloudStatus.updatedText}}"> · {{cloudStatus.updatedText}}</text></text>
+        <text wx:if="{{cloudStatus.enabled}}">自动保存至云端<text wx:if="{{cloudStatus.updatedText}}"> · {{cloudStatus.updatedText}}</text></text>
         <text wx:else>{{userProfile.storageMode === 'local' ? '免费体验 · 最多 5 人共同筹备' : '开启后可共同筹备，并在不同设备使用'}}</text>
       </view>
-      <view class="cloud-button-wrap">
-        <view wx:if="{{!cloudStatus.enabled}}" class="cloud-action-button primary" bindtap="enableCloudSync">开通</view>
-        <view wx:else class="cloud-action-button secondary" bindtap="syncNow">同步</view>
+      <view wx:if="{{!cloudStatus.enabled}}" class="cloud-button-wrap">
+        <view class="cloud-action-button primary" bindtap="enableCloudSync">开通</view>
       </view>
     </view>
     <view wx:if="{{cloudStatus.enabled}}" class="cloud-actions">
-      <text bindtap="disableCloudSync">关闭自动同步</text>
       <text bindtap="removeCloudData">删除云端数据</text>
     </view>
   </view>

@@ -451,12 +451,6 @@ function downloadCloudFile(fileId) {
   })
 }
 
-async function syncNow() {
-  const profile = getLocalProfile()
-  if (profile && profile.permissionRole === 'viewer') return pull()
-  return push()
-}
-
 async function resolveConflict(strategy, remote) {
   if (!remote) throw new Error('缺少云端冲突数据')
   wx.setStorageSync(META_KEYS.enabled, true)
@@ -491,7 +485,6 @@ module.exports = {
   pull,
   push,
   schedulePush,
-  syncNow,
   resolveConflict,
   removeCloudData
 }
