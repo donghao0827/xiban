@@ -11,7 +11,7 @@
     <scroll-view class="filter-scroll" scroll-x enable-flex>
       <view wx:for="{{filters}}" wx:key="*this" class="filter {{activeFilter === index ? 'active' : ''}}" data-index="{{index}}" bindtap="changeFilter">{{item}}</view>
     </scroll-view>
-    <view class="add-guest" bindtap="openSheet"><app-icon name="plus" size="{{20}}"></app-icon></view>
+    <view wx:if="{{!readOnly}}" class="add-guest" bindtap="openSheet"><app-icon name="plus" size="{{20}}"></app-icon></view>
   </view>
 
   <ui-section title="宾客分组" meta="{{'· ' + visibleGuests.length + ' 位'}}"></ui-section>
@@ -27,10 +27,10 @@
     </view>
   </view>
   <view class="card" wx:else>
-    <empty-state icon="record-guests" title="这里还没有宾客" description="从最重要的家人和朋友开始添加吧" actionText="添加第一位宾客" bind:action="openSheet"></empty-state>
+    <empty-state icon="record-guests" title="这里还没有宾客" description="{{readOnly ? '当前为只读身份，可查看宾客名单' : '从最重要的家人和朋友开始添加吧'}}" actionText="{{readOnly ? '' : '添加第一位宾客'}}" bind:action="openSheet"></empty-state>
   </view>
 
-  <view class="page-hint">轻触状态可以快速切换，长按宾客可从名单移除</view>
+  <view class="page-hint">{{readOnly ? '你当前是只读成员，可以查看宾客，无法修改。' : '轻触状态可以快速切换，长按宾客可从名单移除'}}</view>
   <bottom-nav current="{{3}}"></bottom-nav>
 
   <ui-sheet visible="{{showSheet}}" title="添加宾客" subtitle="先记录称呼，其他信息之后也能完善" bind:close="closeSheet">

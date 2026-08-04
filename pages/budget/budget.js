@@ -1,6 +1,7 @@
 const storage = require('../../utils/storage')
 const date = require('../../utils/date')
 const numberInput = require('../../utils/number-input')
+const cloud = require('../../utils/cloud')
 const { createId } = storage
 
 const categoryOptions = [
@@ -22,6 +23,7 @@ function emptyBudget() {
 
 Page({
   data: {
+    readOnly: false,
     budgets: [],
     totalPlanned: 0,
     totalSpent: 0,
@@ -50,9 +52,24 @@ Page({
   },
 
   onShow() {
+    this.refreshReadOnly()
     this.loadBudgets()
     const ready = getApp().globalData.cloudReady
-    if (ready) ready.then(() => this.loadBudgets())
+    if (ready) ready.then(() => {
+      this.refreshReadOnly()
+      this.loadBudgets()
+    })
+  },
+
+  refreshReadOnly() {
+    const profile = cloud.getLocalProfile()
+    this.setData({ readOnly: !!(profile && profile.permissionRole === 'viewer') })
+  },
+
+  ensureEditable() {
+    if (!this.data.readOnly) return true
+    wx.showToast({ title: '你当前是只读成员', icon: 'none' })
+    return false
   },
 
   loadBudgets() {
@@ -98,6 +115,7 @@ Page({
   },
 
   openSheet() {
+    if (!this.ensureEditable()) return
     this.setData({
       showSheet: true,
       form: {
@@ -121,6 +139,7 @@ Page({
   },
 
   editBudget() {
+    if (!this.ensureEditable()) return
     const id = this.data.selectedBudget && this.data.selectedBudget.id
     const budget = storage.get('budgets').find(item => item.id === id)
     if (!budget) return
@@ -153,6 +172,7 @@ Page({
   },
 
   saveBudget() {
+    if (!this.ensureEditable()) return
     const form = this.data.form
     const planned = Number(form.planned)
     if (!planned || planned < 0) {
@@ -178,6 +198,7 @@ Page({
   },
 
   openExpenseSheet() {
+    if (!this.ensureEditable()) return
     this.setData({
       showExpenseSheet: true,
       expenseForm: {
@@ -192,6 +213,7 @@ Page({
   },
 
   editExpense(event) {
+    if (!this.ensureEditable()) return
     const expenseId = event.currentTarget.dataset.id
     const budget = this.data.selectedBudget
     const expense = budget && budget.expenses.find(item => item.id === expenseId)
@@ -229,6 +251,7 @@ Page({
   },
 
   saveExpense() {
+    if (!this.ensureEditable()) return
     const budgetId = this.data.selectedBudget && this.data.selectedBudget.id
     const form = this.data.expenseForm
     const amount = Number(form.amount)
@@ -280,6 +303,7 @@ Page({
   },
 
   removeExpense(event) {
+    if (!this.ensureEditable()) return
     const expenseId = event.currentTarget.dataset.id
     const budgetId = this.data.selectedBudget && this.data.selectedBudget.id
     const linkedExpense = this.data.selectedBudget && this.data.selectedBudget.expenses.find(item => item.id === expenseId)
@@ -308,6 +332,7 @@ Page({
   },
 
   removeBudget(event) {
+    if (!this.ensureEditable()) return
     const id = event.currentTarget.dataset.id
     const budget = storage.get('budgets').find(item => item.id === id)
     const expenseCount = budget && budget.expenses ? budget.expenses.length : 0

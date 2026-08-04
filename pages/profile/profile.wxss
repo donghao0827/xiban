@@ -35,6 +35,7 @@
 .cloud-button-wrap { flex:none; width:126rpx; }
 .cloud-action-button { display:flex; align-items:center; justify-content:center; width:126rpx; height:54rpx; border-radius:28rpx; font-size:21rpx; font-weight:650; }
 .cloud-action-button.primary { color:#fff; background:linear-gradient(135deg,#FF7892,#FF587E); box-shadow:0 9rpx 20rpx rgba(255,102,136,.18); }
+.cloud-action-button.danger { color:#C95A60; background:#FFF1F1; box-shadow:none; }
 .local-storage-note { display:flex; align-items:flex-start; gap:17rpx; margin-top:18rpx; padding:23rpx 24rpx; background:#FFF8ED; box-shadow:var(--xiban-shadow-sm); }
 .local-storage-note-icon { display:flex; flex:none; align-items:center; justify-content:center; width:54rpx; height:54rpx; color:#D98A43; }
 .local-storage-note>view:last-child { flex:1; min-width:0; }

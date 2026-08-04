@@ -1,5 +1,6 @@
 const storage = require('../../utils/storage')
 const numberInput = require('../../utils/number-input')
+const cloud = require('../../utils/cloud')
 const { createId } = storage
 
 const sides = ['男方', '女方', '共同']
@@ -8,6 +9,7 @@ const statuses = ['待邀请', '待回复', '已确认', '不出席']
 
 Page({
   data: {
+    readOnly: false,
     filters: ['全部', '待邀请', '待回复', '已确认'],
     activeFilter: 0,
     guests: [],
@@ -22,9 +24,24 @@ Page({
   },
 
   onShow() {
+    this.refreshReadOnly()
     this.loadGuests()
     const ready = getApp().globalData.cloudReady
-    if (ready) ready.then(() => this.loadGuests())
+    if (ready) ready.then(() => {
+      this.refreshReadOnly()
+      this.loadGuests()
+    })
+  },
+
+  refreshReadOnly() {
+    const profile = cloud.getLocalProfile()
+    this.setData({ readOnly: !!(profile && profile.permissionRole === 'viewer') })
+  },
+
+  ensureEditable() {
+    if (!this.data.readOnly) return true
+    wx.showToast({ title: '你当前是只读成员', icon: 'none' })
+    return false
   },
 
   loadGuests() {
@@ -52,6 +69,7 @@ Page({
   },
 
   openSheet() {
+    if (!this.ensureEditable()) return
     this.setData({ showSheet: true, form: { name: '', side: sides[0], group: groups[0], count: 1, status: statuses[0] } })
   },
   closeSheet() { this.setData({ showSheet: false }) },
@@ -67,6 +85,7 @@ Page({
   chooseStatus(event) { this.setData({ 'form.status': event.currentTarget.dataset.value }) },
 
   saveGuest() {
+    if (!this.ensureEditable()) return
     const form = this.data.form
     if (!form.name.trim()) {
       wx.showToast({ title: '请输入宾客称呼', icon: 'none' })
@@ -81,6 +100,7 @@ Page({
   },
 
   cycleStatus(event) {
+    if (!this.ensureEditable()) return
     const id = event.currentTarget.dataset.id
     const guests = storage.get('guests').map(item => {
       if (item.id !== id) return item
@@ -92,6 +112,7 @@ Page({
   },
 
   removeGuest(event) {
+    if (!this.ensureEditable()) return
     const id = event.currentTarget.dataset.id
     wx.showModal({
       title: '移除宾客',

@@ -38,7 +38,7 @@
 
   <ui-section title="婚礼档案"></ui-section>
   <view class="card menu-card">
-    <ui-list-item wx:if="{{userProfile.weddingId}}" icon="profile-members" tone="pink" title="成员与邀请" description="{{userProfile.name + ' · ' + (userProfile.relation || userProfile.role) + ' · 管理共同筹备成员'}}" bind:tap="openMembers"></ui-list-item>
+    <ui-list-item wx:if="{{userProfile.weddingId}}" icon="profile-members" tone="pink" title="成员与邀请" description="{{membersEntryDesc}}" bind:tap="openMembers"></ui-list-item>
     <ui-list-item wx:if="{{wedding.plan && wedding.plan.templateId !== 'custom'}}" icon="profile-plan" tone="pink" title="筹备设置" description="调整婚宴、仪式、接亲和婚纱照范围" bind:tap="openPlanSettings"></ui-list-item>
     <picker class="date-picker" mode="date" value="{{wedding.date}}" bindchange="changeWeddingDate">
       <ui-list-item icon="profile-calendar" tone="orange" title="婚礼日期" description="{{wedding.date || '还没有确定婚期'}}"></ui-list-item>
@@ -57,6 +57,9 @@
       </view>
       <view wx:if="{{!cloudStatus.enabled}}" class="cloud-button-wrap">
         <view class="cloud-action-button primary" bindtap="enableCloudSync">立即开通</view>
+      </view>
+      <view wx:elif="{{userProfile.permissionRole === 'owner'}}" class="cloud-button-wrap">
+        <view class="cloud-action-button danger" bindtap="disableCloudSync">关闭同步</view>
       </view>
     </view>
   </view>

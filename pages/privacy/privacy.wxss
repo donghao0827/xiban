@@ -14,5 +14,4 @@
 .copy-card>view:last-child { border-bottom:0; }
 .copy-label { color:var(--xiban-text-primary); font-weight:650; }
 .contract-button { display:flex; align-items:center; justify-content:center; height:82rpx; margin-top:34rpx; color:var(--xiban-brand); border-radius:28rpx; background:#fff; box-shadow:var(--xiban-shadow-sm); font-size:23rpx; font-weight:650; }
-.delete-cloud-action { padding:28rpx 0 8rpx; color:#C95A60; text-align:center; font-size:20rpx; }
 .privacy-footnote { padding:24rpx 28rpx 0; color:#AAA09E; text-align:center; font-size:18rpx; line-height:1.6; }

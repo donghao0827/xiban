@@ -20,6 +20,7 @@ Page({
       updatedAt: ''
     },
     userProfile: null,
+    membersEntryDesc: '',
     showLocationSheet: false,
     locationForm: { city: '', venue: '' }
   },
@@ -37,7 +38,8 @@ Page({
       photoDisplay: storage.get('photoDisplay'),
       locationForm: { city: wedding.city || '', venue: wedding.venue || '' },
       cloudStatus: cloud.getStatus(),
-      userProfile: profile
+      userProfile: profile,
+      membersEntryDesc: this.buildMembersEntryDesc(profile)
     })
     this.cacheProfileImages()
     if (cloud.isEnabled()) {
@@ -61,6 +63,7 @@ Page({
           },
           cloudStatus: cloud.getStatus(),
           userProfile: latestProfile,
+          membersEntryDesc: this.buildMembersEntryDesc(latestProfile),
           wechatAvatar: (latestProfile && latestProfile.avatarFileId) || wx.getStorageSync('xiban_wechat_avatar') || '',
           wechatAvatarDisplay: imageCache.peek((latestProfile && latestProfile.avatarFileId) || wx.getStorageSync('xiban_wechat_avatar') || '')
         })
@@ -68,6 +71,17 @@ Page({
         if (cloud.isEnabled()) this.migratePendingAssetsToCloud().catch(() => {})
       })
     }
+  },
+
+  buildMembersEntryDesc(profile) {
+    if (!profile) return ''
+    const relation = profile.relation || profile.role || '共同筹备成员'
+    const action = profile.permissionRole === 'owner'
+      ? '管理共同筹备成员'
+      : profile.permissionRole === 'viewer'
+        ? '查看共同筹备成员'
+        : '共同筹备成员'
+    return `${profile.name || '我'} · ${relation} · ${action}`
   },
 
   async cacheProfileImages() {
@@ -720,6 +734,53 @@ Page({
       fail: error => {
         console.error('打开云同步确认弹窗失败', error)
         wx.showToast({ title: '暂时无法打开，请重试', icon: 'none' })
+      }
+    })
+  },
+
+  disableCloudSync() {
+    const profile = cloud.getLocalProfile()
+    if (!cloud.isEnabled() || !profile || profile.permissionRole !== 'owner') {
+      wx.showToast({ title: '仅管理员可关闭同步', icon: 'none' })
+      return
+    }
+    wx.showModal({
+      title: '关闭云同步？',
+      content: '关闭后将清除云端婚礼空间中的数据、成员关系和邀请；本机数据会保留。此操作不可恢复。',
+      confirmText: '继续关闭',
+      confirmColor: '#c94743',
+      success: first => {
+        if (!first.confirm) return
+        wx.showModal({
+          title: '确认清除云端数据？',
+          content: '云端数据将被永久删除，其他成员将无法继续共同筹备。如仍有其他成员，需要先移除成员。',
+          confirmText: '确认关闭',
+          confirmColor: '#c94743',
+          success: async second => {
+            if (!second.confirm) return
+            wx.showLoading({ title: '正在关闭', mask: true })
+            try {
+              const deleteResult = await cloud.removeCloudData()
+              getApp().globalData.cloudReady = null
+              wx.hideLoading()
+              this.setData({
+                userProfile: cloud.getLocalProfile(),
+                cloudStatus: cloud.getStatus(),
+                weddingPhoto: storage.get('photo'),
+                weddingPhotoOriginal: storage.get('photoOriginal'),
+                wechatAvatar: wx.getStorageSync('xiban_wechat_avatar') || ''
+              })
+              wx.showToast({
+                title: deleteResult.filesKept ? '已关闭，部分文件待清理' : '已关闭同步',
+                icon: deleteResult.filesKept ? 'none' : 'success',
+                duration: 2500
+              })
+            } catch (error) {
+              wx.hideLoading()
+              wx.showToast({ title: error.message || '关闭失败，请重试', icon: 'none', duration: 3000 })
+            }
+          }
+        })
       }
     })
   },

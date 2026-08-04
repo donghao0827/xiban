@@ -7,7 +7,7 @@
         <text>总预算（元）</text>
         <view class="total-money"><text>¥</text>{{totalPlanned}}</view>
       </view>
-      <view class="overview-edit" bindtap="openSheet"><app-icon name="edit" size="{{18}}"></app-icon><text>添加分类</text></view>
+      <view wx:if="{{!readOnly}}" class="overview-edit" bindtap="openSheet"><app-icon name="edit" size="{{18}}"></app-icon><text>添加分类</text></view>
     </view>
 
     <view class="money-summary">
@@ -40,7 +40,7 @@
     </view>
   </view>
 
-  <ui-section title="预算明细" meta="{{'· ' + budgets.length + ' 个分类'}}" link="添加" bind:action="openSheet"></ui-section>
+  <ui-section title="预算明细" meta="{{'· ' + budgets.length + ' 个分类'}}" link="{{readOnly ? '' : '添加'}}" bind:action="openSheet"></ui-section>
 
   <view class="budget-list card" wx:if="{{budgets.length}}">
     <view wx:for="{{budgets}}" wx:key="id" class="budget-row" data-id="{{item.id}}" bindtap="openBudgetDetail" bindlongpress="removeBudget">
@@ -56,15 +56,15 @@
   </view>
 
   <view class="card empty-wrap" wx:else>
-    <empty-state icon="wallet" title="先定一个舒服的预算" description="不需要一次想清楚，可以从婚宴或婚纱照开始" actionText="添加预算分类" bind:action="openSheet"></empty-state>
+    <empty-state icon="wallet" title="先定一个舒服的预算" description="{{readOnly ? '当前为只读身份，可查看预算进度' : '不需要一次想清楚，可以从婚宴或婚纱照开始'}}" actionText="{{readOnly ? '' : '添加预算分类'}}" bind:action="openSheet"></empty-state>
   </view>
 
   <view class="budget-tip">
     <view><app-icon name="sparkle" size="{{18}}"></app-icon></view>
-    <text>建议预留总预算的 5%—10% 作为机动资金，应对临时的小惊喜。</text>
+    <text>{{readOnly ? '你当前是只读成员，可以查看预算，无法修改。' : '建议预留总预算的 5%—10% 作为机动资金，应对临时的小惊喜。'}}</text>
   </view>
 
-  <view class="fab" bindtap="openSheet"><app-icon name="plus" size="{{26}}"></app-icon></view>
+  <view wx:if="{{!readOnly}}" class="fab" bindtap="openSheet"><app-icon name="plus" size="{{26}}"></app-icon></view>
   <bottom-nav current="{{1}}"></bottom-nav>
 
   <ui-sheet visible="{{showSheet}}" title="{{form.id ? '修改预算' : '添加预算分类'}}" subtitle="先定范围，后续可以随时调整" bind:close="closeSheet">
@@ -89,7 +89,7 @@
       <view><text>实际支出</text><text class="pink-money">¥{{selectedBudget.spent}}</text></view>
       <view><text>剩余</text><text>¥{{selectedBudget.planned - selectedBudget.spent}}</text></view>
     </view>
-    <view class="detail-actions">
+    <view wx:if="{{!readOnly}}" class="detail-actions">
       <ui-button text="修改预算" type="secondary" size="medium" bind:action="editBudget"></ui-button>
       <ui-button text="+ 记一笔" size="medium" bind:action="openExpenseSheet"></ui-button>
     </view>
@@ -105,7 +105,7 @@
           <view class="expense-amount">-¥{{item.amount}}</view>
         </view>
       </view>
-      <view wx:else class="expense-empty">还没有支出，记录第一笔婚礼花费吧</view>
+      <view wx:else class="expense-empty">{{readOnly ? '还没有支出记录' : '还没有支出，记录第一笔婚礼花费吧'}}</view>
     </scroll-view>
   </ui-sheet>
 
