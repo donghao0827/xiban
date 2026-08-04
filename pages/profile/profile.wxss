@@ -32,6 +32,7 @@
 .cloud-copy { flex:1; min-width:0; margin:0 18rpx; }
 .cloud-copy>view { display:flex; align-items:center; gap:10rpx; font-size:27rpx; font-weight:650; }
 .cloud-copy>text { display:block; margin-top:7rpx; color:var(--xiban-text-tertiary); font-size:19rpx; }
+.cloud-button-wrap { flex:none; width:126rpx; }
 .cloud-actions { display:flex; justify-content:flex-end; gap:30rpx; margin-top:22rpx; padding-top:20rpx; color:var(--xiban-text-tertiary); border-top:1rpx solid var(--xiban-border-light); font-size:19rpx; }
 .cloud-actions text:last-child { color:#E85B63; }
 .local-storage-note { display:flex; align-items:flex-start; gap:17rpx; margin-top:18rpx; padding:23rpx 24rpx; background:#FFF8ED; box-shadow:var(--xiban-shadow-sm); }
