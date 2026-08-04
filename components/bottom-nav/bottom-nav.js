@@ -1,7 +1,7 @@
 const routes = [
   '/pages/home/home',
   '/pages/budget/budget',
-  '/pages/today/today',
+  '/pages/tasks/tasks?mode=calendar',
   '/pages/guests/guests',
   '/pages/profile/profile'
 ]

@@ -2,6 +2,10 @@ const storage = require('../../utils/storage')
 const date = require('../../utils/date')
 const cloud = require('../../utils/cloud')
 const taskPlan = require('../../utils/task-plan')
+const imageCache = require('../../utils/image-cache')
+
+const PLACEHOLDER_PHOTO = 'cloud://prod-d0gfyfw705426c497.7072-prod-d0gfyfw705426c497-1458425791/assets/placeholders/wedding-hero.jpg'
+const PROGRESS_IMAGE = 'cloud://prod-d0gfyfw705426c497.7072-prod-d0gfyfw705426c497-1458425791/assets/illustrations/progress-envelope.png'
 
 const taskCategoryIcons = {
   前期规划: 'record-planning',
@@ -20,6 +24,9 @@ Page({
   data: {
     wedding: {},
     weddingPhoto: '',
+    weddingPhotoDisplay: '',
+    placeholderPhotoDisplay: imageCache.peek(PLACEHOLDER_PHOTO) || PLACEHOLDER_PHOTO,
+    progressImageDisplay: imageCache.peek(PROGRESS_IMAGE) || PROGRESS_IMAGE,
     coupleAvatars: [],
     photoDisplay: { mode: 'aspectFill' },
     weddingDateText: '',
@@ -41,6 +48,15 @@ Page({
       this.loadData()
       this.loadCoupleAvatars()
     })
+    this.cacheStaticImages()
+  },
+
+  async cacheStaticImages() {
+    const [placeholderPhotoDisplay, progressImageDisplay] = await Promise.all([
+      imageCache.resolve(PLACEHOLDER_PHOTO),
+      imageCache.resolve(PROGRESS_IMAGE)
+    ])
+    this.setData({ placeholderPhotoDisplay, progressImageDisplay })
   },
 
   async loadCoupleAvatars() {
@@ -61,6 +77,8 @@ Page({
         .filter(item => ['新郎', '新娘'].includes(item.relation) && item.avatarFileId)
         .sort((a, b) => order[a.relation] - order[b.relation])
         .slice(0, 2)
+      const cached = await imageCache.resolveMany(coupleAvatars.map(item => item.avatarFileId))
+      coupleAvatars.forEach(item => { item.displayAvatar = cached[item.avatarFileId] || item.avatarFileId })
       this.setData({ coupleAvatars })
     } catch (error) {
       // 首页其他内容仍可继续使用，保留上一次成功加载的头像。
@@ -167,6 +185,7 @@ Page({
     this.setData({
       wedding,
       weddingPhoto,
+      weddingPhotoDisplay: imageCache.peek(weddingPhoto) || weddingPhoto,
       photoDisplay,
       weddingDateText: wedding.date ? wedding.date.replace(/-/g, '.') : '婚期待定',
       weddingWeekday: weddingDate && !Number.isNaN(weddingDate.getTime()) ? weekdays[weddingDate.getDay()] : '',
@@ -178,10 +197,13 @@ Page({
       upcoming,
       currentStage
     })
+    imageCache.resolve(weddingPhoto).then(weddingPhotoDisplay => {
+      if (storage.get('photo') === weddingPhoto) this.setData({ weddingPhotoDisplay })
+    })
   },
 
   goToday() {
-    wx.redirectTo({ url: '/pages/today/today' })
+    wx.redirectTo({ url: '/pages/tasks/tasks?mode=calendar' })
   },
 
   goTasks() {

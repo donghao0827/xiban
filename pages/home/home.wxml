@@ -3,7 +3,7 @@
   <view slot="left" class="couple-bar">
     <view class="couple-avatars">
       <block wx:if="{{coupleAvatars.length}}">
-        <image wx:for="{{coupleAvatars}}" wx:key="id" class="couple-avatar" src="{{item.avatarFileId}}" mode="aspectFill"></image>
+        <image wx:for="{{coupleAvatars}}" wx:key="id" class="couple-avatar" src="{{item.displayAvatar || item.avatarFileId}}" mode="aspectFill"></image>
       </block>
       <view wx:else class="couple-avatar couple-avatar-fallback">
         <image class="couple-avatar-placeholder" src="/assets/icons/profile-avatar.svg" mode="aspectFit"></image>
@@ -17,7 +17,7 @@
   </nav-bar>
 
   <view class="hero card">
-    <image class="hero-photo {{weddingPhoto && photoDisplay.mode === 'aspectFit' ? 'fit' : ''}}" src="{{weddingPhoto || 'cloud://prod-d0gfyfw705426c497.7072-prod-d0gfyfw705426c497-1458425791/assets/placeholders/wedding-hero.jpg'}}" mode="{{weddingPhoto ? photoDisplay.mode : 'aspectFill'}}" bindtap="previewPhoto"></image>
+    <image class="hero-photo {{weddingPhoto && photoDisplay.mode === 'aspectFit' ? 'fit' : ''}}" src="{{weddingPhoto ? (weddingPhotoDisplay || weddingPhoto) : placeholderPhotoDisplay}}" mode="{{weddingPhoto ? photoDisplay.mode : 'aspectFill'}}" bindtap="previewPhoto"></image>
     <view class="hero-mask"></view>
     <view class="hero-copy">
       <view class="countdown-label">距离婚礼还有</view>
@@ -76,7 +76,7 @@
         </view>
       </view>
       <view class="progress-cheer">
-        <image src="cloud://prod-d0gfyfw705426c497.7072-prod-d0gfyfw705426c497-1458425791/assets/illustrations/progress-envelope.png" mode="aspectFit"></image>
+        <image src="{{progressImageDisplay}}" mode="aspectFit"></image>
       </view>
     </view>
   </view>

@@ -1,4 +1,5 @@
 const cloud = require('../../utils/cloud')
+const imageCache = require('../../utils/image-cache')
 
 const relations = ['新娘', '新郎', '新娘父母', '新郎父母', '伴娘', '伴郎', '婚礼帮手', '亲友']
 const permissionLabels = {
@@ -40,11 +41,13 @@ Page({
     try {
       const profile = cloud.getLocalProfile()
       const members = await cloud.fetchMembers()
+      const avatarCache = await imageCache.resolveMany(members.map(item => item.avatarFileId))
       this.setData({
         profile,
         loading: false,
         members: members.map(item => ({
           ...item,
+          displayAvatar: avatarCache[item.avatarFileId] || item.avatarFileId,
           initial: item.name ? item.name.charAt(0) : '喜',
           permissionLabel: permissionLabels[item.permissionRole] || item.permissionRole
         }))

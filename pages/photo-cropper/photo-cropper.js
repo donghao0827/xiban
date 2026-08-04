@@ -24,7 +24,7 @@ Page({
       statusBarHeight: windowInfo.statusBarHeight || 20,
       navHeight: menu.bottom + (menu.top - (windowInfo.statusBarHeight || 20)),
       viewportWidth,
-      viewportHeight: viewportWidth * 0.75
+      viewportHeight: viewportWidth * 9 / 16
     })
     this.getOpenerEventChannel().on('source', ({ path }) => this.loadSource(path))
   },

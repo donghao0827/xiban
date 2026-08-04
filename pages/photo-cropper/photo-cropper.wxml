@@ -1,5 +1,5 @@
 <view class="cropper-page">
-  <view class="cropper-nav" style="padding-top:{{statusBarHeight}}px;height:{{navHeight}}px">
+  <view class="cropper-nav" style="padding-top:{{statusBarHeight}}px;height:{{navHeight + 20}}px">
     <view class="nav-action nav-back-action" bindtap="cancel">
       <image src="/assets/icons/chevron-left.svg" mode="aspectFit"></image>
     </view>

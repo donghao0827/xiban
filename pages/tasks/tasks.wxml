@@ -1,30 +1,92 @@
 <view class="page tasks-page">
-  <nav-bar></nav-bar>
+  <nav-bar custom-left="{{true}}">
+    <view slot="left" class="view-tabs">
+      <view class="{{primaryMode === 'calendar' ? 'active' : ''}}" data-mode="calendar" bindtap="changePrimaryMode">日历</view>
+      <text>/</text>
+      <view class="{{primaryMode === 'tasks' ? 'active' : ''}}" data-mode="tasks" bindtap="changePrimaryMode">任务</view>
+      <text>/</text>
+      <view class="{{primaryMode === 'materials' ? 'active' : ''}}" data-mode="materials" bindtap="changePrimaryMode">婚品</view>
+    </view>
+  </nav-bar>
 
-  <view class="view-tabs">
-    <view data-mode="calendar" bindtap="changePrimaryMode">日历</view>
-    <text>/</text>
-    <view class="{{activeMode === 0 ? 'active' : ''}}" data-mode="tasks" bindtap="changePrimaryMode">任务</view>
-    <text>/</text>
-    <view class="{{activeMode === 1 ? 'active' : ''}}" data-mode="materials" bindtap="changePrimaryMode">婚品</view>
-  </view>
+  <block wx:if="{{primaryMode === 'calendar'}}">
+    <view class="calendar-card card">
+      <view class="calendar-head">
+        <view class="today-button" bindtap="goSelectedDay">今天</view>
+        <view class="month-title">{{monthText}}</view>
+        <view class="month-actions">
+          <view data-direction="-1" bindtap="changeMonth"><app-icon name="chevron-left" size="{{18}}"></app-icon></view>
+          <view data-direction="1" bindtap="changeMonth"><app-icon name="arrow-right" size="{{18}}"></app-icon></view>
+        </view>
+      </view>
 
-  <view class="summary card" wx:if="{{activeMode === 0}}">
+      <view class="week-row">
+        <text wx:for="{{weekLabels}}" wx:key="*this">{{item}}</text>
+      </view>
+      <view class="calendar-grid">
+        <view wx:for="{{days}}" wx:key="date" class="calendar-day {{item.currentMonth ? '' : 'muted'}} {{item.today ? 'today' : ''}} {{item.selected ? 'selected' : ''}}" data-date="{{item.date}}" bindtap="selectDate">
+          <text>{{item.day}}</text>
+          <view wx:if="{{item.taskCount}}" class="task-dots">
+            <text></text><text wx:if="{{item.taskCount > 1}}"></text><text wx:if="{{item.taskCount > 2}}"></text>
+          </view>
+          <view wx:if="{{item.recordCount}}" class="record-dot"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="day-head">
+      <view>
+        <view>{{selectedText}}</view>
+        <text>{{selectedTasks.length}} 项待办 · {{selectedRecords.length}} 条记录</text>
+      </view>
+      <view class="record-action" bindtap="openRecordSheet">
+        <image src="/assets/icons/note-moment.png" mode="aspectFit"></image>
+        <text>记一下</text>
+      </view>
+    </view>
+
+    <view class="day-subtitle" wx:if="{{selectedTasks.length}}">当天待办</view>
+    <view class="day-task-list card" wx:if="{{selectedTasks.length}}">
+      <view wx:for="{{selectedTasks}}" wx:key="id" class="day-task {{item.done ? 'completed' : ''}}" data-id="{{item.id}}" bindtap="toggleDayTask">
+        <view class="task-check">
+          <app-icon wx:if="{{item.done}}" name="check" size="{{13}}"></app-icon>
+        </view>
+        <view class="task-copy">
+          <view>{{item.title}}</view>
+          <text>{{item.category}}</text>
+        </view>
+        <ui-tag text="{{item.done ? '已完成' : '待完成'}}" tone="{{item.done ? 'green' : 'pink'}}"></ui-tag>
+      </view>
+    </view>
+
+    <view class="day-subtitle" wx:if="{{selectedRecords.length}}">{{selectedIsToday ? '今天做了这些' : '这天做了这些'}}</view>
+    <view class="record-list" wx:if="{{selectedRecords.length}}">
+      <view wx:for="{{selectedRecords}}" wx:key="id" class="record-card card" data-id="{{item.id}}" bindtap="editRecord" bindlongpress="removeRecord">
+        <view class="record-icon {{item.tone}}"><app-icon name="{{item.icon}}" size="{{21}}"></app-icon></view>
+        <view class="record-copy">
+          <view class="record-title-row"><text>{{item.title}}</text><text wx:if="{{item.amountText}}">{{item.amountText}}</text></view>
+          <view class="record-detail">{{item.detailText}}<text wx:if="{{item.taskId}}"> · 已关联任务</text></view>
+        </view>
+        <app-icon name="arrow-right" size="{{16}}"></app-icon>
+      </view>
+    </view>
+
+    <view class="empty-day card" wx:if="{{!selectedTasks.length && !selectedRecords.length}}">
+      <view class="empty-calendar-icon"><app-icon name="calendar" size="{{28}}"></app-icon></view>
+      <view>这一天还没有留下记录</view>
+      <text>安排待办，或者把已经完成的事情记下来</text>
+    </view>
+  </block>
+
+  <block wx:elif="{{primaryMode === 'tasks'}}">
+  <view class="summary card">
     <view class="summary-copy">
       <view class="summary-title">筹备进度</view>
       <view class="summary-desc">已完成 {{completedCount}} 项，共 {{effectiveTaskCount}} 项</view>
     </view>
     <view class="summary-rate"><text>{{taskProgress}}</text>%</view>
   </view>
-  <view class="summary card" wx:else>
-    <view class="summary-copy">
-      <view class="summary-title">婚品进度</view>
-      <view class="summary-desc">已备齐 {{boughtCount}} 项，共 {{materials.length}} 项</view>
-    </view>
-    <view class="summary-rate"><text>{{materialProgress}}</text>%</view>
-  </view>
 
-  <block wx:if="{{activeMode === 0}}">
   <view class="tabs">
     <view wx:for="{{tabs}}" wx:key="*this" class="tab {{activeTab === index ? 'active' : ''}}" data-index="{{index}}" bindtap="changeTab">{{item}}</view>
   </view>
@@ -70,6 +132,14 @@
   </block>
 
   <block wx:else>
+    <view class="summary card">
+      <view class="summary-copy">
+        <view class="summary-title">婚品进度</view>
+        <view class="summary-desc">已备齐 {{boughtCount}} 项，共 {{materials.length}} 项</view>
+      </view>
+      <view class="summary-rate"><text>{{materialProgress}}</text>%</view>
+    </view>
+
     <view class="material-view-tabs">
       <view wx:for="{{materialViews}}" wx:key="*this" class="material-view-tab {{activeMaterialView === index ? 'active' : ''}}" data-index="{{index}}" bindtap="changeMaterialView">{{item}}</view>
     </view>
@@ -86,8 +156,7 @@
     <view class="card material-list" wx:if="{{visibleMaterials.length}}">
       <view wx:for="{{visibleMaterials}}" wx:key="id" class="material-row" data-id="{{item.id}}" bindlongpress="removeMaterial">
         <view class="material-icon {{item.image || item.customImage ? 'has-image' : ''}}">
-          <image wx:if="{{item.customImage}}" class="material-image" src="{{item.customImage}}" mode="aspectFit"></image>
-          <image wx:elif="{{item.image}}" class="material-image" src="{{item.imageUrl}}" mode="aspectFit"></image>
+          <image wx:if="{{item.displayImage}}" class="material-image" src="{{item.displayImage}}" mode="aspectFit"></image>
           <app-icon wx:else name="{{item.icon}}" size="{{23}}"></app-icon>
         </view>
         <view class="material-main" data-id="{{item.id}}" bindtap="editMaterial">
@@ -142,7 +211,7 @@
       </view>
       <view class="form-row">
         <text class="form-label">任务名称</text>
-        <input class="form-input" placeholder="例如：预约试纱" value="{{form.title}}" bindinput="updateTitle" focus />
+        <input class="form-input" placeholder="例如：预约试纱" value="{{form.title}}" bindinput="updateTitle" focus="{{showSheet}}" />
       </view>
       <view class="form-row">
         <text class="form-label">计划完成日期</text>
@@ -177,7 +246,7 @@
       <scroll-view scroll-y class="material-form-scroll">
         <view class="form-row">
           <text class="form-label">需要购买什么</text>
-          <input class="form-input" placeholder="例如：红色婚鞋" value="{{materialForm.title}}" bindinput="updateMaterialTitle" focus="{{!materialForm.id}}" />
+          <input class="form-input" placeholder="例如：红色婚鞋" value="{{materialForm.title}}" bindinput="updateMaterialTitle" focus="{{showMaterialSheet && !materialForm.id}}" />
         </view>
         <view class="form-row">
           <text class="form-label">放入分类</text>
@@ -214,7 +283,7 @@
         <view class="form-row">
           <text class="form-label">婚品图片（可选）</text>
           <view class="material-image-picker" bindtap="chooseMaterialImage">
-            <image wx:if="{{materialForm.customImage}}" src="{{materialForm.customImage}}" mode="aspectFit"></image>
+            <image wx:if="{{materialForm.customImage}}" src="{{materialFormDisplayImage || materialForm.customImage}}" mode="aspectFit"></image>
             <view wx:else class="material-image-placeholder">
               <app-icon name="camera" size="{{25}}"></app-icon>
               <text>上传照片或拍摄</text>
@@ -224,6 +293,86 @@
         </view>
         <ui-button text="{{materialForm.id ? '保存修改' : '加入购买清单'}}" bind:action="saveMaterial"></ui-button>
       </scroll-view>
+  </ui-sheet>
+
+  <ui-sheet visible="{{showRecordSheet}}" fixed-height="{{true}}" title="{{recordForm.id ? '修改记录' : '记一下'}}" bind:close="closeRecordSheet">
+    <view class="form-row">
+      <view class="record-category-grid">
+        <view wx:for="{{recordCategories}}" wx:key="name" class="record-category-option {{recordForm.category === item.name ? 'active' : ''}}" data-value="{{item.name}}" bindtap="chooseRecordCategory">
+          <view class="{{item.tone}}"><app-icon name="{{item.icon}}" size="{{20}}"></app-icon></view>
+          <text>{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+
+    <block wx:if="{{recordForm.category === '婚品采购'}}">
+      <view class="form-row">
+        <text class="form-label">婚品分类</text>
+        <view class="chip-row material-category-row">
+          <view wx:for="{{recordMaterialCategories}}" wx:key="*this" class="chip {{recordForm.materialCategory === item ? 'active' : ''}}" data-value="{{item}}" bindtap="chooseRecordMaterialCategory">{{item}}</view>
+        </view>
+      </view>
+      <view class="form-row">
+        <text class="form-label">具体婚品</text>
+        <view class="material-choice-grid">
+          <view wx:for="{{materialOptions}}" wx:key="title" class="material-choice {{recordForm.materialTitle === item.title ? 'active' : ''}}" data-value="{{item.title}}" bindtap="chooseRecordMaterial">
+            <view class="material-choice-image">
+              <image src="{{item.imageUrl}}" mode="aspectFit"></image>
+              <text>{{item.title}}</text>
+            </view>
+          </view>
+        </view>
+        <view wx:if="{{!materialOptions.length}}" class="material-empty-tip">该分类还没有加入清单的婚品</view>
+      </view>
+      <view class="record-number-row">
+        <view class="form-row">
+          <text class="form-label">数量</text>
+          <input class="form-input" type="digit" value="{{recordForm.quantity}}" data-field="quantity" bindinput="updateRecordField" />
+        </view>
+        <view class="form-row">
+          <text class="form-label">单价</text>
+          <input class="form-input" type="digit" placeholder="¥ 0" value="{{recordForm.unitPrice}}" data-field="unitPrice" bindinput="updateRecordField" />
+        </view>
+        <view class="form-row">
+          <text class="form-label">总金额</text>
+          <view class="form-input calculated-amount">¥ {{calculatedTotal}}</view>
+        </view>
+      </view>
+    </block>
+
+    <view wx:else class="form-row">
+      <text class="form-label">今天做了什么</text>
+      <input class="form-input" maxlength="40" placeholder="例如：确定了婚礼主持人" value="{{recordForm.title}}" data-field="title" bindinput="updateRecordField" />
+    </view>
+
+    <view wx:if="{{recordForm.category !== '婚品采购'}}" class="form-row">
+      <text class="form-label">花费金额 <text class="optional">选填</text></text>
+      <input class="form-input" type="digit" placeholder="没有花费可以不填" value="{{recordForm.amount}}" data-field="amount" bindinput="updateRecordField" />
+    </view>
+
+    <view class="form-row" wx:if="{{filteredTaskOptions.length}}">
+      <text class="form-label">关联任务 <text class="optional">选填，关联后自动完成</text></text>
+      <view class="task-select">
+        <view class="task-select-trigger {{taskDropdownOpen ? 'open' : ''}}" bindtap="toggleTaskDropdown">
+          <text class="{{selectedTaskTitle ? '' : 'placeholder'}}">{{selectedTaskTitle || '选择要关联的任务'}}</text>
+          <app-icon name="arrow-down" size="{{16}}"></app-icon>
+        </view>
+        <view wx:if="{{taskDropdownOpen}}" class="task-select-dropdown">
+          <scroll-view class="task-select-options" scroll-y="{{true}}">
+            <view class="task-select-option {{!recordForm.taskId ? 'active' : ''}}" data-id="" bindtap="chooseRelatedTask">
+              <view><text>不关联任务</text></view>
+              <app-icon wx:if="{{!recordForm.taskId}}" name="check" size="{{17}}"></app-icon>
+            </view>
+            <view wx:for="{{filteredTaskOptions}}" wx:key="id" class="task-select-option {{recordForm.taskId == item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="chooseRelatedTask">
+              <view class="task-option-main"><text class="task-option-title">{{item.title}}</text></view>
+              <app-icon wx:if="{{recordForm.taskId == item.id}}" name="check" size="{{17}}"></app-icon>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+    </view>
+
+    <ui-button slot="footer" text="记下来" icon="" bind:action="saveRecord"></ui-button>
   </ui-sheet>
   <privacy-popup></privacy-popup>
 </view>

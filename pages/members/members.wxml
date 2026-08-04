@@ -14,7 +14,7 @@
   <view class="card member-list" wx:if="{{members.length}}">
     <view wx:for="{{members}}" wx:key="id" class="member-row" data-id="{{item.id}}" bindlongpress="removeMember">
       <view class="member-avatar">
-        <image wx:if="{{item.avatarFileId}}" src="{{item.avatarFileId}}" mode="aspectFill"></image>
+        <image wx:if="{{item.avatarFileId}}" src="{{item.displayAvatar || item.avatarFileId}}" mode="aspectFill"></image>
         <text wx:else>{{item.initial}}</text>
       </view>
       <view class="member-main">

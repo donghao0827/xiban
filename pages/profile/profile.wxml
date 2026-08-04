@@ -2,7 +2,7 @@
   <nav-bar custom-left="{{true}}">
   <view slot="left" class="profile-identity">
     <view class="profile-avatar">
-      <image wx:if="{{wechatAvatar}}" src="{{wechatAvatar}}" mode="aspectFill"></image>
+      <image wx:if="{{wechatAvatar}}" src="{{wechatAvatarDisplay || wechatAvatar}}" mode="aspectFill"></image>
       <view wx:else class="avatar-placeholder"><image class="avatar-placeholder-icon" src="/assets/icons/profile-avatar.svg" mode="aspectFit"></image></view>
       <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="chooseWechatAvatar"></button>
     </view>
@@ -17,7 +17,7 @@
   </nav-bar>
 
   <view class="photo-card card" bindtap="choosePhoto">
-    <image wx:if="{{weddingPhoto}}" class="wedding-photo {{photoDisplay.mode === 'aspectFit' ? 'fit' : ''}}" src="{{weddingPhoto}}" mode="{{photoDisplay.mode}}"></image>
+    <image wx:if="{{weddingPhoto}}" class="wedding-photo {{photoDisplay.mode === 'aspectFit' ? 'fit' : ''}}" src="{{weddingPhotoDisplay || weddingPhoto}}" mode="{{photoDisplay.mode}}"></image>
     <view wx:if="{{weddingPhoto}}" class="photo-overlay">
       <view class="photo-meta">
         <view>{{wedding.couple || '我们的婚礼'}}</view>

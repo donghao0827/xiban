@@ -11,8 +11,8 @@
 .profile-name-row>text:first-child { overflow:hidden; font-size:28rpx; font-weight:700; text-overflow:ellipsis; }
 .profile-name-row ui-tag { flex:none; margin-left:12rpx; }
 .profile-identity-copy .avatar-hint { display:block; margin-top:5rpx; color:var(--xiban-text-tertiary); font-size:18rpx; }
-.photo-card { position:relative; min-height:350rpx; margin-top:22rpx; overflow:hidden; box-shadow:var(--xiban-shadow-md); }
-.wedding-photo { display:block; width:100%; height:390rpx; }
+.photo-card { position:relative; height:390rpx; margin-top:22rpx; overflow:hidden; box-shadow:var(--xiban-shadow-md); }
+.wedding-photo { display:block; width:100%; height:100%; }
 .wedding-photo.fit { background:#F1E9E7; }
 .photo-overlay { position:absolute; right:0; bottom:0; left:0; display:flex; align-items:flex-end; justify-content:space-between; padding:70rpx 24rpx 22rpx; color:#fff; background:linear-gradient(transparent,rgba(24,16,15,.72)); }
 .photo-meta view { font-size:29rpx; font-weight:700; }
@@ -20,7 +20,7 @@
 .photo-tools { display:flex; gap:12rpx; }
 .photo-tools>view { display:flex; align-items:center; justify-content:center; width:54rpx; height:54rpx; border-radius:50%; background:rgba(255,255,255,.22); backdrop-filter:blur(12rpx); }
 .photo-tool-icon { width:34rpx; height:34rpx; filter:brightness(0) invert(1); }
-.photo-empty { display:flex; min-height:350rpx; align-items:center; justify-content:center; flex-direction:column; background:linear-gradient(135deg,#FFF0F2,#FFF8F6); }
+.photo-empty { display:flex; width:100%; height:100%; align-items:center; justify-content:center; flex-direction:column; background:linear-gradient(135deg,#FFF0F2,#FFF8F6); }
 .photo-upload-icon { display:flex; align-items:center; justify-content:center; width:100rpx; height:100rpx; }
 .photo-empty>view:nth-child(2) { margin-top:18rpx; font-size:27rpx; font-weight:650; }
 .photo-empty>text { margin-top:8rpx; color:var(--xiban-text-tertiary); font-size:20rpx; }

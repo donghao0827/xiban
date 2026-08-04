@@ -199,7 +199,7 @@ Page({
     if (expense.recordId) {
       wx.showToast({ title: '请在对应的备婚记录中修改', icon: 'none' })
       setTimeout(() => {
-        wx.redirectTo({ url: `/pages/today/today?date=${expense.date || date.formatDate(new Date())}` })
+        wx.redirectTo({ url: `/pages/tasks/tasks?mode=calendar&date=${expense.date || date.formatDate(new Date())}` })
       }, 500)
       return
     }

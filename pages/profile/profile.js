@@ -2,14 +2,17 @@ const storage = require('../../utils/storage')
 const cloud = require('../../utils/cloud')
 const taskPlan = require('../../utils/task-plan')
 const imageFile = require('../../utils/image-file')
+const imageCache = require('../../utils/image-cache')
 const CLOUD_CUSTOM_IMAGE_LIMIT = 20
 
 Page({
   data: {
     wedding: {},
     weddingPhoto: '',
+    weddingPhotoDisplay: '',
     weddingPhotoOriginal: '',
     wechatAvatar: '',
+    wechatAvatarDisplay: '',
     photoDisplay: { mode: 'aspectFill' },
     cloudStatus: {
       enabled: false,
@@ -27,13 +30,16 @@ Page({
     this.setData({
       wedding,
       weddingPhoto: storage.get('photo'),
+      weddingPhotoDisplay: imageCache.peek(storage.get('photo')) || storage.get('photo'),
       weddingPhotoOriginal: storage.get('photoOriginal'),
       wechatAvatar: (profile && profile.avatarFileId) || wx.getStorageSync('xiban_wechat_avatar') || '',
+      wechatAvatarDisplay: imageCache.peek((profile && profile.avatarFileId) || wx.getStorageSync('xiban_wechat_avatar') || ''),
       photoDisplay: storage.get('photoDisplay'),
       locationForm: { city: wedding.city || '', venue: wedding.venue || '' },
       cloudStatus: cloud.getStatus(),
       userProfile: profile
     })
+    this.cacheProfileImages()
     if (cloud.isEnabled()) {
       this.migratePendingAssetsToCloud().catch(() => {
         wx.showToast({ title: '部分本地图片暂未上传', icon: 'none' })
@@ -47,6 +53,7 @@ Page({
         this.setData({
           wedding: latestWedding,
           weddingPhoto: storage.get('photo'),
+          weddingPhotoDisplay: imageCache.peek(storage.get('photo')) || storage.get('photo'),
           weddingPhotoOriginal: storage.get('photoOriginal'),
           locationForm: {
             city: latestWedding.city || '',
@@ -54,11 +61,25 @@ Page({
           },
           cloudStatus: cloud.getStatus(),
           userProfile: latestProfile,
-          wechatAvatar: (latestProfile && latestProfile.avatarFileId) || wx.getStorageSync('xiban_wechat_avatar') || ''
+          wechatAvatar: (latestProfile && latestProfile.avatarFileId) || wx.getStorageSync('xiban_wechat_avatar') || '',
+          wechatAvatarDisplay: imageCache.peek((latestProfile && latestProfile.avatarFileId) || wx.getStorageSync('xiban_wechat_avatar') || '')
         })
+        this.cacheProfileImages()
         if (cloud.isEnabled()) this.migratePendingAssetsToCloud().catch(() => {})
       })
     }
+  },
+
+  async cacheProfileImages() {
+    const weddingPhoto = storage.get('photo')
+    const profile = cloud.getLocalProfile()
+    const wechatAvatar = (profile && profile.avatarFileId) || wx.getStorageSync('xiban_wechat_avatar') || ''
+    const [weddingPhotoDisplay, wechatAvatarDisplay] = await Promise.all([
+      imageCache.resolve(weddingPhoto),
+      imageCache.resolve(wechatAvatar)
+    ])
+    if (storage.get('photo') !== weddingPhoto) return
+    this.setData({ weddingPhotoDisplay, wechatAvatarDisplay })
   },
 
   openPrivacy() {
