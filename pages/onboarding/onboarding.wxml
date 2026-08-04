@@ -70,6 +70,13 @@
         <text>我同意将婚礼信息、任务、婚品、预算和宾客数据保存至云端，用于共同筹备和跨设备同步。</text>
       </view>
 
+      <view class="privacy-links">
+        <text>继续即表示你已阅读</text>
+        <text class="privacy-link" catchtap="openPrivacy">《隐私与数据说明》</text>
+        <text>和</text>
+        <text class="privacy-link" catchtap="openPrivacyContract">《用户隐私保护指引》</text>
+      </view>
+
       <ui-button text="{{submitting ? '正在准备…' : mode === 'create' ? '开始备婚' : '查找并加入婚礼'}}" disabled="{{submitting}}" bind:action="submit"></ui-button>
     </view>
 

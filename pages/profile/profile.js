@@ -60,6 +60,10 @@ Page({
     }
   },
 
+  openPrivacy() {
+    wx.navigateTo({ url: '/pages/privacy/privacy' })
+  },
+
   changeWeddingDate(event) {
     const selectedDate = event.detail.value
     if (!selectedDate || selectedDate === this.data.wedding.date) return
@@ -645,7 +649,7 @@ Page({
     if (profile && profile.storageMode === 'local') {
       wx.showModal({
         title: '开通云端存储',
-        content: '开通后，当前婚礼信息、任务、婚品、预算、宾客、头像和结婚照将上传到云端，并可生成邀请码与亲友共同筹备。本地数据会继续保留。',
+        content: '开通后，当前婚礼信息、任务、婚品、预算、宾客、头像和结婚照将上传到云端。同一婚礼的成员可按权限查看或共同编辑这些数据。本地数据会继续保留。',
         confirmText: '同意并开通',
         confirmColor: '#d96a63',
         success: result => {
@@ -656,7 +660,7 @@ Page({
     }
     wx.showModal({
       title: '开启云同步',
-      content: '开启后，婚礼信息、任务、婚品、预算、宾客数据和结婚照将上传至云端，用于备份、共同筹备和跨设备使用。',
+      content: '开启后，婚礼信息、任务、婚品、预算、宾客数据和结婚照将上传至云端，用于备份、共同筹备和跨设备使用；同一婚礼成员可按权限访问。',
       confirmText: '同意并开启',
       confirmColor: '#d96a63',
       success: async result => {

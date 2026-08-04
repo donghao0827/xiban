@@ -28,3 +28,5 @@
 .agreement-check { display:flex; flex:none; align-items:center; justify-content:center; width:34rpx; height:34rpx; margin:2rpx 12rpx 0 0; color:#fff; border:2rpx solid #D9D3D2; border-radius:10rpx; }
 .agreement-check.active { border-color:var(--xiban-brand); background:var(--xiban-brand); }
 .privacy-note { padding:24rpx 20rpx; color:#B1A7A5; text-align:center; font-size:18rpx; line-height:1.5; }
+.privacy-links { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; margin:24rpx 0 4rpx; color:#A79D9B; font-size:19rpx; line-height:1.8; }
+.privacy-link { color:var(--xiban-brand); }

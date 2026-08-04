@@ -1,0 +1,17 @@
+.privacy-page { min-height:100vh; padding-bottom:60rpx; }
+.privacy-hero { display:flex; gap:22rpx; align-items:center; margin-top:24rpx; padding:28rpx; }
+.privacy-hero-icon { display:flex; flex:none; align-items:center; justify-content:center; width:74rpx; height:74rpx; color:var(--xiban-brand); border-radius:24rpx; background:var(--xiban-brand-light); }
+.privacy-title { margin-bottom:8rpx; color:var(--xiban-text-primary); font-size:30rpx; font-weight:700; }
+.privacy-hero text { color:var(--xiban-text-secondary); font-size:21rpx; line-height:1.6; }
+.privacy-section { margin-top:30rpx; }
+.section-title { margin:0 4rpx 14rpx; color:var(--xiban-text-primary); font-size:27rpx; font-weight:700; }
+.privacy-card,.copy-card { padding:8rpx 26rpx; }
+.privacy-row { display:flex; gap:24rpx; padding:22rpx 0; border-bottom:1rpx solid var(--xiban-border-light); font-size:21rpx; line-height:1.55; }
+.privacy-row:last-child { border-bottom:0; }
+.privacy-row>text:first-child { flex:0 0 120rpx; color:var(--xiban-text-primary); font-weight:650; }
+.privacy-row>text:last-child { color:var(--xiban-text-secondary); }
+.copy-card>view { padding:20rpx 0; color:var(--xiban-text-secondary); border-bottom:1rpx solid var(--xiban-border-light); font-size:21rpx; line-height:1.7; }
+.copy-card>view:last-child { border-bottom:0; }
+.copy-label { color:var(--xiban-text-primary); font-weight:650; }
+.contract-button { display:flex; align-items:center; justify-content:center; height:82rpx; margin-top:34rpx; color:var(--xiban-brand); border-radius:28rpx; background:#fff; box-shadow:var(--xiban-shadow-sm); font-size:23rpx; font-weight:650; }
+.privacy-footnote { padding:24rpx 28rpx 0; color:#AAA09E; text-align:center; font-size:18rpx; line-height:1.6; }

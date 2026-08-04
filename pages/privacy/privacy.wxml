@@ -1,0 +1,60 @@
+<view class="page privacy-page">
+  <nav-bar title="隐私与数据" back="{{true}}"></nav-bar>
+
+  <view class="privacy-hero card">
+    <view class="privacy-hero-icon"><app-icon name="profile-cloud" size="{{30}}"></app-icon></view>
+    <view>
+      <view class="privacy-title">你的备婚数据由你决定</view>
+      <text>默认仅保存在当前设备，只有主动开通云端或加入云端婚礼后才会上传。</text>
+    </view>
+  </view>
+
+  <view class="privacy-section">
+    <view class="section-title">我们处理哪些信息</view>
+    <view class="card privacy-card">
+      <view class="privacy-row"><text>基础资料</text><text>姓名或称呼、身份、微信头像</text></view>
+      <view class="privacy-row"><text>婚礼资料</text><text>婚期、城市、场地、结婚照</text></view>
+      <view class="privacy-row"><text>筹备内容</text><text>任务、婚品、预算、支出、宾客和完成记录</text></view>
+      <view class="privacy-row"><text>账号标识</text><text>云端版使用微信 OpenID 识别成员，不向其他成员展示 OpenID</text></view>
+    </view>
+  </view>
+
+  <view class="privacy-section">
+    <view class="section-title">这些信息如何使用</view>
+    <view class="card copy-card">
+      <view>用于生成和管理备婚计划、展示筹备进度、保存预算及宾客信息。</view>
+      <view>开通云端后，用于跨设备同步、备份和多人共同筹备，不用于广告画像或向无关第三方出售。</view>
+      <view>选择头像、结婚照或婚品图片时，仅处理你主动选择的图片。</view>
+    </view>
+  </view>
+
+  <view class="privacy-section">
+    <view class="section-title">本地与云端</view>
+    <view class="card copy-card">
+      <view><text class="copy-label">本地模式：</text>数据保存在当前微信设备。清理微信数据、更换设备或设备故障可能造成丢失。</view>
+      <view><text class="copy-label">云端模式：</text>数据保存至微信云托管和对象存储。同一婚礼成员可按只读、编辑或管理员权限访问相应婚礼数据。</view>
+      <view><text class="copy-label">加入婚礼：</text>使用邀请码前会先展示婚礼及权限信息，确认后才加入。请勿向无关人员分享邀请码。</view>
+    </view>
+  </view>
+
+  <view class="privacy-section">
+    <view class="section-title">保存与删除</view>
+    <view class="card copy-card">
+      <view>本地数据会保存至你主动清除微信数据、导入覆盖或开始新的婚礼。</view>
+      <view>云端数据在婚礼空间存续期间保存。管理员可在“我的 → 数据与服务”关闭同步或删除云端婚礼空间。</view>
+      <view>删除云端空间会删除婚礼数据、成员关系和邀请，并尝试清理相关云端文件；该操作不可恢复。</view>
+    </view>
+  </view>
+
+  <view class="privacy-section">
+    <view class="section-title">你的选择</view>
+    <view class="card copy-card">
+      <view>你可以不上传头像和结婚照，也可以只使用免费本地版本。</view>
+      <view>你可以导出本地文字数据备份、关闭自动同步，或由管理员删除整个云端婚礼空间。</view>
+      <view>涉及其他宾客的信息时，请只录入共同筹备所必需的内容，并妥善管理成员权限。</view>
+    </view>
+  </view>
+
+  <view class="contract-button" bindtap="openPrivacyContract">查看微信《用户隐私保护指引》</view>
+  <view class="privacy-footnote">本说明用于解释囍伴当前的数据处理方式；微信官方隐私保护指引以小程序平台展示内容为准。</view>
+</view>

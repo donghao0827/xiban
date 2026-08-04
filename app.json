@@ -8,6 +8,7 @@
     "pages/budget/budget",
     "pages/guests/guests",
     "pages/profile/profile",
+    "pages/privacy/privacy",
     "pages/photo-cropper/photo-cropper",
     "pages/members/members"
   ],
@@ -17,6 +18,7 @@
     "backgroundColor": "#F7FAF8"
   },
   "style": "v2",
+  "__usePrivacyCheck__": true,
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
   "usingComponents": {
