@@ -235,7 +235,7 @@ Page({
 
   showAbout() {
     wx.showModal({
-      title: '关于囍伴',
+      title: '关于我们',
       content: '囍伴采用本地优先模式。开启云同步后，婚礼信息、任务、婚品、预算、宾客数据和结婚照会上传云端，用于共同筹备和跨设备使用。',
       showCancel: false,
       confirmColor: '#b95c57'

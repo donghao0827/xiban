@@ -68,7 +68,7 @@
 
   <view class="card menu-card more-card">
     <ui-list-item icon="profile-info" tone="purple" title="隐私与数据" description="查看数据用途、成员可见范围和删除方式" bind:tap="openPrivacy"></ui-list-item>
-    <ui-list-item icon="profile-info" tone="purple" title="关于囍伴" description="本地优先，需要时再开启共同同步" divider="{{false}}" bind:tap="showAbout"></ui-list-item>
+    <ui-list-item icon="profile-info" tone="purple" title="关于我们" description="本地优先，需要时再开启共同同步" divider="{{false}}" bind:tap="showAbout"></ui-list-item>
   </view>
 
   <view class="brand"><view>囍</view><text>愿所有期待，都如约而至</text></view>

@@ -1,4 +1,4 @@
-<view class="ui-list-item {{divider ? 'divider' : ''}}" bindtap="handleTap">
+<view class="ui-list-item {{divider ? 'divider' : ''}}" catchtap="handleTap">
   <slot name="leading"></slot>
   <view wx:if="{{icon}}" class="ui-list-icon {{tone}}"><app-icon name="{{icon}}" size="{{21}}"></app-icon></view>
   <view class="ui-list-main"><view>{{title}}</view><text wx:if="{{description}}">{{description}}</text><slot></slot></view>
