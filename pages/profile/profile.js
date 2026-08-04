@@ -656,10 +656,14 @@ Page({
       wx.showModal({
         title: '开通免费云端体验',
         content: '体验版最多支持 5 名成员和 20 张自定义婚品图片。开通后，婚礼信息、任务、婚品、预算、宾客、头像和结婚照将上传到云端，同一婚礼成员可按权限访问。本地数据会继续保留。',
-        confirmText: '同意并体验',
+        confirmText: '确认开通',
         confirmColor: '#d96a63',
         success: result => {
           if (result.confirm) this.upgradeLocalWeddingToCloud()
+        },
+        fail: error => {
+          console.error('打开云端体验确认弹窗失败', error)
+          wx.showToast({ title: '暂时无法打开，请重试', icon: 'none' })
         }
       })
       return
@@ -667,7 +671,7 @@ Page({
     wx.showModal({
       title: '开启云同步',
       content: '开启后，婚礼信息、任务、婚品、预算、宾客数据和结婚照将上传至云端，用于备份、共同筹备和跨设备使用；同一婚礼成员可按权限访问。',
-      confirmText: '同意并开启',
+      confirmText: '确认开启',
       confirmColor: '#d96a63',
       success: async result => {
         if (!result.confirm) return
@@ -691,6 +695,10 @@ Page({
             wx.showToast({ title: error.message, icon: 'none', duration: 3000 })
           }
         }
+      },
+      fail: error => {
+        console.error('打开云同步确认弹窗失败', error)
+        wx.showToast({ title: '暂时无法打开，请重试', icon: 'none' })
       }
     })
   },
