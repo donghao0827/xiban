@@ -36,7 +36,7 @@
   <ui-sheet visible="{{showSheet}}" title="添加宾客" subtitle="先记录称呼，其他信息之后也能完善" bind:close="closeSheet">
     <view class="form-row">
       <text class="form-label">称呼或姓名</text>
-      <input class="form-input" placeholder="例如：王阿姨" value="{{form.name}}" bindinput="updateName" focus />
+      <input class="form-input" placeholder="例如：王阿姨" value="{{form.name}}" bindinput="updateName" focus="{{showSheet}}" />
     </view>
     <view class="form-row">
       <text class="form-label">宾客归属</text>
