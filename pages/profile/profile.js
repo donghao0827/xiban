@@ -650,6 +650,14 @@ Page({
     wx.previewImage({ current: this.data.weddingPhoto, urls: [this.data.weddingPhoto] })
   },
 
+  handleCloudAction() {
+    if (this.data.cloudStatus.enabled) {
+      this.syncNow()
+      return
+    }
+    this.enableCloudSync()
+  },
+
   enableCloudSync() {
     const profile = cloud.getLocalProfile()
     if (profile && profile.storageMode === 'local') {
