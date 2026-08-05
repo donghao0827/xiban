@@ -236,7 +236,7 @@ function applyRemote(remote) {
   const storage = require('./storage')
   wx.setStorageSync(
     SYNC_KEYS.materials,
-    storage.migrateMaterialSelection(wx.getStorageSync(SYNC_KEYS.materials))
+    storage.normalizeMaterials(wx.getStorageSync(SYNC_KEYS.materials) || [])
   )
   wx.setStorageSync(
     SYNC_KEYS.budgets,

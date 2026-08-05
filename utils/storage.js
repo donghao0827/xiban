@@ -227,10 +227,12 @@ function migrateMaterialSelection(materials) {
   return normalizeMaterials(materials)
     .filter(item => {
       if (item.hidden) return false
+      // 用户主动加入的清单项（含云端回写后可能丢失 selected 的情况）
+      if (item.selected === true) return true
+      if (item.id && String(item.id).indexOf('material_') === 0) return true
       const template = catalogMap[item.title]
       if (!template) return true
       return (
-        item.selected === true ||
         item.bought ||
         Number(item.quantity || 1) !== Number(template.quantity || 1) ||
         (item.unit || '件') !== (template.unit || '件') ||

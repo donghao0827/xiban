@@ -797,14 +797,23 @@ Page({
       return
     }
     materials.unshift({
-      ...catalogItem,
       id: createId('material'),
+      title: catalogItem.title,
+      category: catalogItem.category,
+      icon: catalogItem.icon,
+      image: catalogItem.image || '',
+      customImage: '',
       selected: true,
-      bought: false
+      hidden: false,
+      bought: false,
+      quantity: 1,
+      unit: catalogItem.unit || '件',
+      note: '',
+      plannedAmount: 0,
+      spentAmount: 0
     })
     if (!storage.set('materials', materials)) return
     this.loadMaterials()
-    wx.showToast({ title: '已加入我的清单', icon: 'success' })
   },
 
   toggleMaterial(event) {
