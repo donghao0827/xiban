@@ -21,7 +21,7 @@ App({
     }
   },
   globalData: {
-    appName: '囍伴',
+    appName: '一起备婚啦',
     cloudReady: null,
     justLaunched: false
   }

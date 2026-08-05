@@ -157,7 +157,7 @@ Page({
 
   exportLocalBackup() {
     const backup = storage.createBackup()
-    const fileName = `囍伴备份-${new Date().toISOString().slice(0, 10)}.json`
+    const fileName = `一起备婚啦备份-${new Date().toISOString().slice(0, 10)}.json`
     const filePath = `${wx.env.USER_DATA_PATH}/${fileName}`
     wx.showLoading({ title: '正在生成备份' })
     wx.getFileSystemManager().writeFile({
@@ -250,7 +250,7 @@ Page({
   showAbout() {
     wx.showModal({
       title: '关于我们',
-      content: '囍伴采用本地优先模式。开启云同步后，婚礼信息、任务、婚品、预算、宾客数据和结婚照会上传云端，用于共同筹备和跨设备使用。',
+      content: '一起备婚啦采用本地优先模式。开启云同步后，婚礼信息、任务、婚品、预算、宾客数据和结婚照会上传云端，用于共同筹备和跨设备使用。',
       showCancel: false,
       confirmColor: '#b95c57'
     })

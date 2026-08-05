@@ -431,7 +431,7 @@ function createId(prefix) {
 
 function createBackup() {
   return {
-    app: '囍伴',
+    app: '一起备婚啦',
     backupVersion: BACKUP_VERSION,
     schemaVersion: SCHEMA_VERSION,
     exportedAt: new Date().toISOString(),
@@ -447,8 +447,8 @@ function createBackup() {
 }
 
 function importBackup(backup) {
-  if (!backup || backup.app !== '囍伴' || !backup.data || typeof backup.data !== 'object') {
-    throw new Error('这不是有效的囍伴备份文件')
+  if (!backup || !['一起备婚啦', '囍伴'].includes(backup.app) || !backup.data || typeof backup.data !== 'object') {
+    throw new Error('这不是有效的一起备婚啦备份文件')
   }
   if (Number(backup.backupVersion || 0) > BACKUP_VERSION) {
     throw new Error('备份来自更新版本，请先升级小程序')
