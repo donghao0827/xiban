@@ -153,19 +153,27 @@
       <text>婚品预算 ¥{{materialPlanned}}</text><text>实际支出 ¥{{materialSpent}}</text>
     </view>
 
-    <view class="card material-list" wx:if="{{visibleMaterials.length}}">
-      <view wx:for="{{visibleMaterials}}" wx:key="id" class="material-row" data-id="{{item.id}}" bindlongpress="removeMaterial">
-        <view class="material-icon {{item.image || item.customImage ? 'has-image' : ''}}">
-          <image wx:if="{{item.displayImage}}" class="material-image" src="{{item.displayImage}}" mode="aspectFit"></image>
-          <app-icon wx:else name="{{item.icon}}" size="{{23}}"></app-icon>
+    <view class="material-grid" wx:if="{{visibleMaterials.length}}">
+      <view
+        wx:for="{{visibleMaterials}}"
+        wx:key="id"
+        class="material-card card {{item.bought ? 'bought' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="editMaterial"
+        bindlongpress="removeMaterial"
+      >
+        <view class="material-card-image {{item.image || item.customImage ? 'has-image' : ''}}">
+          <image wx:if="{{item.displayImage}}" class="material-card-photo" src="{{item.displayImage}}" mode="aspectFit"></image>
+          <app-icon wx:else name="{{item.icon}}" size="{{30}}"></app-icon>
+          <view class="material-card-category {{item.categoryTone}}">{{item.category}}</view>
+          <view class="material-card-check {{item.bought ? 'done' : ''}}" data-id="{{item.id}}" catchtap="toggleMaterial">
+            <app-icon wx:if="{{item.bought}}" name="check" size="{{14}}"></app-icon>
+          </view>
         </view>
-        <view class="material-main" data-id="{{item.id}}" bindtap="editMaterial">
-          <view class="material-name {{item.bought ? 'finished' : ''}}">{{item.title}}</view>
-          <view class="material-group">{{item.category}} · {{item.detailLine}}</view>
-          <view wx:if="{{item.amountLine}}" class="material-amount">{{item.amountLine}}</view>
-        </view>
-        <view class="round-check {{item.bought ? 'done' : ''}}" data-id="{{item.id}}" bindtap="toggleMaterial">
-          <app-icon wx:if="{{item.bought}}" name="check" size="{{16}}"></app-icon>
+        <view class="material-card-body">
+          <view class="material-card-name {{item.bought ? 'finished' : ''}}">{{item.title}}</view>
+          <view class="material-card-meta">{{item.detailLine}}</view>
+          <view wx:if="{{item.amountLine}}" class="material-card-amount">{{item.amountLine}}</view>
         </view>
       </view>
     </view>
@@ -178,22 +186,46 @@
 
     <block wx:else>
       <view class="catalog-intro card">
-        <view class="catalog-intro-title">官方婚品库</view>
-        <view class="catalog-intro-desc">按需选配，加入后再填写数量、规格和预算</view>
+        <view class="catalog-intro-copy">
+          <view class="catalog-intro-title">官方婚品库</view>
+          <view class="catalog-intro-desc">{{catalogBatchMode ? '点选要加入的婚品，确认后一次加入清单' : '按需选配，加入后再填写数量、规格和预算'}}</view>
+        </view>
+        <view class="catalog-batch-toggle" bindtap="toggleCatalogBatchMode">{{catalogBatchMode ? '取消' : '批量加入'}}</view>
       </view>
-      <view class="catalog-grid" wx:if="{{visibleCatalogMaterials.length}}">
-        <view wx:for="{{visibleCatalogMaterials}}" wx:key="title" class="catalog-card card">
+      <view class="catalog-grid {{catalogBatchMode ? 'batch-mode' : ''}}" wx:if="{{visibleCatalogMaterials.length}}">
+        <view
+          wx:for="{{visibleCatalogMaterials}}"
+          wx:key="title"
+          class="catalog-card card {{item.batchChecked ? 'batch-checked' : ''}}"
+          data-title="{{item.title}}"
+          bindtap="onCatalogCardTap"
+        >
           <view class="catalog-image-wrap">
             <image wx:if="{{item.image}}" class="catalog-image" src="{{item.imageUrl}}" mode="aspectFit"></image>
             <app-icon wx:else name="{{item.icon}}" size="{{30}}"></app-icon>
             <view class="catalog-category {{item.categoryTone}}">{{item.category}}</view>
+            <view wx:if="{{catalogBatchMode}}" class="catalog-batch-check {{item.selected ? 'joined' : ''}} {{item.batchChecked ? 'checked' : ''}}">
+              <app-icon wx:if="{{item.selected || item.batchChecked}}" name="check" size="{{14}}"></app-icon>
+            </view>
           </view>
           <view class="catalog-title-row">
             <view class="catalog-name">{{item.title}}</view>
-            <view class="catalog-action {{item.selected ? 'selected' : ''}}" data-title="{{item.title}}" bindtap="toggleCatalogMaterial">
+            <view
+              wx:if="{{!catalogBatchMode}}"
+              class="catalog-action {{item.selected ? 'selected' : ''}}"
+              data-title="{{item.title}}"
+              catchtap="toggleCatalogMaterial"
+            >
               {{item.selected ? '已加入' : '+ 加入'}}
             </view>
+            <view wx:elif="{{item.selected}}" class="catalog-action selected">已加入</view>
           </view>
+        </view>
+      </view>
+      <view wx:if="{{catalogBatchMode}}" class="catalog-batch-bar">
+        <view class="catalog-batch-select-all" bindtap="selectAllVisibleCatalog">全选本类</view>
+        <view class="catalog-batch-confirm {{catalogBatchCount ? '' : 'disabled'}}" bindtap="confirmCatalogBatchAdd">
+          加入清单{{catalogBatchCount ? ' · ' + catalogBatchCount : ''}}
         </view>
       </view>
     </block>

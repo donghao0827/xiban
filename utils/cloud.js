@@ -256,6 +256,14 @@ async function pull() {
   setStatus('同步中')
   try {
     const remote = await request('/api/sync', 'GET')
+    const localUpdatedAt = Number(wx.getStorageSync(META_KEYS.localUpdatedAt) || 0)
+    const syncedLocalAt = Number(wx.getStorageSync(META_KEYS.syncedLocalAt) || 0)
+    // 拉取期间若本机已有未同步修改，改为推送，避免旧云端快照覆盖刚加入的婚品等数据
+    if (localUpdatedAt !== syncedLocalAt) {
+      setStatus('待同步')
+      await push()
+      return null
+    }
     if (remote) applyRemote(remote)
     else setStatus('等待首次同步')
     return remote
@@ -301,6 +309,18 @@ function schedulePush() {
       if (error.statusCode === 409 && error.remoteData) promptConflict(error.remoteData)
     })
   }, 1200)
+}
+
+function flushPush() {
+  if (!isEnabled()) return Promise.resolve(null)
+  if (pushTimer) {
+    clearTimeout(pushTimer)
+    pushTimer = null
+  }
+  return push().catch(error => {
+    if (error.statusCode === 409 && error.remoteData) promptConflict(error.remoteData)
+    throw error
+  })
 }
 
 function promptConflict(remote) {
@@ -485,6 +505,7 @@ module.exports = {
   pull,
   push,
   schedulePush,
+  flushPush,
   resolveConflict,
   removeCloudData
 }

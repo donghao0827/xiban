@@ -90,6 +90,9 @@ Page({
     activeMaterialView: 0,
     materialCategories: ['全部'],
     activeMaterialCategory: '全部',
+    catalogBatchMode: false,
+    catalogBatchTitles: [],
+    catalogBatchCount: 0,
     boughtCount: 0,
     materialProgress: 0,
     materialPlanned: 0,
@@ -290,20 +293,33 @@ Page({
 
   filterMaterials() {
     const category = this.data.activeMaterialCategory
+    const batchSet = new Set(this.data.catalogBatchTitles)
+    const visibleCatalogMaterials = (
+      category === '全部'
+        ? this.data.catalogMaterials
+        : this.data.catalogMaterials.filter(item => item.category === category)
+    ).map(item => ({
+      ...item,
+      batchChecked: batchSet.has(item.title)
+    }))
     this.setData({
       visibleMaterials: category === '全部'
         ? this.data.materials
         : this.data.materials.filter(item => item.category === category),
-      visibleCatalogMaterials: category === '全部'
-        ? this.data.catalogMaterials
-        : this.data.catalogMaterials.filter(item => item.category === category)
+      visibleCatalogMaterials
     })
   },
 
   changePrimaryMode(event) {
     const mode = event.currentTarget.dataset.mode
     if (mode === this.data.primaryMode) return
-    this.setData({ primaryMode: mode }, () => {
+    const patch = { primaryMode: mode }
+    if (mode !== 'materials' && this.data.catalogBatchMode) {
+      patch.catalogBatchMode = false
+      patch.catalogBatchTitles = []
+      patch.catalogBatchCount = 0
+    }
+    this.setData(patch, () => {
       if (mode === 'materials') this.cacheMaterialImages()
     })
     if (mode === 'calendar') this.loadCalendar()
@@ -770,33 +786,112 @@ Page({
   },
 
   changeMaterialView(event) {
-    this.setData({ activeMaterialView: Number(event.currentTarget.dataset.index) }, this.cacheMaterialImages)
+    const activeMaterialView = Number(event.currentTarget.dataset.index)
+    const patch = { activeMaterialView }
+    if (activeMaterialView !== 1 && this.data.catalogBatchMode) {
+      patch.catalogBatchMode = false
+      patch.catalogBatchTitles = []
+      patch.catalogBatchCount = 0
+    }
+    this.setData(patch, () => {
+      this.filterMaterials()
+      this.cacheMaterialImages()
+    })
   },
 
-  toggleCatalogMaterial(event) {
+  enterCatalogBatchMode() {
+    this.setData({
+      catalogBatchMode: true,
+      catalogBatchTitles: [],
+      catalogBatchCount: 0
+    }, this.filterMaterials)
+  },
+
+  exitCatalogBatchMode() {
+    this.setData({
+      catalogBatchMode: false,
+      catalogBatchTitles: [],
+      catalogBatchCount: 0
+    }, this.filterMaterials)
+  },
+
+  toggleCatalogBatchMode() {
+    if (this.data.catalogBatchMode) this.exitCatalogBatchMode()
+    else this.enterCatalogBatchMode()
+  },
+
+  onCatalogCardTap(event) {
+    if (!this.data.catalogBatchMode) return
+    this.toggleCatalogBatchItem(event)
+  },
+
+  toggleCatalogBatchItem(event) {
     const title = event.currentTarget.dataset.title
     const catalogItem = this.data.catalogMaterials.find(item => item.title === title)
     if (!catalogItem) return
-    const materials = storage.get('materials')
-    const selected = materials.find(item => item.title === title)
-    if (selected) {
-      const remove = () => {
-        if (!storage.set('materials', materials.filter(item => item.title !== title))) return
-        this.loadMaterials()
-      }
-      if (selected.bought || selected.note || selected.plannedAmount || selected.spentAmount) {
-        wx.showModal({
-          title: '移出我的清单',
-          content: '这项婚品已经填写过进度或备注，确定移出吗？',
-          confirmColor: '#b95664',
-          success: result => { if (result.confirm) remove() }
-        })
-      } else {
-        remove()
-      }
+    if (catalogItem.selected) {
+      wx.showToast({ title: '已在我的清单', icon: 'none' })
       return
     }
-    materials.unshift({
+    const catalogBatchTitles = this.data.catalogBatchTitles.slice()
+    const index = catalogBatchTitles.indexOf(title)
+    if (index >= 0) catalogBatchTitles.splice(index, 1)
+    else catalogBatchTitles.push(title)
+    this.setData({
+      catalogBatchTitles,
+      catalogBatchCount: catalogBatchTitles.length
+    }, this.filterMaterials)
+  },
+
+  selectAllVisibleCatalog() {
+    const pending = this.data.visibleCatalogMaterials
+      .filter(item => !item.selected)
+      .map(item => item.title)
+    if (!pending.length) {
+      wx.showToast({ title: '本类已全部加入', icon: 'none' })
+      return
+    }
+    const catalogBatchTitles = Array.from(new Set(this.data.catalogBatchTitles.concat(pending)))
+    this.setData({
+      catalogBatchTitles,
+      catalogBatchCount: catalogBatchTitles.length
+    }, this.filterMaterials)
+  },
+
+  confirmCatalogBatchAdd() {
+    const titles = this.data.catalogBatchTitles
+    if (!titles.length) {
+      wx.showToast({ title: '请先选择婚品', icon: 'none' })
+      return
+    }
+    const materials = storage.get('materials')
+    const existing = new Set(materials.map(item => item.title))
+    let added = 0
+    titles.forEach(title => {
+      if (existing.has(title)) return
+      const catalogItem = this.data.catalogMaterials.find(item => item.title === title)
+      if (!catalogItem) return
+      materials.unshift(this.buildCatalogMaterial(catalogItem))
+      existing.add(title)
+      added += 1
+    })
+    if (!added) {
+      this.exitCatalogBatchMode()
+      return
+    }
+    if (!storage.set('materials', materials)) return
+    this.setData({
+      catalogBatchMode: false,
+      catalogBatchTitles: [],
+      catalogBatchCount: 0,
+      activeMaterialView: 0
+    })
+    this.loadMaterials()
+    this.syncMaterialsNow()
+  },
+
+  buildCatalogMaterial(catalogItem) {
+    return {
       id: createId('material'),
       title: catalogItem.title,
       category: catalogItem.category,
@@ -811,9 +906,44 @@ Page({
       note: '',
       plannedAmount: 0,
       spentAmount: 0
-    })
+    }
+  },
+
+  toggleCatalogMaterial(event) {
+    const title = event.currentTarget.dataset.title
+    const catalogItem = this.data.catalogMaterials.find(item => item.title === title)
+    if (!catalogItem) return
+    const materials = storage.get('materials')
+    const selected = materials.find(item => item.title === title)
+    if (selected) {
+      const remove = () => {
+        if (!storage.set('materials', materials.filter(item => item.title !== title))) return
+        this.loadMaterials()
+        this.syncMaterialsNow()
+      }
+      if (selected.bought || selected.note || selected.plannedAmount || selected.spentAmount) {
+        wx.showModal({
+          title: '移出我的清单',
+          content: '这项婚品已经填写过进度或备注，确定移出吗？',
+          confirmColor: '#b95664',
+          success: result => { if (result.confirm) remove() }
+        })
+      } else {
+        remove()
+      }
+      return
+    }
+    materials.unshift(this.buildCatalogMaterial(catalogItem))
     if (!storage.set('materials', materials)) return
     this.loadMaterials()
+    this.syncMaterialsNow()
+  },
+
+  syncMaterialsNow() {
+    if (!cloud.isEnabled()) return
+    cloud.flushPush().catch(error => {
+      console.error('婚品同步失败', error)
+    })
   },
 
   toggleMaterial(event) {
